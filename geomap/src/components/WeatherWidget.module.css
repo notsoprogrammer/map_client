@@ -1,0 +1,96 @@
+/* WeatherWidget.module.css */
+.weatherWidget {
+  display: flex;
+  /* background: linear-gradient(to bottom, #E1B470, #47A85C); */
+
+  background:  #5c8db8 ;
+  color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+}
+
+.currentWeatherSection {
+  flex-basis: 40%; 
+}
+
+.locationTitle {
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.currentWeather {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconAndTemp {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+
+.weatherIcon {
+  width: 60px;
+  height: 60px;
+}
+
+.temperature {
+  font-size: 3em;
+  font-weight: bold;
+  margin-left: 10px; 
+}
+
+.condition {
+  font-size: 1.2em;
+  margin-top: 5px;
+  text-transform: capitalize;
+}
+
+.detailsAndForecast {
+  flex-basis: 60%; 
+  display: flex;
+  flex-direction: column;
+}
+
+.details {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 20px;
+  border-bottom: 1px solid #555; 
+}
+
+.detailLabel {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.weeklyForecast {
+  align-items: center;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  color: rgb(35, 35, 35);
+  
+}
+
+.forecastCard {
+  background-color: rgba(255, 255, 255, 0.242);
+  flex-basis: 60%;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.icon {
+  align-items: center;
+  justify-content: center;  
+  width: 20px;
+  height: 20px;
+  margin-block-start: 5px;
+  margin-right: 10px;
+}
