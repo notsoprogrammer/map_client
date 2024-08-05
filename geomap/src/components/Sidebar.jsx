@@ -21,7 +21,7 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
     },
     {
       text: "Farmers",
-      icon: <Person />,
+      icon: <Groups2Outlined />,
     },
     // {
     //   text: "Associations",
