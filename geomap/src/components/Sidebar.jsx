@@ -37,10 +37,14 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
       icon: <ReceiptLongOutlined />,
     },
 
-    // {
-    //   text: "MapUploads",
-    //   icon: <PublicOutlined />,
-    // },
+    {
+      text: "MapUploads",
+      icon: <PublicOutlined />,
+    },
+    {
+        text: "ImageUpload",
+        icon: <PublicOutlined />,
+      },
   ];
 
 
@@ -55,7 +59,9 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
       const isOpen = Boolean(anchorEl);
       const handleClick = (event) => setAnchorEl(event.currentTarget);
       const handleClose = () => setAnchorEl(null);
-
+    //   const goToProfileUpload = () => {
+    //     navigate('/profile-upload'); // Path to the profile upload page
+    //     };
       const [logoutApiCall] = useLogoutMutation();
       const logoutHandler = async () => {
         try {
@@ -104,8 +110,13 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
                           flexDirection: 'column',
                           alignItems: 'center',
                           p: '1.5rem',
-                          pb: '2rem'
+                          pb: '1.5rem'
                       }}>
+                          <Box display="flex" alignItems="center" mb={'20px'} >
+                            <Typography variant="h4" fontWeight="bold">
+                              MAPULON
+                            </Typography>
+                          </Box>
                           {/* User Profile */}
                           <Avatar alt={user.name} src={user.profilePicture} sx={{ width: 56, height: 56 }} />
                           <Typography variant="h6" noWrap>
@@ -115,11 +126,7 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
                               {user.job}
                           </Typography>
 
-                          <Box display="flex" alignItems="center" mt={'20px'}>
-                            <Typography variant="h4" fontWeight="bold">
-                              {/* MAPULON APP */}
-                            </Typography>
-                          </Box>
+
                       </Box>
                       <List>
                         {navItems.map(({ text, icon }) => {

@@ -67,42 +67,6 @@ function UserProfile() {
         }
     };
     
-    // const handleImageChange = (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onload = () => {
-    //             setLocalUser(prevState => ({
-    //                 ...prevState,
-    //                 profileImg: reader.result
-    //             }));
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
-    
-    const handleImageUpload = async (event) => {
-        const file = event.target.files[0];
-        const formData = new FormData();
-        formData.append('image', file);
-
-        const response = await fetch('/api/users/profile/image', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-        });
-        const data = await response.json();
-        if (response.ok) {
-            updateUser({ ...user, profileImg: data.file.url });  // Update context with new image URL
-            setLocalUser({ ...localUser, profileImg: data.file.url });  // Update local state
-            alert('Image uploaded successfully');
-        } else {
-            alert('Failed to upload image: ' + data.message);
-        }
-    };
-
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -111,9 +75,9 @@ function UserProfile() {
         setEditMode(true);
     };
 
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         if (localUser.newPassword !== localUser.confirmPassword) {
             alert("New passwords do not match!");
             return;
@@ -123,45 +87,42 @@ function UserProfile() {
             return;
         }
     
-        const formData = new FormData();
-        Object.keys(localUser).forEach(key => {
-            if (key !== 'profileImg' && key !== 'newPassword' && key !== 'confirmPassword') {
-                formData.append(key, localUser[key]);
+        try {
+            const response = await fetch('/api/users/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    name: localUser.name,
+                    email: localUser.email,
+                    job: localUser.job,
+                    password: localUser.newPassword // Ensure backend is properly hashing this password
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                updateUser({
+                    ...user,
+                    name: data.name,
+                    email: data.email,
+                    job: data.job
+                }); // It's safer to update from the response if backend modifies data
+                setLocalUser(data);  // Update local state to reflect the new data
+                alert('Profile Updated Successfully');
+                setEditMode(false);
+            } else {
+                throw new Error(data.message); // Throw to catch block for uniform error handling
             }
-        });
-    
-        if (localUser.newPassword && localUser.newPassword === localUser.confirmPassword && !passwordError) {
-            formData.append('password', localUser.newPassword);
-        }
-    
-        const fileInput = document.getElementById('icon-button-file');
-        if (fileInput && fileInput.files.length > 0) {
-            formData.append('profileImg', fileInput.files[0]);
-        }
-    
-        const response = await fetch('/api/users/profile', {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                // 'Content-Type': 'application/json'  // Removed to let the browser set it with the correct boundary
-            },
-            body: formData
-        });
-    
-        const data = await response.json();
-        if (response.ok) {
-            updateUser(data);  // Update global user context
-            setLocalUser(data);  // Update local state to reflect the new data
-            alert('Profile Updated Successfully');
-            setEditMode(false);
-            fetchUserData();  // Re-fetch data here to ensure UI is updated
-        } else {
-            alert(data.message);
+        } catch (error) {
+            console.error('Update failed:', error);
+            alert('Update failed: ' + error.message || 'Unknown error');
         }
     };
     
     const validatePassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+        const regex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,16}$/;
         setPasswordError(
             regex.test(password) ? '' : 'Password must be 8-16 characters, include one uppercase, one number, and one special character.'
         );
@@ -173,15 +134,26 @@ function UserProfile() {
                 <Grid item xs={12} md={6}>
                     <Typography variant="h4">Profile</Typography>
                     <div style={{ position: 'relative', marginBottom: '20px' }}>
-                        <Avatar src={localUser.profileImg || '/default-avatar.png'} sx={{ width: 90, height: 90 }} />
+                    <Avatar src={localUser.profileImg || '/default-avatar.png'} sx={{ width: 90, height: 90 }} />
                         {editMode && (
+                            <label htmlFor="icon-button-file">
+                                <Input accept="image/*" id="icon-button-file" type="file" />
+                                <IconButton color="primary" component="span" style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                                    <EditIcon />
+                                </IconButton>
+                            </label>
+                            )}
+                        {/* <Avatar src={localUser.profileImg || '/default-avatar.png'} sx={{ width: 90, height: 90 }} /> */}
+                        {/* <Avatar src={getImageForMunicipality(localUser.municipality) || '/default-municipality.png'} sx={{ width: 90, height: 90 }} /> */}
+                        {/* {editMode && (
                             <label htmlFor="icon-button-file">
                                 <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImageUpload} />
                                 <IconButton color="primary" component="span" style={{ position: 'absolute', bottom: 0, right: 0 }}>
                                     <EditIcon />
                                 </IconButton>
                             </label>
-                        )}
+                            
+                        )} */}
                     </div>
                     <form onSubmit={handleSubmit}>
                         <TextField
