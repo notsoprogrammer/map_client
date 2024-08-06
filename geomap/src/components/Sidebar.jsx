@@ -4,6 +4,7 @@
   import { setMode } from '../slices/modeSlice';
   import { clearCredentials } from '../slices/authSlice';
   import { useLogoutMutation } from '../slices/usersApiSlice';
+  import { useUser } from './userContext';
   import {Groups2Outlined,HomeOutlined,DarkModeOutlined,LightModeOutlined,SettingsOutlined,ShoppingCartOutlined,ExitToAppOutlined,ReceiptLongOutlined,PublicOutlined,ChevronRightOutlined, // Import the icon for logout button
   Person
   } from "@mui/icons-material";
@@ -43,13 +44,13 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
   ];
 
 
-  const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) => {
+  const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) => {
       const { pathname } = useLocation();
       const [active, setActive] = useState("");
       const dispatch = useDispatch();
       const navigate = useNavigate();
       const theme = useTheme();
-
+      const {user} =useUser();  
       const [anchorEl, setAnchorEl] = useState(null);
       const isOpen = Boolean(anchorEl);
       const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -177,12 +178,13 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
                         >
                             {theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
                         </Button>
-                        {/* <Button
+                        <Button
                             startIcon={<SettingsOutlined />}
+                            onClick={() => navigate('/settings')}
                             sx={buttonStyle}
                         >
                             Settings
-                        </Button> */}
+                        </Button>
                         <Button
                             startIcon={<ExitToAppOutlined />}
                             onClick={logoutHandler}
