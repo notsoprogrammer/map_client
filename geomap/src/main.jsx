@@ -8,29 +8,32 @@ import { UserProvider } from './components/userContext.jsx'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import store from './store'
+import UserDataInitializer from './components/userDataInitializer.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
   <Provider store={store}>
     <UserProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<App />} />
-          <Route path='/contact' element={<Contact />} />
-          <Route path='/about' element={<About />} />
-          {/* Private Routes */}
-          <Route path='' element={<PrivateRoute/>}>
-            <Route path='/dashboard' element={<Dashboard/>} />
-            <Route path='/settings' element={<Settings/>} />
-            <Route path='/farmers' element={<Farmers/>} />
-            <Route path='/associations' element={<Associations/>} />
-            <Route path='/crops' element={<Crops/>} />
-            <Route path='/rice' element={<RiceStat/>} />
-            <Route path='/maps' element={<Maps/>} />
-            <Route path='/mapuploads' element={<MapUploads/>} />
-            <Route path='/imageupload' element={<ImageUpload/>} />
-          </Route>
-        </Routes>
+        <UserDataInitializer>
+          <Routes>
+            <Route path='/' element={<App />} />
+            <Route path='/contact' element={<Contact />} />
+            <Route path='/about' element={<About />} />
+            {/* Private Routes */}
+            <Route path='' element={<PrivateRoute/>}>
+              <Route path='/dashboard' element={<Dashboard/>} />
+              <Route path='/settings' element={<Settings/>} />
+              <Route path='/farmers' element={<Farmers/>} />
+              <Route path='/associations' element={<Associations/>} />
+              <Route path='/crops' element={<Crops/>} />
+              <Route path='/rice' element={<RiceStat/>} />
+              <Route path='/maps' element={<Maps/>} />
+              <Route path='/mapuploads' element={<MapUploads/>} />
+              <Route path='/imageupload' element={<ImageUpload/>} />
+            </Route>
+          </Routes>
+        </UserDataInitializer>
       </BrowserRouter>
     </UserProvider>
   </Provider>

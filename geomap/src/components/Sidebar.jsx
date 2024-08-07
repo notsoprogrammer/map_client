@@ -148,11 +148,11 @@
                           p: '1.5rem',
                           pb: '1.5rem'
                       }}>
-                          <Box display="flex" alignItems="center" mb={'20px'} >
+                          {/* <Box display="flex" alignItems="center" mb={'20px'} >
                             <Typography variant="h4" fontWeight="bold">
                               MAPULON
                             </Typography>
-                          </Box>
+                          </Box> */}
                           {/* User Profile */}
                           <Avatar src={profileImageUrl} alt={user.name} sx={{ width: 100, height: 100 }} />
                           <Typography variant="h6" noWrap>
