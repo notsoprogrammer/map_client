@@ -5,7 +5,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/styles';
 import { useUser } from './userContext'; 
-
+import AdminProfileImageUpload from './AdminUploadProfileImg';
 const Input = styled('input')({
   display: 'none',
 });
@@ -134,26 +134,17 @@ function UserProfile() {
                 <Grid item xs={12} md={6}>
                     <Typography variant="h4">Profile</Typography>
                     <div style={{ position: 'relative', marginBottom: '20px' }}>
-                    <Avatar src={localUser.profileImg || '/default-avatar.png'} sx={{ width: 90, height: 90 }} />
-                        {editMode && (
+                    {/* <Avatar src={localUser.profileImg || '/default-avatar.png'} sx={{ width: 90, height: 90 }} /> */}
+                    {/* <AdminProfileImageUpload /> */}
+                        {/* {editMode && (
                             <label htmlFor="icon-button-file">
                                 <Input accept="image/*" id="icon-button-file" type="file" />
                                 <IconButton color="primary" component="span" style={{ position: 'absolute', bottom: 0, right: 0 }}>
                                     <EditIcon />
                                 </IconButton>
                             </label>
-                            )}
-                        {/* <Avatar src={localUser.profileImg || '/default-avatar.png'} sx={{ width: 90, height: 90 }} /> */}
-                        {/* <Avatar src={getImageForMunicipality(localUser.municipality) || '/default-municipality.png'} sx={{ width: 90, height: 90 }} /> */}
-                        {/* {editMode && (
-                            <label htmlFor="icon-button-file">
-                                <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImageUpload} />
-                                <IconButton color="primary" component="span" style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                                    <EditIcon />
-                                </IconButton>
-                            </label>
-                            
-                        )} */}
+                            )} */}
+
                     </div>
                     <form onSubmit={handleSubmit}>
                         <TextField

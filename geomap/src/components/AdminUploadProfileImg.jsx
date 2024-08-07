@@ -26,7 +26,7 @@ function AdminProfileImageUpload() {
         formData.append('municipality', selectedMunicipality);
 
         try {
-            const response = await fetch('/admin/upload-profile-image', {
+            const response = await fetch('/api/image/upload', {
                 method: 'POST',
                 body: formData,
             });

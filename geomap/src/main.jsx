@@ -21,11 +21,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           {/* Private Routes */}
           <Route path='' element={<PrivateRoute/>}>
             <Route path='/dashboard' element={<Dashboard/>} />
+            <Route path='/settings' element={<Settings/>} />
             <Route path='/farmers' element={<Farmers/>} />
             <Route path='/associations' element={<Associations/>} />
             <Route path='/crops' element={<Crops/>} />
             <Route path='/rice' element={<RiceStat/>} />
-            <Route path='/settings' element={<Settings/>} />
             <Route path='/maps' element={<Maps/>} />
             <Route path='/mapuploads' element={<MapUploads/>} />
             <Route path='/imageupload' element={<ImageUpload/>} />

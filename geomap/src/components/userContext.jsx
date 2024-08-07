@@ -16,9 +16,15 @@ export const UserProvider = ({ children }) => {
     const updateUser = (userData) => {
         setUser(userData);
     };
+    // const updateUserProfileImage = (imageUrl) => {
+    //     setUser(prevUser => ({
+    //         ...prevUser,
+    //         profilePicture: imageUrl
+    //     }));
+    // };
 
     return (
-        <UserContext.Provider value={{ user, updateUser }}>
+        <UserContext.Provider value={{ user, updateUser  }}>
             {children}
         </UserContext.Provider>
     );

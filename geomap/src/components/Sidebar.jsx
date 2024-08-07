@@ -1,15 +1,32 @@
   import React, { useEffect, useState } from 'react';
+  import axios from 'axios';
   import { useLocation, useNavigate } from "react-router-dom";
   import { useDispatch } from 'react-redux';
   import { setMode } from '../slices/modeSlice';
   import { clearCredentials } from '../slices/authSlice';
   import { useLogoutMutation } from '../slices/usersApiSlice';
   import { useUser } from './userContext';
-  import {Groups2Outlined,HomeOutlined,DarkModeOutlined,LightModeOutlined,SettingsOutlined,ShoppingCartOutlined,ExitToAppOutlined,ReceiptLongOutlined,PublicOutlined,ChevronRightOutlined, // Import the icon for logout button
-  Person
-  } from "@mui/icons-material";
-import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButton,ListItemIcon,ListItemText,Typography,useTheme,Menu,MenuItem,Stack} from "@mui/material";
+  import {Groups2Outlined,HomeOutlined,DarkModeOutlined,LightModeOutlined,SettingsOutlined,ShoppingCartOutlined,ExitToAppOutlined,ReceiptLongOutlined,PublicOutlined} from "@mui/icons-material";
+    import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButton,ListItemIcon,ListItemText,Typography,useTheme,Menu,MenuItem,Stack} from "@mui/material";
+  import Basey from '../Municipality Images/Basey.png';
+  import Calbiga from '../Municipality Images/Calbiga.png';
+  import Catbalogan from '../Municipality Images/Catbalogan.png';
+  import Gandara from '../Municipality Images/Gandara.png';
+  import Paranas from '../Municipality Images/Paranas.png';
+  import SanJorge from '../Municipality Images/SanJorge.png';
 
+  const normalizeMunicipalityName = (name) => {
+    return name.replace(/\s+/g, '').toLowerCase();
+  };
+  
+  const municipalityImages = {
+    basey: Basey,
+    calbiga: Calbiga,
+    catbalogan: Catbalogan,
+    gandara: Gandara,
+    paranas: Paranas,
+    sanjorge: SanJorge // 'San Jorge' becomes 'sanjorge'
+  };
 
   const navItems = [
     {
@@ -55,14 +72,14 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
       const navigate = useNavigate();
       const theme = useTheme();
       const {user} =useUser();  
+      const defaultAvatar = '/default-avatar.png';
       const [anchorEl, setAnchorEl] = useState(null);
       const isOpen = Boolean(anchorEl);
       const handleClick = (event) => setAnchorEl(event.currentTarget);
       const handleClose = () => setAnchorEl(null);
-    //   const goToProfileUpload = () => {
-    //     navigate('/profile-upload'); // Path to the profile upload page
-    //     };
       const [logoutApiCall] = useLogoutMutation();
+      const normalizedMunicipality = normalizeMunicipalityName(user.municipality || '');
+      const profileImageUrl = municipalityImages[normalizedMunicipality] || defaultAvatar;
       const logoutHandler = async () => {
         try {
             await logoutApiCall().unwrap(); // Ensure this calls the correct endpoint
@@ -74,18 +91,37 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
         }
     };
     
+    // useEffect(() => {
+    //     if (user.municipality) {
+    //         fetchProfileImage(user.municipality);
+    //     }
+    // }, [user.municipality]); 
+    // const fetchProfileImage = async (municipality) => {
+    //     try {
+    //         const response = await axios.get(`api/image/municipality/${municipality}`);
+    //         if (response.status === 200) {
+    //             setProfileImageUrl(response.data.url);  
+    //         } else {
+    //             throw new Error('Failed to fetch profile image');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching profile image:', error);
+    //         setProfileImageUrl('/default-avatar.png');
+    //     }
+    // };
+    
 
-      useEffect(() => {
-          setActive(pathname.substring(1));
-      }, [pathname]);
+        useEffect(() => {
+            setActive(pathname.substring(1));
+        }, [pathname]);
 
-      const buttonStyle = {
-        justifyContent: "flex-start",
-        textTransform: "none",
-        color: theme.palette.text.primary,
-        width: '100%',
-        my: 1,
-    };
+        const buttonStyle = {
+            justifyContent: "flex-start",
+            textTransform: "none",
+            color: theme.palette.text.primary,
+            width: '100%',
+            my: 1,
+        };
       return (
           <Box component="nav">
               {isSidebarOpen && (
@@ -118,7 +154,7 @@ import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButt
                             </Typography>
                           </Box>
                           {/* User Profile */}
-                          <Avatar alt={user.name} src={user.profilePicture} sx={{ width: 56, height: 56 }} />
+                          <Avatar src={profileImageUrl} alt={user.name} sx={{ width: 100, height: 100 }} />
                           <Typography variant="h6" noWrap>
                               {user.name}
                           </Typography>
