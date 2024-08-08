@@ -1,7 +1,7 @@
   import React, { useEffect, useState } from 'react';
   import axios from 'axios';
   import { useLocation, useNavigate } from "react-router-dom";
-  import { useDispatch } from 'react-redux';
+  import { useDispatch, useSelector } from 'react-redux';
   import { setMode } from '../slices/modeSlice';
   import { clearCredentials } from '../slices/authSlice';
   import { useLogoutMutation } from '../slices/usersApiSlice';
@@ -14,6 +14,7 @@
   import Gandara from '../Municipality Images/Gandara.png';
   import Paranas from '../Municipality Images/Paranas.png';
   import SanJorge from '../Municipality Images/SanJorge.png';
+    import { clearUser } from '../slices/setUserSlice';
 
   const normalizeMunicipalityName = (name) => {
     return name.replace(/\s+/g, '').toLowerCase();
@@ -54,14 +55,14 @@
       icon: <ReceiptLongOutlined />,
     },
 
-    {
-      text: "MapUploads",
-      icon: <PublicOutlined />,
-    },
-    {
-        text: "ImageUpload",
-        icon: <PublicOutlined />,
-      },
+    // {
+    //   text: "MapUploads",
+    //   icon: <PublicOutlined />,
+    // },
+    // {
+    //     text: "ImageUpload",
+    //     icon: <PublicOutlined />,
+    //   },
   ];
 
 
@@ -71,44 +72,28 @@
       const dispatch = useDispatch();
       const navigate = useNavigate();
       const theme = useTheme();
-      const {user} =useUser();  
+      const user = useSelector(state => state.auth.userInfo);
       const defaultAvatar = '/default-avatar.png';
       const [anchorEl, setAnchorEl] = useState(null);
       const isOpen = Boolean(anchorEl);
       const handleClick = (event) => setAnchorEl(event.currentTarget);
       const handleClose = () => setAnchorEl(null);
       const [logoutApiCall] = useLogoutMutation();
+
       const normalizedMunicipality = normalizeMunicipalityName(user.municipality || '');
-      const profileImageUrl = municipalityImages[normalizedMunicipality] || defaultAvatar;
+      const profileImageUrl = user?.municipality ? municipalityImages[normalizeMunicipalityName(user.municipality)] || '/default-avatar.png' : '/default-avatar.png';
+      
       const logoutHandler = async () => {
         try {
             await logoutApiCall().unwrap(); // Ensure this calls the correct endpoint
             dispatch(clearCredentials());
+    
             navigate('/');
         } catch (error) {
             console.error('Logout failed:', error);
             // Optionally set an error state and display a message to the user
         }
     };
-    
-    // useEffect(() => {
-    //     if (user.municipality) {
-    //         fetchProfileImage(user.municipality);
-    //     }
-    // }, [user.municipality]); 
-    // const fetchProfileImage = async (municipality) => {
-    //     try {
-    //         const response = await axios.get(`api/image/municipality/${municipality}`);
-    //         if (response.status === 200) {
-    //             setProfileImageUrl(response.data.url);  
-    //         } else {
-    //             throw new Error('Failed to fetch profile image');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching profile image:', error);
-    //         setProfileImageUrl('/default-avatar.png');
-    //     }
-    // };
     
 
         useEffect(() => {
@@ -154,7 +139,7 @@
                             </Typography>
                           </Box> */}
                           {/* User Profile */}
-                          <Avatar src={profileImageUrl} alt={user.name} sx={{ width: 100, height: 100 }} />
+                          <Avatar src={profileImageUrl} alt={user?.name} sx={{ width: 100, height: 100 }} />
                           <Typography variant="h6" noWrap>
                               {user.name}
                           </Typography>

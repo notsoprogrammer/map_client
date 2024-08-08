@@ -5,48 +5,48 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/styles';
 import { useUser } from './userContext'; 
-import AdminProfileImageUpload from './AdminUploadProfileImg';
+import { useDispatch,useSelector } from 'react-redux';
+import { updateCredentials } from '../slices/authSlice';
+
 const Input = styled('input')({
   display: 'none',
 });
 
 function UserProfile() {
-    const { user, updateUser } = useUser();
+    // const { user, updateUser } = useUser();
+    const dispatch = useDispatch();
+    const userInfo = useSelector(state => state.auth.userInfo);
     const [editMode, setEditMode] = useState(false);
-    const [localUser, setLocalUser] = useState({
-        ...user,
-        newPassword: '',
-        confirmPassword: ''
-    });
+    const [localUser, setLocalUser] = useState({...userInfo,newPassword: '',confirmPassword: '' });
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
 
     
-    useEffect(() => {
-        fetchUserData(); // Initial fetch on component mount
-    }, []);
+    // useEffect(() => {
+    //     fetchUserData(); // Initial fetch on component mount
+    // }, []);
 
     useEffect(() => {
-        setLocalUser({ ...user, newPassword: '', confirmPassword: '' });
-    }, [user]);
+        setLocalUser({ ...userInfo, newPassword: '', confirmPassword: '' });
+    }, [userInfo]);
 
-    const fetchUserData = async () => {
-        const token = localStorage.getItem('token');
-        try {
-            const response = await fetch('/api/users/profile', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                updateUser(data);  // Update global user context
-                setLocalUser(data); // Set local user state
-            } else {
-                console.error(data.message);
-            }
-        } catch (error) {
-            console.error('Network error:', error);
-        }
-    };
+    // const fetchUserData = async () => {
+    //     const token = localStorage.getItem('token');
+    //     try {
+    //         const response = await fetch('/api/users/profile', {
+    //             headers: { 'Authorization': `Bearer ${token}` }
+    //         });
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             updateUser(data);  // Update global user context
+    //             setLocalUser(data); // Set local user state
+    //         } else {
+    //             console.error(data.message);
+    //         }
+    //     } catch (error) {
+    //         console.error('Network error:', error);
+    //     }
+    // };
     
     
 
@@ -75,7 +75,6 @@ function UserProfile() {
         setEditMode(true);
     };
 
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (localUser.newPassword !== localUser.confirmPassword) {
@@ -87,6 +86,14 @@ function UserProfile() {
             return;
         }
     
+        console.log("Sending data to update:", { // Logging the data being sent
+            name: localUser.name,
+            email: localUser.email,
+            job: localUser.job,
+            password: localUser.newPassword
+        });
+    
+        // Assuming you have the right URL and method
         try {
             const response = await fetch('/api/users/profile', {
                 method: 'PUT',
@@ -98,28 +105,67 @@ function UserProfile() {
                     name: localUser.name,
                     email: localUser.email,
                     job: localUser.job,
-                    password: localUser.newPassword // Ensure backend is properly hashing this password
+                    password: localUser.newPassword // Send as 'password', 'newPassword', or another key as your backend expects
                 })
             });
             const data = await response.json();
             if (response.ok) {
-                updateUser({
-                    ...user,
-                    name: data.name,
-                    email: data.email,
-                    job: data.job
-                }); // It's safer to update from the response if backend modifies data
-                setLocalUser(data);  // Update local state to reflect the new data
                 alert('Profile Updated Successfully');
                 setEditMode(false);
+                // Optionally update local state or Redux state here if needed
             } else {
-                throw new Error(data.message); // Throw to catch block for uniform error handling
+                throw new Error(data.message);
             }
         } catch (error) {
             console.error('Update failed:', error);
             alert('Update failed: ' + error.message || 'Unknown error');
         }
     };
+    
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     if (localUser.newPassword !== localUser.confirmPassword) {
+    //         alert("New passwords do not match!");
+    //         return;
+    //     }
+    //     if (passwordError) {
+    //         alert("Please fix password issues before submitting.");
+    //         return;
+    //     }
+    
+    //     try {
+    //         const response = await fetch('/api/users/profile', {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //             },
+    //             body: JSON.stringify({
+    //                 name: localUser.name,
+    //                 email: localUser.email,
+    //                 job: localUser.job,
+    //                 password: localUser.newPassword // Ensure backend is properly hashing this password
+    //             })
+    //         });
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             updateUser({
+    //                 ...user,
+    //                 name: data.name,
+    //                 email: data.email,
+    //                 job: data.job
+    //             }); // It's safer to update from the response if backend modifies data
+    //             setLocalUser(data);  // Update local state to reflect the new data
+    //             alert('Profile Updated Successfully');
+    //             setEditMode(false);
+    //         } else {
+    //             throw new Error(data.message); // Throw to catch block for uniform error handling
+    //         }
+    //     } catch (error) {
+    //         console.error('Update failed:', error);
+    //         alert('Update failed: ' + error.message || 'Unknown error');
+    //     }
+    // };
     
     const validatePassword = (password) => {
         const regex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,16}$/;
