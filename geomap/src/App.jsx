@@ -21,7 +21,7 @@ const App = () => {
         <Hero  />
         <Features />
         <SubFeatures />
-        <Download />
+        {/* <Download /> */}
         <Footer />
       </Box>
     </ThemeProvider>

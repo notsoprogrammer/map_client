@@ -8,7 +8,7 @@ import { MapContainer, LayersControl, TileLayer, ImageOverlay, useMap,LayerGroup
 import FlexBetween from './FlexBetween';
 import axios from 'axios';
 import legendData from '../mapSources/legendData';
-import Boundary from '../components/Boundary.svg';
+import Boundary from '../assets/Boundary.svg';
 import geojsonData from '../mapSources/geojson';
 import soilgeodata from '../mapSources/soilData';
 import textureData from '../mapSources/soilTexture';

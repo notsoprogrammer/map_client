@@ -7,9 +7,9 @@ import f3 from '../assets/f3.svg'
 
 const Features = () => {
   return (
-    <section style={{ width: '100%', height: '100vh', backgroundColor: '#D9D9D9'}}>
+    <section id="product-insights" style={{ width: '100%', height: '100vh', backgroundColor: '#D9D9D9'}}>
         <Container maxWidth='xl' sx={{ paddingTop: '10rem'}}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
+            <Box  sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                 <Typography sx={{fontSize: '30px', fontWeight: 700, width: '400px', lineHeight: '1.2'}}>We Make Your Records
                 More Well Organized </Typography>
                 <Typography sx={{color: '#6E6D7A', fontSize: '1rem', width: '400px'}}>We have features that will make it easier for you 

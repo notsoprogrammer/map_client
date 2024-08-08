@@ -1,8 +1,8 @@
 import { AppBar, Box, Button, CircularProgress, CssBaseline, Divider, Drawer, FormControl, IconButton, List, ListItem, ListItemButton, ListItemText, Modal, Stack, TextField, Toolbar, Typography } from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { Link as ScrollLink } from 'react-scroll';  
 import MenuIcon from '@mui/icons-material/Menu'
 import geomap from '../assets/geomap.png'
 import { setCredentials } from '../slices/authSlice'
@@ -45,6 +45,16 @@ const Navbar = (props) => {
     const [login, { isLoading }] = useLoginMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
+    const handleHomeClick = () => {
+      const navigate = useNavigate();  // Hook for programmatically navigating
+      
+      return () => {
+        navigate('/');  // Navigate to the home route
+        window.scrollTo({ top: 0, behavior: 'smooth' });  // Scroll to the top of the page smoothly
+      };
+    };
+    const navigateHomeAndScrollTop = handleHomeClick();
+
     
     useEffect(() => {
       if(userInfo) {
@@ -88,9 +98,9 @@ const Navbar = (props) => {
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2, color: navbarTextColor }}>
-                <Link to="/">
+                <RouterLink to="/">
                 GEOMAP SAMAR
-                </Link>
+                </RouterLink>
             </Typography>
             <Divider />
             <List>
@@ -135,29 +145,26 @@ const Navbar = (props) => {
                 {item}
               </Button>
             ))} */}
-              <Link  to="/">
-                <Button sx={{marginRight: '4rem', color: '#fff' }}>
+              <RouterLink to="/" style={{ textDecoration: 'none' }}>
+                <Button onClick={navigateHomeAndScrollTop} sx={{ marginRight: '4rem', color: '#fff' }}>
                   Home
                 </Button>
-              </Link>
-
-              <Link to="/">
-                <Button sx={{marginRight: '4rem', color: '#fff' }}>
+              </RouterLink>
+              {/* <ScrollLink to="product-insights" smooth={true} duration={500} style={{ textDecoration: 'none' }}>
+                <Button sx={{ marginRight: '4rem', color: '#fff' }}>
                   Features
                 </Button>
-              </Link>
-
-              <Link to="/about">
-                <Button sx={{marginRight: '4rem', color: '#fff' }}>
+              </ScrollLink>
+              <RouterLink to="/about" style={{ textDecoration: 'none' }}>
+                <Button sx={{ marginRight: '4rem', color: '#fff' }}>
                   About
                 </Button>
-              </Link>
-
-              <Link to="/contact">
-                <Button sx={{marginRight: '4rem', color: '#fff', ":hover": { color: '#fff'} }}>
-                Contact Us
+              </RouterLink> */}
+              <RouterLink to="/contact" style={{ textDecoration: 'none' }}>
+                <Button sx={{ marginRight: '4rem', color: '#fff' }}>
+                  Contact Us
                 </Button>
-              </Link>
+              </RouterLink>
 
 
               <Button onClick={handleOpen} sx={{marginRight: '4rem', color: '#fff' }}>

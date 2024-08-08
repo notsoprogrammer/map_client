@@ -1,16 +1,18 @@
 import { Box, Button, Container, Typography } from "@mui/material"
 
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
+import { useScrollToTop } from "../util/ScrollTop";
+
 import data from "../assets/data.svg"
 import hero from "../assets/hero.png"
 import information from "../assets/information.svg"
 import insights from "../assets/insights.svg"
 import maskmap from "../assets/maskmap.png"
-
 const Hero = () => {
-
+  useScrollToTop();
   return (
-    <section style={{position: 'relative', width: '100%', height: '100vh', backgroundColor: 'rgb(54,60,81)', background: 'linear-gradient(180deg, rgba(54,60,81,0.9) 0%, rgba(54,60,81,1) 100%)'}}>
+    <section id="hero" style={{position: 'relative', width: '100%', height: '100vh', backgroundColor: 'rgb(54,60,81)', background: 'linear-gradient(180deg, rgba(54,60,81,0.9) 0%, rgba(54,60,81,1) 100%)'}}>
         <Box sx={{ margin: '0 10rem',display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center'}}>
           <Box sx={{width: 500, color: '#fff', display:'flex', flexWrap: 'wrap', flexDirection:'column', rowGap: '1.5rem'}}>
             <Typography variant="h1" sx={{ fontSize: '35px', fontWeight: '700', lineHeight:'1.4'}}>
@@ -40,11 +42,11 @@ const Hero = () => {
             <Typography variant="p" sx={{color: '#CCC9C9', fontSize:'12px', mt: 2}}>
               To those interested to register or apply, click the button below
             </Typography>
-              <Link to="/contact">
+              <RouterLink to="/contact">
                 <Button sx={{ borderRadius: '15px', backgroundColor: '#D9D9D9', width: 150, padding: '0.6rem', fontWeight: 700}}>
                     Contact Us
                 </Button>
-              </Link>  
+              </RouterLink>  
           </Box>
               <Box sx={{ zIndex: 99,flex: '4', display: {xs : 'none', md: 'flex'}}}>
                 <img src={hero} alt="" style={{marginTop: '-6rem', marginLeft: '6rem', filter: 'drop-shadow(0px 35px 35px rgba(0,0,0,0.8))'}} height={640} width={640} />
