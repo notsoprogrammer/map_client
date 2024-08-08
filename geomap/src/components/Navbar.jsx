@@ -45,15 +45,15 @@ const Navbar = (props) => {
     const [login, { isLoading }] = useLoginMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
-    const handleHomeClick = () => {
-      const navigate = useNavigate();  // Hook for programmatically navigating
+    // const handleHomeClick = () => {
+    //   const navigate = useNavigate();  // Hook for programmatically navigating
       
-      return () => {
-        navigate('/');  // Navigate to the home route
-        window.scrollTo({ top: 0, behavior: 'smooth' });  // Scroll to the top of the page smoothly
-      };
-    };
-    const navigateHomeAndScrollTop = handleHomeClick();
+    //   return () => {
+    //     navigate('/');  // Navigate to the home route
+    //     window.scrollTo({ top: 0, behavior: 'smooth' });  // Scroll to the top of the page smoothly
+    //   };
+    // };
+    // const navigateHomeAndScrollTop = handleHomeClick();
 
     
     useEffect(() => {
@@ -146,7 +146,7 @@ const Navbar = (props) => {
               </Button>
             ))} */}
               <RouterLink to="/" style={{ textDecoration: 'none' }}>
-                <Button onClick={navigateHomeAndScrollTop} sx={{ marginRight: '4rem', color: '#fff' }}>
+                <Button  sx={{ marginRight: '4rem', color: '#fff' }}>
                   Home
                 </Button>
               </RouterLink>
