@@ -23,7 +23,7 @@ export default defineConfig({
     port: 10000,
     proxy: {
       '/api': {
-        target: process.env.NODE_ENV === 'production' ? 'https://geobackend-1jwe.onrender.com' : 'http://localhost:5000',
+        target: process.env.NODE_ENV === 'production' ? 'https://map-backend-scmu.onrender.com' : 'http://localhost:5000',
         changeOrigin: true,
       },
     },
