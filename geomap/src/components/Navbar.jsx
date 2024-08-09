@@ -62,16 +62,28 @@ const Navbar = (props) => {
       }
     }, [navigate, userInfo]);
 
+    // const submitHandler = async (e) => {
+    //   e.preventDefault();
+    //   try {
+    //     const res = await login({ email, password}).unwrap();
+    //     dispatch(setCredentials({...res}));
+    //     navigate('/dasboard');
+    //   } catch (err) {
+    //     toast.error(err?.data?.message || err.error);
+    //   };
+    // }
     const submitHandler = async (e) => {
       e.preventDefault();
       try {
-        const res = await login({ email, password}).unwrap();
-        dispatch(setCredentials({...res}));
-        navigate('/dasboard');
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password }, {
+          withCredentials: true
+        });
+        dispatch(setCredentials({ ...res.data }));
+        navigate('/dashboard');
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      };
-    }
+        console.error(err.response?.data?.message || err.message);
+      }
+    };
   
     useEffect(() => {
       const handleScroll = () => {
