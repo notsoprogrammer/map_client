@@ -9,7 +9,7 @@ import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
 import { useLoginMutation } from '../slices/usersApiSlice'
 import ForgotPasswordModal from './forgotPasswordModal';
-
+import axios from 'axios';
 const drawerWidth = 240;
 const navItems = ['Home','Features','About', 'Contact Us', 'Sign In'];
 
