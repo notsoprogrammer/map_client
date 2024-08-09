@@ -415,12 +415,12 @@ const Maps = () => {
       let isMounted = true;
 
       if (mapType && municipality && category) {
-        const apiEndpoint = `http://localhost:5000/api/get/map/${municipality}/${mapType}/${category}`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}/api/get/map/${municipality}/${mapType}/${category}`;
         axios
           .get(apiEndpoint, { responseType: 'blob' })
           .then((response) => {
             axios
-              .get(`http://localhost:5000/api/get/metadata/${municipality}/${mapType}/${category}`)
+              .get(`${process.env.REACT_APP_API_URL}/api/get/metadata/${municipality}/${mapType}/${category}`)
               .then((metadataResponse) => {
                 const blob = response.data;
                 const metadata = metadataResponse.data;

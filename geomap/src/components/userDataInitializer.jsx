@@ -10,7 +10,7 @@ const UserDataInitializer = ({ children }) => {
     if (!user) {  // Fetch user data if not available
       const fetchUserData = async () => {
         try {
-          const response = await fetch('/api/users/profile', {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
             headers: {
               'Cache-Control': 'no-cache'  // Avoid using cached data
             }

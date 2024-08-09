@@ -8,6 +8,7 @@ import geomap from '../assets/geomap.png'
 import { setCredentials } from '../slices/authSlice'
 import { toast } from 'react-toastify'
 import { useLoginMutation } from '../slices/usersApiSlice'
+import ForgotPasswordModal from './forgotPasswordModal';
 
 const drawerWidth = 240;
 const navItems = ['Home','Features','About', 'Contact Us', 'Sign In'];
@@ -45,17 +46,16 @@ const Navbar = (props) => {
     const [login, { isLoading }] = useLoginMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
-    // const handleHomeClick = () => {
-    //   const navigate = useNavigate();  // Hook for programmatically navigating
-      
-    //   return () => {
-    //     navigate('/');  // Navigate to the home route
-    //     window.scrollTo({ top: 0, behavior: 'smooth' });  // Scroll to the top of the page smoothly
-    //   };
-    // };
-    // const navigateHomeAndScrollTop = handleHomeClick();
+    const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
-    
+    const handleForgotPasswordOpen = () => {
+      handleClose(); // Close the login modal
+      setForgotPasswordOpen(true);
+     };
+      const handleForgotPasswordClose = () => {
+          setForgotPasswordOpen(false);
+      };
+  
     useEffect(() => {
       if(userInfo) {
         navigate('/dashboard');
@@ -135,31 +135,14 @@ const Navbar = (props) => {
             component="div"
             sx={{ marginLeft: '5rem', fontWeight:700, flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            
               GEOMAP SAMAR
-           
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {/* {navItems.map((item) => (
-              <Button key={item} sx={{marginRight: '4rem', color: '#fff' }}>
-                {item}
-              </Button>
-            ))} */}
               <RouterLink to="/" style={{ textDecoration: 'none' }}>
                 <Button  sx={{ marginRight: '4rem', color: '#fff' }}>
                   Home
                 </Button>
               </RouterLink>
-              {/* <ScrollLink to="product-insights" smooth={true} duration={500} style={{ textDecoration: 'none' }}>
-                <Button sx={{ marginRight: '4rem', color: '#fff' }}>
-                  Features
-                </Button>
-              </ScrollLink>
-              <RouterLink to="/about" style={{ textDecoration: 'none' }}>
-                <Button sx={{ marginRight: '4rem', color: '#fff' }}>
-                  About
-                </Button>
-              </RouterLink> */}
               <RouterLink to="/contact" style={{ textDecoration: 'none' }}>
                 <Button sx={{ marginRight: '4rem', color: '#fff' }}>
                   Contact Us
@@ -184,6 +167,8 @@ const Navbar = (props) => {
                     <h2>Welcome back!</h2>
                     <TextField sx={{width: '100%'}} type='email' value={email} onChange={ (e) => setEmail(e.target.value)} id="outlined-basic" label="Email Address" variant="outlined" />                
                     <TextField sx={{width: '100%'}} type='password' value={password} onChange={ (e) => setPassword(e.target.value)} id="outlined-basic" label="Password" variant="outlined" />                
+                    <Button onClick={handleForgotPasswordOpen} sx={{ textTransform: 'none' }}>Forgot Password?</Button>
+
                     <span> </span>
                     {isLoading && <CircularProgress/>}
                     <Button sx={{ width: '100%'}} type='submit' onClick={submitHandler} variant="contained" color='success'>Sign In</Button>
@@ -192,6 +177,7 @@ const Navbar = (props) => {
               </Box>
             </Box>
         </Modal>
+        <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
 
 
           </Box>
