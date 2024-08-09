@@ -2,13 +2,12 @@ import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, Private
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import App from './App.jsx'
-import Associations from './components/Associations.jsx'
 import { Provider } from 'react-redux'
 import { UserProvider } from './components/userContext.jsx'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import store from './store.js'
-import UserDataInitializer from './components/userDataInitializer.jsx'
+// import UserDataInitializer from './components/userDataInitializer.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -16,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <UserProvider>
       <BrowserRouter>
-        <UserDataInitializer>
+        {/* <UserDataInitializer> */}
             <Routes>
               
               <Route path='/' element={<App />} />
@@ -35,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path='/mapuploads' element={<MapUploads/>} />
               </Route>
             </Routes>
-        </UserDataInitializer>
+        {/* </UserDataInitializer> */}
       </BrowserRouter>
     </UserProvider>
   </Provider>

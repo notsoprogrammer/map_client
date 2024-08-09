@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 import { useUser } from './userContext'; 
 import { useDispatch,useSelector } from 'react-redux';
 import { updateCredentials } from '../slices/authSlice';
-
+import axios from 'axios';
 const Input = styled('input')({
   display: 'none',
 });
@@ -95,7 +95,7 @@ function UserProfile() {
     
         // Assuming you have the right URL and method
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
