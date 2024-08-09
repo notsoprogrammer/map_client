@@ -15,7 +15,7 @@ const RiceStat = () => {
   useEffect(() => {
     const fetchDashboardLink = async () => {
       try {
-        const { data } = await axios.get('/api/dashboard/links');
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`);
         setRiceDashboardLink(data.riceDashboardLink);
       } catch (error) {
         console.error('Error fetching dashboard link:', error);

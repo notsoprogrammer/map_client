@@ -28,7 +28,7 @@ const CustomTextField = styled(TextField)({
 });
 
 // Correcting baseURL to point to the backend if it's different from frontend
-const baseUrl = "http://localhost:3000"; 
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${baseUrl}/api/email/send`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

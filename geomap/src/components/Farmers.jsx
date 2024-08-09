@@ -10,7 +10,7 @@ const Farmers = () => {
   useEffect(() => {
     const fetchLinks = async () => {
       try {
-        const response = await axios.get('/api/dashboard/links', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
           params: { municipality: 'your-municipality-name' }, // Replace with actual municipality name
           withCredentials: true // Include cookies in the request
         });
