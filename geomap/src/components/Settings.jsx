@@ -111,7 +111,7 @@ function UserProfile() {
             const data = await response.json();
             if (response.ok) {
                 dispatch(updateCredentials({
-                    name: data.name, // It's good to use response data assuming backend might apply changes (e.g., formatting)
+                    name: data.name, 
                     email: data.email,
                     job: data.job
                     
@@ -142,16 +142,6 @@ function UserProfile() {
                 <Grid item xs={12} md={6}>
                     <Typography variant="h4">Profile</Typography>
                     <div style={{ position: 'relative', marginBottom: '20px' }}>
-                    {/* <Avatar src={localUser.profileImg || '/default-avatar.png'} sx={{ width: 90, height: 90 }} /> */}
-                    {/* <AdminProfileImageUpload /> */}
-                        {/* {editMode && (
-                            <label htmlFor="icon-button-file">
-                                <Input accept="image/*" id="icon-button-file" type="file" />
-                                <IconButton color="primary" component="span" style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                                    <EditIcon />
-                                </IconButton>
-                            </label>
-                            )} */}
 
                     </div>
                     <form onSubmit={handleSubmit}>
