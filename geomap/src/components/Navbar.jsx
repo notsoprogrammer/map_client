@@ -75,15 +75,20 @@ const Navbar = (props) => {
     const submitHandler = async (e) => {
       e.preventDefault();
       try {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password }, {
-          withCredentials: true
-        });
-        dispatch(setCredentials({ ...res.data }));
-        navigate('/dashboard');
+          const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password }, {
+              withCredentials: true
+          });
+          if (res.data && res.data.token) {
+              localStorage.setItem('token', res.data.token); // Store the token
+          }
+          dispatch(setCredentials({ ...res.data }));
+          navigate('/dashboard');
       } catch (err) {
-        console.error(err.response?.data?.message || err.message);
+          console.error(err.response?.data?.message || err.message);
+          alert("Login failed: " + (err.response?.data?.message || "An error occurred"));
       }
-    };
+  };
+  
   
     useEffect(() => {
       const handleScroll = () => {
