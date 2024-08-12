@@ -33,7 +33,7 @@ function Settings() {
     }, [userInfo]);
 
     const fetchUserData = async () => {
-        const apiUrl = `${process.env.REACT_APP_API_URL}/api/settings`; // Adjust the endpoint as necessary
+        const apiUrl = `${process.env.REACT_APP_API_URL}/api/users/profile`; // Adjust the endpoint as necessary
         const token = localStorage.getItem('token');
 
         axios.get(apiUrl, {
