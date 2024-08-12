@@ -7,12 +7,13 @@ import { styled } from '@mui/material/styles';
 import { useUser } from './userContext'; 
 import { useDispatch,useSelector } from 'react-redux';
 import { updateCredentials } from '../slices/authSlice';
+import axios from 'axios';
 
 const Input = styled('input')({
   display: 'none',
 });
 
-function UserProfile() {
+function Settings() {
     // const { user, updateUser } = useUser();
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.auth.userInfo);
@@ -20,6 +21,7 @@ function UserProfile() {
     const [localUser, setLocalUser] = useState({...userInfo,newPassword: '',confirmPassword: '' });
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
+
 
     
     useEffect(() => {
@@ -31,21 +33,30 @@ function UserProfile() {
     }, [userInfo]);
 
     const fetchUserData = async () => {
+        const apiUrl = `${process.env.REACT_APP_API_URL}/api/settings`; // Adjust the endpoint as necessary
         const token = localStorage.getItem('token');
-        try {
-            const response = await fetch('/api/users/profile', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                // updateUser(data);  // Update global user context
-                setLocalUser(data); // Set local user state
-            } else {
-                console.error(data.message);
+
+        axios.get(apiUrl, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` 
             }
-        } catch (error) {
-            console.error('Network error:', error);
-        }
+        })
+        .then(response => {
+            console.log('Data retrieved successfully:', response.data);
+        })
+        .catch(error => {
+            if (error.response) {
+                console.error('Error data:', error.response.data);
+                console.error('Error status:', error.response.status);
+                console.error('Error headers:', error.response.headers);
+            } else if (error.request) {
+                console.error('Error request:', error.request);
+            } else {
+                console.error('Error message:', error.message);
+            }
+            console.error('Error config:', error.config);
+        });
     };
     
     
@@ -86,46 +97,49 @@ function UserProfile() {
             return;
         }
     
-        console.log("Sending data to update:", { // Logging the data being sent
+        const apiUrl = `${process.env.REACT_APP_API_URL}/api/users/profile`; // Ensure this is the correct API endpoint
+        const token = localStorage.getItem('token');
+    
+        axios.put(apiUrl, {
             name: localUser.name,
             email: localUser.email,
             job: localUser.job,
-            password: localUser.newPassword
-        });
-    
-        // Assuming you have the right URL and method
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    name: localUser.name,
-                    email: localUser.email,
-                    job: localUser.job,
-                    password: localUser.newPassword // Send as 'password', 'newPassword', or another key as your backend expects
-                })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                dispatch(updateCredentials({
-                    name: data.name, 
-                    email: data.email,
-                    job: data.job
-                    
-                }));
-                alert('Profile Updated Successfully');
-                setEditMode(false);
-            } else {
-                throw new Error(data.message);
+            password: localUser.newPassword // Be cautious with password handling
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
-        } catch (error) {
-            console.error('Update failed:', error);
-            alert('Update failed: ' + error.message || 'Unknown error');
-        }
+        })
+        .then(response => {
+            dispatch(updateCredentials({
+                name: response.data.name, 
+                email: response.data.email,
+                job: response.data.job
+            }));
+            alert('Profile Updated Successfully');
+            setEditMode(false);
+        })
+        .catch(error => {
+            if (error.response) {
+                // Server responded with a status outside the 2xx range
+                console.error('Error data:', error.response.data);
+                console.error('Error status:', error.response.status);
+                console.error('Error headers:', error.response.headers);
+                alert(`Failed to update profile: ${error.response.data.message || error.response.statusText}`);
+            } else if (error.request) {
+                // No response was received to the request
+                console.error('Error request:', error.request);
+                alert('Failed to update profile: No response from the server');
+            } else {
+                // An error occurred in setting up the request
+                console.error('Error message:', error.message);
+                alert('Update failed: ' + error.message);
+            }
+            console.error('Error config:', error.config);
+        });
     };
+    
     
 
     
@@ -231,4 +245,4 @@ function UserProfile() {
     );
 }
 
-export default UserProfile;
+export default Settings;
