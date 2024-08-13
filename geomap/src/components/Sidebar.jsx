@@ -56,7 +56,18 @@ import { clearUser } from '../slices/setUserSlice';
       
       const logoutHandler = async () => {
         try {
-            await logoutApiCall().unwrap();
+            const token = localStorage.getItem('token'); // Retrieve the token
+    
+            if (!token) {
+                throw new Error('Token not found');
+            }
+    
+            await logoutApiCall({
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).unwrap();
+    
             localStorage.removeItem('token');
             dispatch(clearCredentials());
     

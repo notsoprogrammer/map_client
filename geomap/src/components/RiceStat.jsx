@@ -21,7 +21,7 @@ const RiceStat = () => {
           params: { municipality: 'your-municipality-name' },
           withCredentials: true // Include cookies in the request if needed
         });
-        setLinks(response.data);
+        setRiceDashboardLink(response.data);
       } catch (error) {
         console.error('Error fetching dashboard links:', error);
       }
