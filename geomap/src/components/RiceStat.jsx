@@ -1,16 +1,11 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import axios from 'axios';
-
 const { tableau } = window;
 
-const RiceStat = () => {
+const CropStat = () => {
   const tableauVizRef = useRef(null);
-  const [riceDashboardLink, setRiceDashboardLink] = useState('');
-
-  // Set up axios to use cookies
-  axios.defaults.withCredentials = true;
+  const [links, setLinks] = useState(null);
 
   useEffect(() => {
     const fetchLinks = async () => {
@@ -21,7 +16,7 @@ const RiceStat = () => {
           params: { municipality: 'your-municipality-name' },
           withCredentials: true // Include cookies in the request if needed
         });
-        setRiceDashboardLink(response.data);
+        setLinks(response.data);
       } catch (error) {
         console.error('Error fetching dashboard links:', error);
       }
@@ -31,29 +26,43 @@ const RiceStat = () => {
   }, []);
 
   useEffect(() => {
-    if (riceDashboardLink) {
+    if (links) {
+      let viz;
       const initViz = () => {
-        const vizUrl = riceDashboardLink;
+        const vizUrl = links.riceDashboardLink;
+
         const options = {
+          width: '100%',
+          height: '100%',
           hideTabs: true,
           hideToolbar: true,
           onFirstInteractive: () => {
             console.log('Tableau dashboard is interactive');
-          }
+          },
+          withCredentials: true // Include credentials in requests
         };
 
-        new tableau.Viz(tableauVizRef.current, vizUrl, options);
+        viz = new tableau.Viz(tableauVizRef.current, vizUrl, options);
       };
 
       initViz();
 
+      const handleResize = () => {
+        if (viz) {
+          viz.setFrameSize(undefined, tableauVizRef.current.clientHeight);
+        }
+      };
+
+      window.addEventListener('resize', handleResize);
+
       return () => {
-        if (tableauVizRef.current) {
-          tableauVizRef.current.dispose();
+        window.removeEventListener('resize', handleResize);
+        if (viz) {
+          viz.dispose();
         }
       };
     }
-  }, [riceDashboardLink]);
+  }, [links]);
 
   return (
     <Box
@@ -63,7 +72,7 @@ const RiceStat = () => {
         backgroundColor: 'transparent',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <div
@@ -72,11 +81,11 @@ const RiceStat = () => {
           height: '100vh',
           width: '100%',
           margin: '0 auto',
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
         }}
       />
     </Box>
   );
 };
 
-export default RiceStat;
+export default CropStat;
