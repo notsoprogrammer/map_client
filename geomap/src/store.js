@@ -8,7 +8,6 @@ import globalReducer from './slices/modeSlice'
 const store = configureStore({
     reducer: {
         auth: authReducer,
-        user:setUserReducer,
         [apiSlice.reducerPath]: apiSlice.reducer,
         global: globalReducer,
         file: fileUploadReducer,
