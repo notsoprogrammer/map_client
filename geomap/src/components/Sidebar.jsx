@@ -56,17 +56,7 @@ import { clearUser } from '../slices/setUserSlice';
       
       const logoutHandler = async () => {
         try {
-            const token = localStorage.getItem('token'); // Retrieve the token
-    
-            if (!token) {
-                throw new Error('Token not found');
-            }
-    
-            await logoutApiCall({
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }).unwrap();
+            await logoutApiCall().unwrap();
     
             localStorage.removeItem('token');
             dispatch(clearCredentials());
@@ -76,6 +66,7 @@ import { clearUser } from '../slices/setUserSlice';
             console.error('Logout failed:', error);
         }
     };
+    
     
 
         useEffect(() => {
