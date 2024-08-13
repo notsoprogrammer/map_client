@@ -9,10 +9,12 @@ const Farmers = () => {
 
   useEffect(() => {
     const fetchLinks = async () => {
+      const token = localStorage.getItem('token'); // Get token from localStorage
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
-          params: { municipality: 'your-municipality-name' }, // Replace with actual municipality name
-          withCredentials: true // Include cookies in the request
+          headers: { 'Authorization': `Bearer ${token}` },
+          params: { municipality: 'your-municipality-name' },
+          withCredentials: true // Include cookies in the request if needed
         });
         setLinks(response.data);
       } catch (error) {

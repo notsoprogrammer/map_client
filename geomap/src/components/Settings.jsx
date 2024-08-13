@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, TextField, Typography, Avatar, Box, Grid, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/styles';
-import { useUser } from './userContext'; 
 import { useDispatch,useSelector } from 'react-redux';
 import { updateCredentials } from '../slices/authSlice';
 
@@ -13,7 +11,6 @@ const Input = styled('input')({
 });
 
 function Settings() {
-    // const { user, updateUser } = useUser();
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.auth.userInfo);
     const [editMode, setEditMode] = useState(false);
@@ -34,19 +31,19 @@ function Settings() {
         const token = localStorage.getItem('token');
         console.log("Retrieved token:", token); // Log to verify
         try {
-            const response = await fetch('/api/users/profile', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setLocalUser(data); // Set local user state
-            } else {
-                console.error(data.message);
-            }
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+          if (response.ok) {
+            setLocalUser(data); // Set local user state
+          } else {
+            console.error(data.message);
+          }
         } catch (error) {
-            console.error('Network error:', error);
+          console.error('Network error:', error);
         }
-    };
+      };
     
     
 
@@ -97,16 +94,16 @@ function Settings() {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
-                    name: localUser.name,
-                    email: localUser.email,
-                    job: localUser.job,
-                    password: localUser.newPassword 
+                  name: localUser.name,
+                  email: localUser.email,
+                  job: localUser.job,
+                  password: localUser.newPassword 
                 })
-            });
+              });
             const data = await response.json();
             if (response.ok) {
                 dispatch(updateCredentials({

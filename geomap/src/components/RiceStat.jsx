@@ -13,16 +13,21 @@ const RiceStat = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    const fetchDashboardLink = async () => {
+    const fetchLinks = async () => {
+      const token = localStorage.getItem('token'); // Get token from localStorage
       try {
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`);
-        setRiceDashboardLink(data.riceDashboardLink);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+          params: { municipality: 'your-municipality-name' },
+          withCredentials: true // Include cookies in the request if needed
+        });
+        setLinks(response.data);
       } catch (error) {
-        console.error('Error fetching dashboard link:', error);
+        console.error('Error fetching dashboard links:', error);
       }
     };
 
-    fetchDashboardLink();
+    fetchLinks();
   }, []);
 
   useEffect(() => {
