@@ -10,7 +10,6 @@ import store from './store.js'
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
   <Provider store={store}>
-    <UserProvider>
       <BrowserRouter>
             <Routes>
               
@@ -30,7 +29,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               </Route>
             </Routes>
       </BrowserRouter>
-    </UserProvider>
   </Provider>
   // </React.StrictMode>,
 )
