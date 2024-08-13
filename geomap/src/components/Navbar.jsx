@@ -70,7 +70,7 @@ const Navbar = (props) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password }, {
-        withCredentials: true
+        // withCredentials: true
       });
       if (res.data && res.data.token) {
         localStorage.setItem('token', res.data.token); // Store the token

@@ -14,7 +14,7 @@
   import Gandara from '../Municipality Images/Gandara.png';
   import Paranas from '../Municipality Images/Paranas.png';
   import SanJorge from '../Municipality Images/SanJorge.png';
-    import { clearUser } from '../slices/setUserSlice';
+import { clearUser } from '../slices/setUserSlice';
 
   const normalizeMunicipalityName = (name) => {
     return name.replace(/\s+/g, '').toLowerCase();
@@ -30,39 +30,11 @@
   };
 
   const navItems = [
-    {
-      text: "Dashboard",
-      icon: <HomeOutlined />,
-    },
-    {
-        text: "Maps",
-        icon: <PublicOutlined />,
-    },
-    {
-      text: "Farmers",
-      icon: <Groups2Outlined />,
-    },
-    // {
-    //   text: "Associations",
-    //   icon: <Groups2Outlined />,
-    // },
-    {
-      text: "Rice",
-      icon: <ReceiptLongOutlined />,
-    },
-    {
-      text: "Crops",
-      icon: <ReceiptLongOutlined />,
-    },
-
-    // {
-    //   text: "MapUploads",
-    //   icon: <PublicOutlined />,
-    // },
-    // {
-    //     text: "ImageUpload",
-    //     icon: <PublicOutlined />,
-    //   },
+    { text: "Dashboard", icon: <HomeOutlined /> },
+    { text: "Maps", icon: <PublicOutlined /> },
+    { text: "Farmers", icon: <Groups2Outlined /> },
+    { text: "Rice", icon: <ReceiptLongOutlined /> },
+    { text: "Crops", icon: <ReceiptLongOutlined /> },
   ];
 
 
@@ -73,7 +45,6 @@
       const navigate = useNavigate();
       const theme = useTheme();
       const user = useSelector(state => state.auth.userInfo);
-      const defaultAvatar = '/default-avatar.png';
       const [anchorEl, setAnchorEl] = useState(null);
       const isOpen = Boolean(anchorEl);
       const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -85,13 +56,13 @@
       
       const logoutHandler = async () => {
         try {
-            await logoutApiCall().unwrap(); // Ensure this calls the correct endpoint
+            await logoutApiCall().unwrap();
+            localStorage.removeItem('token');
             dispatch(clearCredentials());
     
             navigate('/');
         } catch (error) {
             console.error('Logout failed:', error);
-            // Optionally set an error state and display a message to the user
         }
     };
     
