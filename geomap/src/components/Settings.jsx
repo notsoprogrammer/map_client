@@ -104,7 +104,7 @@ function Settings() {
                     name: localUser.name,
                     email: localUser.email,
                     job: localUser.job,
-                    password: localUser.newPassword // Send as 'password', 'newPassword', or another key as your backend expects
+                    password: localUser.newPassword 
                 })
             });
             const data = await response.json();

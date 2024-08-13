@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { useLoginMutation } from '../slices/usersApiSlice'
 import ForgotPasswordModal from './forgotPasswordModal';
 import axios from 'axios';
+
 const drawerWidth = 240;
 const navItems = ['Home','Features','About', 'Contact Us', 'Sign In'];
 
@@ -49,7 +50,7 @@ const Navbar = (props) => {
     const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
     const handleForgotPasswordOpen = () => {
-      handleClose(); // Close the login modal
+      handleClose(); 
       setForgotPasswordOpen(true);
      };
       const handleForgotPasswordClose = () => {
@@ -61,17 +62,7 @@ const Navbar = (props) => {
         navigate('/dashboard');
       }
     }, [navigate, userInfo]);
-
-    // const submitHandler = async (e) => {
-    //   e.preventDefault();
-    //   try {
-    //     const res = await login({ email, password}).unwrap();
-    //     dispatch(setCredentials({...res}));
-    //     navigate('/dasboard');
-    //   } catch (err) {
-    //     toast.error(err?.data?.message || err.error);
-    //   };
-    // }
+    
     const submitHandler = async (e) => {
       e.preventDefault();
       try {
@@ -112,27 +103,34 @@ const Navbar = (props) => {
         setMobileOpen((prevState) => !prevState);
     };
 
-    const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2, color: navbarTextColor }}>
-                <RouterLink to="/">
-                GEOMAP SAMAR
-                </RouterLink>
-            </Typography>
-            <Divider />
-            <List>
-                {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
-                            <ListItemText primary={item}/>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </Box>
-    );
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2, color: navbarTextColor }}>
+        <RouterLink to="/">
+          GEOMAP SAMAR
+        </RouterLink>
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
-    const container = window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      submitHandler(e);
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -211,7 +209,7 @@ const Navbar = (props) => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },

@@ -14,7 +14,7 @@ const Dashboard = () => {
     const fetchLinks = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
-          params: { municipality: 'your-municipality-name' }, // Replace with actual municipality name
+          params: { municipality: 'your-municipality-name' }, 
           withCredentials: true // Include cookies in the request
         });
         setLinks(response.data);
@@ -52,7 +52,7 @@ const Dashboard = () => {
         onFirstInteractive: () => {
           console.log('Tableau dashboard is interactive');
         },
-        withCredentials: true // Include credentials in requests
+        withCredentials: true 
       };
 
       new tableau.Viz(tableauAgriInfo.current, links.mainDashboardLink, options);
