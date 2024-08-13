@@ -7,17 +7,14 @@ import { UserProvider } from './components/userContext.jsx'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import store from './store.js'
-import UserDataInitializer from './components/userDataInitializer.jsx'
-
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
   <Provider store={store}>
     <UserProvider>
       <BrowserRouter>
-
             <Routes>
-
+              
               <Route path='/' element={<App />} />
               <Route path='/contact' element={<Contact />} />
               {/* <Route path='/about' element={<About />} /> */}
@@ -25,9 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               {/* Private Routes */}
               <Route path='' element={<PrivateRoute/>}>
                 <Route path='/dashboard' element={<Dashboard/>} />
-                        <UserDataInitializer>
                 <Route path='/settings' element={<Settings/>} />
-                        </UserDataInitializer>
                 <Route path='/farmers' element={<Farmers/>} />
                 <Route path='/crops' element={<Crops/>} />
                 <Route path='/rice' element={<RiceStat/>} />
@@ -35,7 +30,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path='/mapuploads' element={<MapUploads/>} />
               </Route>
             </Routes>
-
       </BrowserRouter>
     </UserProvider>
   </Provider>
