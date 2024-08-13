@@ -5,7 +5,6 @@
   import { setMode } from '../slices/modeSlice';
   import { clearCredentials } from '../slices/authSlice';
   import { useLogoutMutation } from '../slices/usersApiSlice';
-  import { useUser } from './userContext';
   import {Groups2Outlined,HomeOutlined,DarkModeOutlined,LightModeOutlined,SettingsOutlined,ShoppingCartOutlined,ExitToAppOutlined,ReceiptLongOutlined,PublicOutlined} from "@mui/icons-material";
     import { Avatar,Box,Divider, Drawer,IconButton,Button,List,ListItem,ListItemButton,ListItemIcon,ListItemText,Typography,useTheme,Menu,MenuItem,Stack} from "@mui/material";
   import Basey from '../Municipality Images/Basey.png';
@@ -14,7 +13,6 @@
   import Gandara from '../Municipality Images/Gandara.png';
   import Paranas from '../Municipality Images/Paranas.png';
   import SanJorge from '../Municipality Images/SanJorge.png';
-import { clearUser } from '../slices/setUserSlice';
 
   const normalizeMunicipalityName = (name) => {
     return name.replace(/\s+/g, '').toLowerCase();
