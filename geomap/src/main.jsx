@@ -7,7 +7,7 @@ import { UserProvider } from './components/userContext.jsx'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import store from './store.js'
-// import UserDataInitializer from './components/userDataInitializer.jsx'
+import UserDataInitializer from './components/userDataInitializer.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -15,9 +15,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <UserProvider>
       <BrowserRouter>
-        {/* <UserDataInitializer> */}
+
             <Routes>
-              
+
               <Route path='/' element={<App />} />
               <Route path='/contact' element={<Contact />} />
               {/* <Route path='/about' element={<About />} /> */}
@@ -25,7 +25,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               {/* Private Routes */}
               <Route path='' element={<PrivateRoute/>}>
                 <Route path='/dashboard' element={<Dashboard/>} />
+                        <UserDataInitializer>
                 <Route path='/settings' element={<Settings/>} />
+                        </UserDataInitializer>
                 <Route path='/farmers' element={<Farmers/>} />
                 <Route path='/crops' element={<Crops/>} />
                 <Route path='/rice' element={<RiceStat/>} />
@@ -33,7 +35,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path='/mapuploads' element={<MapUploads/>} />
               </Route>
             </Routes>
-        {/* </UserDataInitializer> */}
+
       </BrowserRouter>
     </UserProvider>
   </Provider>
