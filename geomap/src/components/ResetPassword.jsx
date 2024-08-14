@@ -46,7 +46,7 @@ function ResetPassword() {
             });
             setMessage(response.data.message);
             setTimeout(() => {
-                navigate('/login');
+                navigate('/');
             }, 3000);
         } catch (error) {
             console.error('Error resetting password:', error);
