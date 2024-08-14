@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography, Box, IconButton, InputAdornment } from '@mui/material';
+import { Button, TextField, Typography, Box, CircularProgress, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function ResetPassword() {
     const { token } = useParams();
+    const navigate = useNavigate(); // Hook to programmatically navigate
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [email, setEmail] = useState(''); // Email state for displaying the email
+    const [loading, setLoading] = useState(false);
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -34,23 +36,25 @@ function ResetPassword() {
             setMessage("Passwords do not match!");
             return;
         }
-        if (passwordError) {
-            setMessage("Please fix password issues before submitting.");
-            return;
-        }
 
+        setLoading(true);
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/reset-password`, {
                 token,
                 password,
             });
+
+            setEmail(response.data.email); // Set the email from the response
             setMessage(response.data.message);
+
+            // Redirect after 3 seconds
             setTimeout(() => {
                 navigate('/');
             }, 3000);
         } catch (error) {
             console.error('Error resetting password:', error);
             setMessage('Failed to reset password. Please try again later.');
+            setLoading(false);
         }
     };
 
@@ -66,6 +70,11 @@ function ResetPassword() {
             <Typography variant="h4" gutterBottom>
                 Reset Your Password
             </Typography>
+            {email && (
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                    Resetting password for <strong>{email}</strong>
+                </Typography>
+            )}
             <form onSubmit={handleSubmit}>
                 <TextField
                     fullWidth
@@ -96,10 +105,26 @@ function ResetPassword() {
                     onChange={handleInputChange}
                     margin="normal"
                 />
-                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                    Reset Password
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    disabled={loading}
+                >
+                    {loading ? <CircularProgress size={24} /> : 'Reset Password'}
                 </Button>
-                {message && <Typography color="secondary" sx={{ mt: 2 }}>{message}</Typography>}
+                {message && (
+                    <Typography color="secondary" sx={{ mt: 2 }}>
+                        {message}
+                    </Typography>
+                )}
+                {loading && (
+                    <Typography variant="body2" sx={{ mt: 2 }}>
+                        Redirecting...
+                    </Typography>
+                )}
             </form>
         </Box>
     );
