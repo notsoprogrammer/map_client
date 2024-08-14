@@ -12,6 +12,7 @@ function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
