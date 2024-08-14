@@ -43,29 +43,24 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/send`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json(); // This expects the response to be in JSON format
-      console.log(data.message);
-      alert(data.message);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/email/send`, formData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        // Assuming the response contains a message in the data
+        console.log(response.data.message);
+        alert(response.data.message);
     } catch (error) {
-      console.error('Failed to send message:', error);
-      alert('Failed to send message: ' + error.message);
+        console.error('Failed to send message:', error);
+        alert('Failed to send message: ' + (error.response?.data?.message || error.message));
     }
-  };
+};
+
   
 
   return (
