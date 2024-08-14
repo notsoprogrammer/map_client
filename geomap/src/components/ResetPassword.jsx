@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextField, Typography, Box, CircularProgress, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -13,8 +13,23 @@ function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const [message, setMessage] = useState('');
-    const [email, setEmail] = useState(''); // Email state for displaying the email
+    const [email, setEmail] = useState(''); // State to hold the user's email
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        // Fetch user email from backend using token
+        const fetchEmail = async () => {
+            try {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/get-email`, { token });
+                setEmail(response.data.email);
+            } catch (error) {
+                console.error('Failed to fetch email:', error);
+                setMessage('Failed to load user information.');
+            }
+        };
+
+        fetchEmail();
+    }, [token]);
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -44,7 +59,6 @@ function ResetPassword() {
                 password,
             });
 
-            setEmail(response.data.email); // Set the email from the response
             setMessage(response.data.message);
 
             // Redirect after 3 seconds
@@ -71,9 +85,10 @@ function ResetPassword() {
                 Reset Your Password
             </Typography>
             {email && (
-                <Typography variant="body1" sx={{ mb: 2 }}>
-                    Resetting password for <strong>{email}</strong>
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    {/* <img src="https://via.placeholder.com/24" alt="user icon" style={{ marginRight: 8 }} /> Placeholder for user icon */}
+                    <Typography variant="body1">{email}</Typography>
+                </Box>
             )}
             <form onSubmit={handleSubmit}>
                 <TextField
