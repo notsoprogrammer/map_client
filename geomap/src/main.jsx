@@ -1,4 +1,4 @@
-import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, PrivateRoute, Crops,Settings,Features } from './components/index'
+import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, PrivateRoute, Crops,Settings,Features,Reset } from './components/index'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import App from './App.jsx'
@@ -21,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path='' element={<PrivateRoute/>}>
                 <Route path='/dashboard' element={<Dashboard/>} />
                 <Route path='/settings' element={<Settings/>} />
+                <Route path='/reset-password/:token' element={<Reset/>} />
                 <Route path='/farmers' element={<Farmers/>} />
                 <Route path='/crops' element={<Crops/>} />
                 <Route path='/rice' element={<RiceStat/>} />
