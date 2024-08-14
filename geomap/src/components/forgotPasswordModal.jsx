@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography, CircularProgress } from '@mui/material';
+import axios from 'axios';
 
 const ForgotPasswordModal = ({ open, handleClose }) => {
     const [email, setEmail] = useState('');
@@ -9,17 +10,15 @@ const ForgotPasswordModal = ({ open, handleClose }) => {
     const handleResetRequest = async () => {
         setIsLoading(true);
         try {
-            // Perform fetch or axios request here
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-            const data = await response.json();
-            setMessage(data.message);
-            setIsLoading(false);
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_URL}/api/auth/forgot-password`,
+                { email },
+                { headers: { 'Content-Type': 'application/json' } }
+            );
+            setMessage(response.data.message);
         } catch (error) {
             setMessage('Failed to send reset email.');
+        } finally {
             setIsLoading(false);
         }
     };
