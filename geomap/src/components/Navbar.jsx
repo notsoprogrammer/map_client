@@ -69,16 +69,18 @@ const Navbar = (props) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const userData = { email, password };
-      await login(userData).unwrap();  // Assuming the mutation handles the post and state management
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password }, {
+      });
+      if (res.data && res.data.token) {
+        localStorage.setItem('token', res.data.token); // Store the token
+      }
+      dispatch(setCredentials({ ...res.data }));
       navigate('/dashboard');
     } catch (err) {
-      console.error(err);
-      alert("Login failed: " + (err.error ? err.error.message : "An error occurred"));
+      console.error(err.response?.data?.message || err.message);
+      alert("Login failed: " + (err.response?.data?.message || "An error occurred"));
     }
-};
-
-
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -202,6 +204,7 @@ const Navbar = (props) => {
                     <Button onClick={handleForgotPasswordOpen} sx={{ textTransform: 'none' }}>Forgot Password?</Button>
 
                     <span> </span>
+
                     <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success' disabled={isLoading}>
                       {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
                     </Button>
