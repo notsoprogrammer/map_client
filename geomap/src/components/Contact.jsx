@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, Paper, TextField, Typography,CircularProgress } from '@mui/material';
+import { Box, Button, Grid, Paper, TextField, Typography, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Footer, Navbar } from './index';
-import axios from 'axios'; // Notice you've imported axios but are using fetch
+import axios from 'axios';
 
 const CustomTextField = styled(TextField)({
     'label': {
@@ -27,9 +27,6 @@ const CustomTextField = styled(TextField)({
     }
 });
 
-// Correcting baseURL to point to the backend if it's different from frontend
-
-const [loading,setLoading]=useState(false);
 const Contact = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -38,6 +35,7 @@ const Contact = () => {
     phoneNumber: '',
     message: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -70,9 +68,6 @@ const Contact = () => {
         setLoading(false);
     }
   };
-
-
-  
 
   return (
     <>
