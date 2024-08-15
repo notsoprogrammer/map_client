@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   AppBar, Box, Button, CircularProgress, CssBaseline, Divider, Drawer, IconButton,
-  List, ListItem, ListItemButton, ListItemText, Modal, Stack, TextField, Toolbar, Typography
+  List, ListItem, ListItemButton, ListItemText, Modal, Stack, TextField, Toolbar, Typography 
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -48,11 +48,15 @@ const Navbar = (props) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const handleForgotPasswordOpen = () => {
     handleClose();
     setForgotPasswordOpen(true);
   };
-  const handleForgotPasswordClose = () => setForgotPasswordOpen(false);
+
+  const handleForgotPasswordClose = () => {
+    setForgotPasswordOpen(false);
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -80,9 +84,10 @@ const Navbar = (props) => {
   };
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2, color: 'inherit' }}>
         <RouterLink to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
           GEOMAP SAMAR
         </RouterLink>
@@ -105,15 +110,26 @@ const Navbar = (props) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" style={{ backgroundColor: 'transparent', transition: 'background-color 0.3s ease-in-out' }} position='fixed'>
         <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerToggle}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+          >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
             GEOMAP SAMAR
           </Typography>
-          <Button onClick={handleOpen}>Sign In</Button>
+          <Button onClick={handleOpen}>
+            Sign In
+          </Button>
           <Modal
             open={open}
             onClose={handleClose}
@@ -159,6 +175,7 @@ const Navbar = (props) => {
           <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
         </Toolbar>
       </AppBar>
+
       <Drawer
         container={container}
         variant="temporary"
