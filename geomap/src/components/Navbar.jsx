@@ -9,7 +9,7 @@ import geomap from '../assets/geomap.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
-import ForgotPasswordModal from './ForgotPasswordModal';
+import ForgotPasswordModal from './forgotPasswordModal';
 import axios from 'axios';
 
 const drawerWidth = 240;
