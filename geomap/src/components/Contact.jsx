@@ -29,7 +29,7 @@ const CustomTextField = styled(TextField)({
 
 // Correcting baseURL to point to the backend if it's different from frontend
 
-
+const [loading,setLoading]=useState(false);
 const Contact = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -45,18 +45,17 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/email/send`, formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        
-        // Assuming the response contains a message in the data
+
         console.log(response.data.message);
         alert(response.data.message);
-
-        // Clearing the formData state after successful submission
+        
         setFormData({
             firstName: '',
             lastName: '',
@@ -67,8 +66,10 @@ const Contact = () => {
     } catch (error) {
         console.error('Failed to send message:', error);
         alert('Failed to send message: ' + (error.response?.data?.message || error.message));
+    } finally {
+        setLoading(false);
     }
-};
+  };
 
 
   
