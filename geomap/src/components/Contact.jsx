@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, Paper, TextField, Typography,CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Footer, Navbar } from './index';
 import axios from 'axios'; // Notice you've imported axios but are using fetch
@@ -43,7 +43,7 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/email/send`, formData, {
@@ -55,11 +55,21 @@ const handleSubmit = async (e) => {
         // Assuming the response contains a message in the data
         console.log(response.data.message);
         alert(response.data.message);
+
+        // Clearing the formData state after successful submission
+        setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            message: ''
+        });
     } catch (error) {
         console.error('Failed to send message:', error);
         alert('Failed to send message: ' + (error.response?.data?.message || error.message));
     }
 };
+
 
   
 
@@ -79,7 +89,9 @@ const handleSubmit = async (e) => {
                   <CustomTextField name="email" onChange={handleChange} value={formData.email} label="Email Address" variant="outlined" fullWidth margin="normal" />
                   <CustomTextField name="phoneNumber" onChange={handleChange} value={formData.phoneNumber} label="Phone Number" variant="outlined" fullWidth margin="normal" />
                   <CustomTextField name="message" onChange={handleChange} value={formData.message} label="Message" multiline rows={4} fullWidth margin="normal" />
-                  <Button type="submit" sx={{ mt: 3, color: '#000', bgcolor: '#fff' }} variant="contained" fullWidth>Send Message</Button>
+                  <Button type="submit" sx={{ mt: 3, color: '#000', bgcolor: '#fff' }} variant="contained" fullWidth disabled={loading}>
+                    {loading ? <CircularProgress size={24} /> : 'Send Message'}
+                  </Button>
                 </form>
               </Paper>
             </Grid>
