@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WeatherWidget from './WeatherWidget';
 import { Box } from '@mui/material';
 import axios from 'axios';
+import { validateToken } from '../util/auth';
+
 const { tableau } = window;
 
 const Dashboard = () => {
@@ -9,6 +12,31 @@ const Dashboard = () => {
   const [links, setLinks] = useState(null);
   const tableauAgriInfo = useRef(null);
   const tableauMapDashboard = useRef(null);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const checkTokenAndFetchLinks = async () => {
+      const isValid = await validateToken();
+      if (!isValid) {
+        navigate('/');
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+          params: { municipality: 'your-municipality-name' },
+          withCredentials: true
+        });
+        setLinks(response.data);
+      } catch (error) {
+        console.error('Error fetching dashboard links:', error);
+      }
+    };
+
+    checkTokenAndFetchLinks();
+  }, [navigate]);
 
   useEffect(() => {
     const fetchLinks = async () => {

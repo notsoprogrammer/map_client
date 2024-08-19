@@ -1,6 +1,6 @@
 import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, PrivateRoute, Crops,Settings,Features,Reset } from './components/index'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-
+import NotFound from './components/notFound.jsx'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
 import React from 'react'
@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
       <BrowserRouter>
             <Routes>
-              
+              <Route path="*" element={<NotFound />} />
               <Route path='/' element={<App />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/reset-password/:token' element={<Reset/>} />
