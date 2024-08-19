@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import WeatherWidget from './WeatherWidget';
 import { Box } from '@mui/material';
 import axios from 'axios';
-import { validateToken } from '../util/auth';
+import useTokenValidation from '../util/useTokenValidation';
 
 const { tableau } = window;
 
@@ -12,17 +11,11 @@ const Dashboard = () => {
   const [links, setLinks] = useState(null);
   const tableauAgriInfo = useRef(null);
   const tableauMapDashboard = useRef(null);
-  const navigate = useNavigate();
-
+  
+  useTokenValidation();
 
   useEffect(() => {
-    const checkTokenAndFetchLinks = async () => {
-      const isValid = await validateToken();
-      if (!isValid) {
-        navigate('/');
-        return;
-      }
-
+    const fetchLinks = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
@@ -35,8 +28,9 @@ const Dashboard = () => {
       }
     };
 
-    checkTokenAndFetchLinks();
-  }, [navigate]);
+    fetchLinks();
+  }, []);
+
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(

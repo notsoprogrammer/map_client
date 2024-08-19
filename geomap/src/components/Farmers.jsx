@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import axios from 'axios';
+import useTokenValidation from '../util/useTokenValidation';
 const { tableau } = window;
 
 const Farmers = () => {
   const tableauVizRef = useRef(null);
   const [links, setLinks] = useState(null);
+
+  useTokenValidation();
 
   useEffect(() => {
     const fetchLinks = async () => {
