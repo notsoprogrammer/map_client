@@ -2,6 +2,8 @@ import {
   AppBar, Box, Button, CircularProgress, CssBaseline, Divider, Drawer, FormControl, IconButton,
   List, ListItem, ListItemButton, ListItemText, Modal, Stack, TextField, Toolbar, Typography 
 } from '@mui/material';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -205,9 +207,11 @@ const Navbar = (props) => {
 
                     <span> </span>
 
-                    <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success' disabled={isLoading}>
-                      {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
-                    </Button>
+                    <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success'               disabled={isLoading}
+                      startIcon={isLoading ? <HourglassEmptyIcon /> : null}
+                    >
+                    {isLoading ? 'Logging In...' : 'Sign In'}
+                  </Button>
                     <Button sx={{ width: '100%' }} onClick={handleClose} variant="text">cancel</Button>
                   </Stack>
                 </Box>
