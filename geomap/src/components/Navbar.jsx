@@ -48,8 +48,8 @@ const Navbar = (props) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
+  const [isLoading,setIsLoading] = useState(false);
 
   const { userInfo } = useSelector((state) => state.auth);
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
@@ -70,17 +70,19 @@ const Navbar = (props) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password }, {
-      });
-      if (res.data && res.data.token) {
-        localStorage.setItem('token', res.data.token); // Store the token
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
+      if (response.data && response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        dispatch(setCredentials({ ...response.data }));
+        navigate('/dashboard');
       }
-      dispatch(setCredentials({ ...res.data }));
-      navigate('/dashboard');
-    } catch (err) {
-      console.error(err.response?.data?.message || err.message);
-      alert("Login failed: " + (err.response?.data?.message || "An error occurred"));
+    } catch (error) {
+      console.error(error.response?.data?.message || error.message);
+      alert("Login failed: " + (error.response?.data?.message || "An error occurred"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -207,7 +209,7 @@ const Navbar = (props) => {
 
                     <span> </span>
 
-                    <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success'               disabled={isLoading}
+                    <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success' disabled={isLoading}
                       startIcon={isLoading ? <HourglassEmptyIcon /> : null}
                     >
                     {isLoading ? 'Logging In...' : 'Sign In'}
