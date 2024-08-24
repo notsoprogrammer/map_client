@@ -45,6 +45,7 @@ const navItems = [
 
 // Admin-specific navigation items
 const adminNavItems = [
+    { text: "Dashboard", path: "/admin", icon: <HomeOutlined /> },
     { text: "Map Uploads", icon: <UploadFileOutlined /> },
     { text: "User Management", icon: <ManageAccountsOutlined /> },
 ];

@@ -1,4 +1,4 @@
-import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, PrivateRoute, Crops,Settings,Features,Reset } from './components/index'
+import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, PrivateRoute, Crops,Settings,Features,Reset, UserManagement } from './components/index'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import NotFound from './components/notFound.jsx'
 import App from './App.jsx'
@@ -24,7 +24,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path='/crops' element={<Crops/>} />
                 <Route path='/rice' element={<RiceStat/>} />
                 <Route path='/maps' element={<Maps/>} />
-                <Route path='/mapuploads' element={<MapUploads/>} />
+                <Route path='admin/usermanagement' element={<UserManagement/>} />
+                <Route path='admin/mapuploads' element={<MapUploads/>} />
               </Route>
             </Routes>
       </BrowserRouter>
