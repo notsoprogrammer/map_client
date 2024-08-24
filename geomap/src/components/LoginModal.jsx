@@ -51,7 +51,13 @@ const LoginModal = ({ open, handleClose }) => {
       if (response.data && response.data.token) {
         localStorage.setItem('token', response.data.token);
         dispatch(setCredentials({ ...response.data }));
-        navigate('/dashboard');
+        
+        // Redirect based on user role
+        if (response.data.role === 'admin') {
+          navigate('/admin/usermanagement');
+        } else {
+          navigate('/dashboard');
+        }
       }
     } catch (error) {
       console.error(error.response?.data?.message || error.message);
