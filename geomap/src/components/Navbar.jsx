@@ -1,90 +1,23 @@
-import {
-  AppBar, Box, Button, CircularProgress, CssBaseline, Divider, Drawer, FormControl, IconButton,
-  List, ListItem, ListItemButton, ListItemText, Modal, Stack, TextField, Toolbar, Typography 
-} from '@mui/material';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link as ScrollLink } from 'react-scroll';
+import React, { useState, useEffect } from 'react';
+import { AppBar, Box, Button, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
-import geomap from '../assets/geomap.png';
-import { setCredentials } from '../slices/authSlice';
-import { toast } from 'react-toastify';
-import { useLoginMutation } from '../slices/usersApiSlice';
-import ForgotPasswordModal from './forgotPasswordModal';
-import axios from 'axios';
+import LoginModal from './LoginModal';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'Features', 'About', 'Contact Us', 'Sign In'];
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: '#F6F4F4',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 const Navbar = (props) => {
-
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const [navbarColor, setNavbarColor] = useState('transparent');
   const [navbarTextColor, setNavbarTextColor] = useState('white');
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [loginOpen, setLoginOpen] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [login] = useLoginMutation();
-  const [isLoading,setIsLoading] = useState(false);
-
-  const { userInfo } = useSelector((state) => state.auth);
-  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
-
-  const handleForgotPasswordOpen = () => {
-    handleClose(); // Close the login modal
-    setForgotPasswordOpen(true);
-  };
-  const handleForgotPasswordClose = () => {
-    setForgotPasswordOpen(false);
-  };
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate('/dashboard');
-    }
-  }, [navigate, userInfo]);
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
-      if (response.data && response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        dispatch(setCredentials({ ...response.data }));
-        navigate('/dashboard');
-      }
-    } catch (error) {
-      console.error(error.response?.data?.message || error.message);
-      alert("Login failed: " + (error.response?.data?.message || "An error occurred"));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleLoginOpen = () => setLoginOpen(true);
+  const handleLoginClose = () => setLoginOpen(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,13 +62,6 @@ const Navbar = (props) => {
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
-  
-  // Function to handle Enter key press
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      submitHandler(e);
-    }
-  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -170,60 +96,14 @@ const Navbar = (props) => {
               </Button>
             </RouterLink>
 
-            <Button onClick={handleOpen} sx={{ marginRight: '4rem', color: '#fff' }}>
+            <Button onClick={handleLoginOpen} sx={{ marginRight: '4rem', color: '#fff' }}>
               Sign In
             </Button>
 
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <Box sx={{ padding: '5px' }} >
-                  <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
-                    <img src={geomap} alt='logo' style={{ height: 54, width: 54 }} />
-                    <h2>Welcome back!</h2>
-                    <TextField
-                      sx={{ width: '100%' }}
-                      type='email'
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      onKeyPress={handleKeyPress} // Attach keypress handler
-                      id="outlined-basic"
-                      label="Email Address"
-                      variant="outlined"
-                    />
-                    <TextField
-                      sx={{ width: '100%' }}
-                      type='password'
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyPress={handleKeyPress} // Attach keypress handler
-                      id="outlined-basic"
-                      label="Password"
-                      variant="outlined"
-                    />
-                    <Button onClick={handleForgotPasswordOpen} sx={{ textTransform: 'none' }}>Forgot Password?</Button>
-
-                    <span> </span>
-
-                    <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success' disabled={isLoading}>
-                      {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
-                    </Button>
-                    <Button sx={{ width: '100%' }} onClick={handleClose} variant="text">cancel</Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Modal>
-            <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
+            <LoginModal open={loginOpen} handleClose={handleLoginClose} />
           </Box>
         </Toolbar>
       </AppBar>
-
-      <div>
-      </div>
 
       <Box component="nav">
         <Drawer
@@ -243,7 +123,7 @@ const Navbar = (props) => {
         </Drawer>
       </Box>
     </Box>
-  )
+  );
 }
 
 export default Navbar;

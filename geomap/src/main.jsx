@@ -16,8 +16,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path='/' element={<App />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/reset-password/:token' element={<Reset/>} />
-              {/* <Route path='/about' element={<About />} /> */}
-              {/* <Route path='/features' element={<Features />} /> */}
               {/* Private Routes */}
               <Route path='' element={<PrivateRoute/>}>
                 <Route path='/dashboard' element={<Dashboard/>} />
