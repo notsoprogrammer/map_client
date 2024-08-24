@@ -45,9 +45,8 @@ const navItems = [
 
 // Admin-specific navigation items
 const adminNavItems = [
-    { text: "Dashboard", path: "/admin", icon: <HomeOutlined /> },
-    { text: "Map Uploads", icon: <UploadFileOutlined /> },
-    { text: "User Management", icon: <ManageAccountsOutlined /> },
+    { text: "Map Uploads", icon: <UploadFileOutlined />, path: '/admin/mapuploads' },
+    { text: "User Management", icon: <ManageAccountsOutlined />, path: '/admin/usermanagement' },
 ];
 
 const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) => {
@@ -176,17 +175,16 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) 
                                 </ListItem>
                             );
                         })}
-                        {user.role === 'admin' && adminNavItems.map(({ text, icon }) => {
-                            const lcText = text.toLowerCase();
-                            const isSelected = active === lcText;
+                        {user.role === 'admin' && adminNavItems.map(({ text, icon, path }) => {
+                            const isSelected = pathname === path;
 
                             return (
                                 <ListItem key={text} disablePadding>
                                     <ListItemButton
                                         selected={isSelected}
                                         onClick={() => {
-                                            navigate(`/${lcText}`);
-                                            setActive(lcText);
+                                            navigate(path);  // Navigate using the correct path
+                                            setActive(path);
                                         }}
                                         sx={{
                                             backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
