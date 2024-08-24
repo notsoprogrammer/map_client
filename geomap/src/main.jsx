@@ -24,8 +24,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path='/crops' element={<Crops/>} />
                 <Route path='/rice' element={<RiceStat/>} />
                 <Route path='/maps' element={<Maps/>} />
-                <Route path='admin/usermanagement' element={<UserManagement/>} />
-                <Route path='admin/mapuploads' element={<MapUploads/>} />
+                <Route path='/admin/usermanagement' element={<UserManagement/>} />
+                <Route path='/admin/mapuploads' element={<MapUploads/>} />
               </Route>
             </Routes>
       </BrowserRouter>
