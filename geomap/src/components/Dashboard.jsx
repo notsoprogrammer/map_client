@@ -95,36 +95,6 @@ const Dashboard = () => {
     );
   }, []);
 
-  useEffect(() => {
-    if (links) {
-      const tableauToken = localStorage.getItem('tableauToken'); // Retrieve the Tableau-specific token
-
-      if (!tableauToken) {
-        console.error('Tableau token is missing.');
-        return;
-      }
-
-      const options = {
-        hideTabs: true,
-        hideToolbar: true,
-        onFirstInteractive: () => {
-          console.log('Tableau dashboard is interactive');
-        },
-        withCredentials: true 
-      };
-
-      const mainDashboardUrl = `${links.mainDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
-      const weatherDashboardUrl = `${links.weatherDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
-
-      new tableau.Viz(tableauAgriInfo.current, mainDashboardUrl, options);
-      new tableau.Viz(tableauMapDashboard.current, weatherDashboardUrl, options);
-
-      return () => {
-        tableauAgriInfo.current?.dispose();
-        tableauMapDashboard.current?.dispose();
-      };
-    }
-  }, [links]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', height: '99vh', overflowY: 'hidden', paddingTop: '5px', boxSizing: 'border-box' }}>
