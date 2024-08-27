@@ -12,7 +12,7 @@ const UserManagement = () => {
 
     const handleAddUser = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/register`,{
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/addUser`,{
                 name, email, password, municipality, job, role,
             });
             alert(response.data.message);
