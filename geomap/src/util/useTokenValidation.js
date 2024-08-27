@@ -31,7 +31,7 @@ const useTokenValidation = () => {
 
     useEffect(() => {
         const validateToken = async () => {
-            const token = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('authToken');
 
             if (!authToken) {
                 logoutHandler();
