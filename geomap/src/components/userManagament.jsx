@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box, Alert, AlertTitle } from '@mui/material';
 import axios from 'axios';
 
 const UserManagement = () => {
@@ -9,14 +9,16 @@ const UserManagement = () => {
     const [municipality, setMunicipality] = useState('');
     const [job, setJob] = useState('');
     const [role, setRole] = useState('user');
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
 
     const handleAddUser = async () => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/addUser`,{
                 name, email, password, municipality, job, role,
             });
-            alert(response.data.message);
-            // Reset form fields
+            setSuccess(true);
+            setError('');
             setName('');
             setEmail('');
             setPassword('');
@@ -25,13 +27,26 @@ const UserManagement = () => {
             setRole('user');
         } catch (error) {
             console.error("Error adding user:", error);
-            alert("Failed to add user");
+            setSuccess(false);
+            setError("Failed to add user");
         }
     };
 
     return (
         <Box sx={{ mt: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h2>Manage Users</h2>
+            {success && (
+                <Alert severity="success" onClose={() => setSuccess(false)} sx={{ mb: 2 }}>
+                    <AlertTitle>Success</AlertTitle>
+                    User has been added successfully!
+                </Alert>
+            )}
+            {error && (
+                <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
+                    <AlertTitle>Error</AlertTitle>
+                    {error}
+                </Alert>
+            )}
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '300px' }}>
                 <TextField label="Name" value={name} onChange={(e) => setName(e.target.value)} />
                 <TextField label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
