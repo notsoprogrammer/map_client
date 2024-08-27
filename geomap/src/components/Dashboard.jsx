@@ -16,27 +16,66 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchLinks = async () => {
-      const authToken = localStorage.getItem('authToken'); // Retrieve the authToken for general API requests
-      const tableauToken = localStorage.getItem('tableauToken'); // Retrieve the tableauToken for Tableau embedding
-
+      const authToken = localStorage.getItem('authToken');
+      const tableauToken = localStorage.getItem('tableauToken');
+  
+      console.log("authToken:", authToken);
+      console.log("tableauToken:", tableauToken);
+  
       if (!authToken || !tableauToken) {
         console.error('Authentication or Tableau token is missing.');
         return;
       }
-
+  
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
-          headers: { Authorization: `Bearer ${authToken}` }, // Use the authToken for authentication
+          headers: { Authorization: `Bearer ${authToken}` },
           withCredentials: true
         });
+        console.log("Dashboard links fetched:", response.data);
         setLinks(response.data);
       } catch (error) {
         console.error('Error fetching dashboard links:', error);
       }
     };
-
+  
     fetchLinks();
   }, []);
+  
+  useEffect(() => {
+    if (links) {
+      const tableauToken = localStorage.getItem('tableauToken');
+      if (!tableauToken) {
+        console.error('Tableau token is missing.');
+        return;
+      }
+  
+      const mainDashboardUrl = `${links.mainDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
+      const weatherDashboardUrl = `${links.weatherDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
+  
+      console.log("Embedding Tableau dashboards with URLs:");
+      console.log("Main Dashboard URL:", mainDashboardUrl);
+      console.log("Weather Dashboard URL:", weatherDashboardUrl);
+  
+      const options = {
+        hideTabs: true,
+        hideToolbar: true,
+        onFirstInteractive: () => {
+          console.log('Tableau dashboard is interactive');
+        },
+        withCredentials: true 
+      };
+  
+      new tableau.Viz(tableauAgriInfo.current, mainDashboardUrl, options);
+      new tableau.Viz(tableauMapDashboard.current, weatherDashboardUrl, options);
+  
+      return () => {
+        tableauAgriInfo.current?.dispose();
+        tableauMapDashboard.current?.dispose();
+      };
+    }
+  }, [links]);
+  
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
