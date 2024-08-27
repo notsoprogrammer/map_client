@@ -12,15 +12,15 @@ const useTokenValidation = () => {
 
     const logoutHandler = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const authToken = localStorage.getItem('authToken');
 
-            if (!token) {
+            if (!authToken) {
                 throw new Error('Token not found');
             }
 
             await logoutApiCall().unwrap();
 
-            localStorage.removeItem('token');
+            localStorage.removeItem('authToken');
             dispatch(clearCredentials());
 
             navigate('/');
@@ -31,16 +31,16 @@ const useTokenValidation = () => {
 
     useEffect(() => {
         const validateToken = async () => {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('authToken');
 
-            if (!token) {
+            if (!authToken) {
                 logoutHandler();
                 return;
             }
 
             try {
                 await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/validate-token`, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${authToken}` },
                     withCredentials: true
                 });
             } catch (error) {
