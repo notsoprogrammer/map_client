@@ -67,15 +67,15 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) 
 
     const logoutHandler = async () => {
         try {
-            const token = localStorage.getItem('token'); // Retrieve the token
+            const authToken = localStorage.getItem('authToken'); // Retrieve the token
 
-            if (!token) {
+            if (!authToken) {
                 throw new Error('Token not found');
             }
 
             await logoutApiCall().unwrap();
 
-            localStorage.removeItem('token');
+            localStorage.removeItem('authToken');
             dispatch(clearCredentials());
 
             navigate('/');

@@ -28,11 +28,11 @@ function Settings() {
     }, [userInfo]);
 
     const fetchUserData = async () => {
-        const token = localStorage.getItem('token');
-        console.log("Retrieved token:", token); // Log to verify
+        const authToken = localStorage.getItem('authToken');
+        console.log("Retrieved token:", authToken); // Log to verify
         try {
           const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { 'Authorization': `Bearer ${authToken}` }
           });
           const data = await response.json();
           if (response.ok) {
@@ -95,7 +95,7 @@ function Settings() {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem('token')}`
+                  'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify({
                   name: localUser.name,

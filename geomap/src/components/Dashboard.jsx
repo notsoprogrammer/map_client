@@ -16,10 +16,17 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchLinks = async () => {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the authToken for general API requests
+      const tableauToken = localStorage.getItem('tableauToken'); // Retrieve the tableauToken for Tableau embedding
+
+      if (!authToken || !tableauToken) {
+        console.error('Authentication or Tableau token is missing.');
+        return;
+      }
+
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-          params: { municipality: 'your-municipality-name' },
+          headers: { Authorization: `Bearer ${authToken}` }, // Use the authToken for authentication
           withCredentials: true
         });
         setLinks(response.data);
@@ -30,7 +37,6 @@ const Dashboard = () => {
 
     fetchLinks();
   }, []);
-
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -52,6 +58,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (links) {
+      const tableauToken = localStorage.getItem('tableauToken'); // Retrieve the Tableau-specific token
+
+      if (!tableauToken) {
+        console.error('Tableau token is missing.');
+        return;
+      }
+
       const options = {
         hideTabs: true,
         hideToolbar: true,
@@ -61,8 +74,11 @@ const Dashboard = () => {
         withCredentials: true 
       };
 
-      new tableau.Viz(tableauAgriInfo.current, links.mainDashboardLink, options);
-      new tableau.Viz(tableauMapDashboard.current, links.weatherDashboardLink, options);
+      const mainDashboardUrl = `${links.mainDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
+      const weatherDashboardUrl = `${links.weatherDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
+
+      new tableau.Viz(tableauAgriInfo.current, mainDashboardUrl, options);
+      new tableau.Viz(tableauMapDashboard.current, weatherDashboardUrl, options);
 
       return () => {
         tableauAgriInfo.current?.dispose();

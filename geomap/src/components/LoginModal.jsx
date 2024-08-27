@@ -48,10 +48,13 @@ const LoginModal = ({ open, handleClose }) => {
     setIsLoading(true);
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
-      if (response.data && response.data.token) {
-        localStorage.setItem('token', response.data.token);
+      if (response.data && response.data.authToken && response.data.tableauToken) {
+        // Store the authToken and tableauToken in localStorage
+        localStorage.setItem('authToken', response.data.authToken);
+        localStorage.setItem('tableauToken', response.data.tableauToken);
+
         dispatch(setCredentials({ ...response.data }));
-        
+
         // Redirect based on user role
         if (response.data.role === 'admin') {
           navigate('/admin/usermanagement');
@@ -69,12 +72,12 @@ const LoginModal = ({ open, handleClose }) => {
 
   return (
     <>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
         <Box sx={style}>
           <Box sx={{ padding: '5px' }} >
             <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
@@ -108,8 +111,8 @@ const LoginModal = ({ open, handleClose }) => {
               <Button sx={{ width: '100%' }} onClick={handleClose} variant="text">cancel</Button>
             </Stack>
           </Box>
-        </Box>
-      </Modal>
+      </Box>
+    </Modal>
 
       <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
     </>
