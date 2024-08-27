@@ -12,7 +12,7 @@ const UserManagement = () => {
 
     const handleAddUser = async () => {
         try {
-            const response = await axios.post('/api/admin/adduser', {
+            const response = await axios.post('/api/users/register', {
                 name, email, password, municipality, job, role,
             });
             alert(response.data.message);
