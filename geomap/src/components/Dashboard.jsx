@@ -63,7 +63,6 @@ const Dashboard = () => {
         onFirstInteractive: () => {
           console.log('Tableau dashboard is interactive');
         },
-        withCredentials: true 
       };
   
       new tableau.Viz(tableauAgriInfo.current, mainDashboardUrl, options);
