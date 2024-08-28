@@ -32,7 +32,7 @@ const Dashboard = () => {
           headers: { Authorization: `Bearer ${authToken}` },
           withCredentials: true
         });
-        console.log("Dashboard links fetched:", response.data);
+        // console.log("Dashboard links fetched:", response.data);
         setLinks(response.data);
       } catch (error) {
         console.error('Error fetching dashboard links:', error);
@@ -50,8 +50,8 @@ const Dashboard = () => {
         return;
       }
   
-      const mainDashboardUrl = `${links.mainDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
-      const weatherDashboardUrl = `${links.weatherDashboardLink}?:embed=y&:showVizHome=no&:jwt=${tableauToken}`;
+      const mainDashboardUrl = `${links.mainDashboardLink}?:jwt=${tableauToken}`;
+      const weatherDashboardUrl = `${links.weatherDashboardLink}?:jwt=${tableauToken}`;
   
       console.log("Embedding Tableau dashboards with URLs:");
       console.log("Main Dashboard URL:", mainDashboardUrl);
@@ -60,9 +60,6 @@ const Dashboard = () => {
       const options = {
         hideTabs: true,
         hideToolbar: true,
-        onFirstInteractive: () => {
-          console.log('Tableau dashboard is interactive');
-        },
       };
   
       new tableau.Viz(tableauAgriInfo.current, mainDashboardUrl, options);
