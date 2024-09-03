@@ -37,6 +37,11 @@ const LoginModal = ({ open, handleClose }) => {
     setForgotPasswordOpen(false);
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.REACT_APP_API_URL}/api/auth/google`; // This URL should start the OAuth process on the backend
+};
+
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       submitHandler(e);
@@ -108,6 +113,10 @@ const LoginModal = ({ open, handleClose }) => {
               <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success' disabled={isLoading}>
                 {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
               </Button>
+
+              <Button onClick={handleGoogleLogin} variant="contained" color="primary">
+                Login with Google
+            </Button>
               <Button sx={{ width: '100%' }} onClick={handleClose} variant="text">cancel</Button>
             </Stack>
           </Box>
