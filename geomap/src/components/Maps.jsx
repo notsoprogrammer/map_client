@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import { tokensDark,tokensLight } from '../theme';
 import PieChartComponent from '../mapSources/PieChartCrop';
 import analysesData from '../mapSources/Analyses';
+import customMarkerIconURl from '../assets/CustomMarkerIcon.svg'
 //when I made this code, only God, chatGPT and I knows. If you're having problem, only God can answer you :)
 
 // Component definition
@@ -42,6 +43,13 @@ const Maps = () => {
   const [clickedFeature, setClickedFeature] = useState(null);
   const [geoJsonLayer, setGeoJsonLayer] = useState(null);
   const mode = useSelector((state) => state.global.mode);
+  const [markers, setMarkers] = useState([]);
+  const customMarkerIcon = new L.Icon({
+    iconUrl: customMarkerIconURl,
+    iconSize: [30, 40], // Size of the icon
+    iconAnchor: [15, 40], // Point of the icon which will correspond to marker's location
+    popupAnchor: [0, -40] // Point from which the popup should open relative to the iconAnchor
+});
   const chartTextColors = {
     dark: tokensDark.grey[0], 
     light: tokensDark.grey[900], 
@@ -411,6 +419,7 @@ const Maps = () => {
       }
     }, [mapType]);
 
+
     useEffect(() => {
       let isMounted = true;
 
@@ -483,31 +492,35 @@ const Maps = () => {
                 <LayersControl.Overlay name="Municipality Boundary" checked={boundaryVisible}>
                   <ImageOverlay url={Boundary} bounds={boundaryBounds} opacity={1.0}  style={{zIndex:1}}/>
                 </LayersControl.Overlay>
-                {mapType === 'Soil Properties' && category && municipality && (
-                    <LayersControl.Overlay name="Soil Markers" checked={showSoilMarkers}>
-                      <LayerGroup>
-                        {soilgeodata.features
-                          .filter(feature => 
-                            (feature.properties["Municipality"] === municipality || feature.properties["Province"] === municipality) && 
-                            feature.properties[propertyKeyMap[category]] !== null // Use propertyKeyMap to access the correct property
-                          )
-                          .map((feature, index) => (
-                            <Marker 
-                              key={index} 
-                              position={[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]} // Coordinates are [latitude, longitude]
-                            >
-                              <Popup>
-                                {category}: {feature.properties[propertyKeyMap[category]]}
-                              </Popup>
-                            </Marker>
-                          ))
-                        }
-                      </LayerGroup>
-                    </LayersControl.Overlay>
-                  )}
 
-                  {mapType === 'Soil Texture' && category && municipality && (
-                    <LayersControl.Overlay name="Soil Markers" checked={showSoilMarkers}>
+                {mapType === 'Soil Properties' && category && municipality && (
+                  <LayersControl.Overlay name="Soil Markers" checked={showSoilMarkers}>
+                    <LayerGroup>
+                      {soilgeodata.features
+                        .filter(feature => 
+                          (feature.properties["Municipality"] === municipality || feature.properties["Province"] === municipality) && 
+                          feature.properties[propertyKeyMap[category]] !== null
+                        )
+                        .map((feature, index) => (
+                          <Marker 
+                            key={index} 
+                            position={[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]}
+                            icon={customMarkerIcon} // Using custom marker icon
+                          >
+                            <Popup>
+                              {category}: {feature.properties[propertyKeyMap[category]]}
+                            </Popup>
+                          </Marker>
+                        ))
+                      }
+                    </LayerGroup>
+                  </LayersControl.Overlay>
+                )
+              }
+
+              {
+                mapType === 'Soil Texture' && category && municipality && (
+                  <LayersControl.Overlay name="Soil Markers" checked={showSoilMarkers}>
                     <LayerGroup>
                       {textureData.features
                         .filter(feature => 
@@ -517,10 +530,10 @@ const Maps = () => {
                         .map((feature, index) => (
                           <Marker 
                             key={index} 
-                            position={[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]} // Coordinates are [latitude, longitude]
+                            position={[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]}
+                            icon={customMarkerIcon} // Using custom marker icon
                           >
                             <Popup>
-                              
                               The {category} value in {feature.properties.Brgy} is {feature.properties[category]}
                             </Popup>
                           </Marker>
@@ -528,8 +541,8 @@ const Maps = () => {
                       }
                     </LayerGroup>
                   </LayersControl.Overlay>
-                  
-                )}
+                    )
+              }
 
               </LayersControl>
 
