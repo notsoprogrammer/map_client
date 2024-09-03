@@ -38,7 +38,7 @@ const LoginModal = ({ open, handleClose }) => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.REACT_APP_API_URL}/api/auth/google`; // This URL should start the OAuth process on the backend
+    window.location.href = `${process.env.REACT_APP_API_URL}/api/auth/tableau`; // This URL should start the OAuth process on the backend
 };
 
 
