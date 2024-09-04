@@ -12,11 +12,12 @@ const CropStat = () => {
 
   useEffect(() => {
     const fetchLinks = async () => {
-      const token = localStorage.getItem('token'); // Get the access token from localStorage
+      const authToken = localStorage.getItem('authToken'); // Get the access token from localStorage
       try {
         // Fetching the specific links for the crops dashboard
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
-          headers: { 'Authorization': `Bearer ${token}` },
+          headers: { 'Authorization': `Bearer ${authToken}` },
+          params: { municipality: 'your-municipality-name' }, // Assuming API can filter links by dashboard type
           withCredentials: true
         });
         setLinks(response.data); // Setting the fetched links to state
