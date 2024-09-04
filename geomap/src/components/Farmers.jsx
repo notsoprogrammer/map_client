@@ -2,24 +2,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import axios from 'axios';
 import useTokenValidation from '../util/useTokenValidation';
+
 const { tableau } = window;
 
-const Farmers = () => {
-  const tableauVizRef = useRef(null);
-  const [links, setLinks] = useState(null);
-
-  useTokenValidation();
+const CropStat = () => {
+  const tableauVizRef = useRef(null); // Reference to the div where the viz will be embedded
+  const [links, setLinks] = useState(null); // State to hold the dashboard links
+  useTokenValidation(); // Custom hook to validate tokens
 
   useEffect(() => {
     const fetchLinks = async () => {
-      const token = localStorage.getItem('token'); // Get token from localStorage
+      const authToken = localStorage.getItem('authToken'); // Get the access token from localStorage
       try {
+        // Fetching the specific links for the crops dashboard
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/dashboard/links`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-          params: { municipality: 'your-municipality-name' },
-          withCredentials: true // Include cookies in the request if needed
+          headers: { 'Authorization': `Bearer ${authToken}` },
+          params: { municipality: 'your-municipality-name' }, // Assuming API can filter links by dashboard type
+          withCredentials: true
         });
-        setLinks(response.data);
+        setLinks(response.data); // Setting the fetched links to state
       } catch (error) {
         console.error('Error fetching dashboard links:', error);
       }
@@ -30,9 +31,9 @@ const Farmers = () => {
 
   useEffect(() => {
     if (links) {
-      let viz;
+      let viz; // Variable to hold the viz instance
       const initViz = () => {
-        const vizUrl = links.farmersProfileLink;
+        const vizUrl = links.farmersProfileLink; // URL for the crops dashboard
 
         const options = {
           width: '100%',
@@ -41,10 +42,10 @@ const Farmers = () => {
           hideToolbar: true,
           onFirstInteractive: () => {
             console.log('Tableau dashboard is interactive');
-          },
-          withCredentials: true // Include credentials in requests
+          }
         };
 
+        // Initialize the Tableau Viz in the referenced div
         viz = new tableau.Viz(tableauVizRef.current, vizUrl, options);
       };
 
@@ -52,13 +53,16 @@ const Farmers = () => {
 
       const handleResize = () => {
         if (viz) {
+          // Adjust the frame size on window resize
           viz.setFrameSize(undefined, tableauVizRef.current.clientHeight);
         }
       };
 
+      // Add window resize listener
       window.addEventListener('resize', handleResize);
 
       return () => {
+        // Clean up on component unmount
         window.removeEventListener('resize', handleResize);
         if (viz) {
           viz.dispose();
@@ -91,4 +95,4 @@ const Farmers = () => {
   );
 };
 
-export default Farmers;
+export default CropStat;
