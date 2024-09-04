@@ -47,6 +47,19 @@ const LoginModal = ({ open, handleClose }) => {
       submitHandler(e);
     }
   };
+  const handleLoginWithTableau = () => {
+    const tableauCloudUrl = "https://prod-apsoutheast-a.online.tableau.com/";
+    const windowFeatures = "toolbar=no, menubar=no, width=500, height=700, top=100, left=100";
+    const authWindow = window.open(tableauCloudUrl, '_blank', windowFeatures);
+
+    const timer = setInterval(() => {
+        if (authWindow.closed) {
+            clearInterval(timer);
+            alert("Authentication complete. You may now close this window.");
+            handleClose();  // Optionally close the modal post-authentication
+        }
+    }, 1000);
+};
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -113,7 +126,9 @@ const LoginModal = ({ open, handleClose }) => {
               <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success' disabled={isLoading}>
                 {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
               </Button>
-
+              <Button onClick={handleLoginWithTableau} variant="contained" color="primary">
+                  Login with Tableau
+              </Button>
               <Button onClick={handleGoogleLogin} variant="contained" color="primary">
                 Login with Google
             </Button>
