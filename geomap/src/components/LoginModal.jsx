@@ -61,13 +61,17 @@ const LoginModal = ({ open, handleClose }) => {
     }
   };
 
+  
   const submitHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
-      if (response.data && response.data.authToken) {
+      if (response.data && response.data.authToken && response.data.tableauToken) {
+        // Store the authToken and tableauToken in localStorage
         localStorage.setItem('authToken', response.data.authToken);
+        localStorage.setItem('tableauToken', response.data.tableauToken);
+
         dispatch(setCredentials({ ...response.data }));
 
         // Redirect based on user role
@@ -76,8 +80,6 @@ const LoginModal = ({ open, handleClose }) => {
         } else {
           navigate('/dashboard');
         }
-
-        handleClose(); // Close the modal after successful login
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -86,6 +88,32 @@ const LoginModal = ({ open, handleClose }) => {
       setIsLoading(false);
     }
   };
+
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
+  //     if (response.data && response.data.authToken) {
+  //       localStorage.setItem('authToken', response.data.authToken);
+  //       dispatch(setCredentials({ ...response.data }));
+
+  //       // Redirect based on user role
+  //       if (response.data.role === 'admin') {
+  //         navigate('/admin/usermanagement');
+  //       } else {
+  //         navigate('/dashboard');
+  //       }
+
+  //       handleClose(); // Close the modal after successful login
+  //     }
+  //   } catch (error) {
+  //     console.error('Login failed:', error);
+  //     setSnackbar({ open: true, message: "Login failed: " + (error.response?.data?.message || "An error occurred") });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const handleModalClose = () => {
     setEmail('');
