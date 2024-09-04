@@ -3,7 +3,7 @@ import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField } from
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../slices/authSlice';
-import ForgotPasswordModal from './ForgotPasswordModal';
+import ForgotPasswordModal from './forgotPasswordModal';
 
 const style = {
   position: 'absolute',
