@@ -48,15 +48,16 @@ const LoginModal = ({ open, handleClose }) => {
     }
   };
   const handleLoginWithTableau = () => {
-    const tableauCloudUrl = "https://prod-apsoutheast-a.online.tableau.com/";
+    const tableauAuthUrl = "https://prod-apsoutheast-a.online.tableau.com"; // Customize with your actual Tableau URL
     const windowFeatures = "toolbar=no, menubar=no, width=500, height=700, top=100, left=100";
-    const authWindow = window.open(tableauCloudUrl, '_blank', windowFeatures);
+    const authWindow = window.open(tableauAuthUrl, '_blank', windowFeatures);
 
-    const timer = setInterval(() => {
+    // Optional: Monitor the window status to close it programmatically
+    const timer = setInterval(function() {
         if (authWindow.closed) {
             clearInterval(timer);
             alert("Authentication complete. You may now close this window.");
-            handleClose();  // Optionally close the modal post-authentication
+            // Here you might want to trigger some follow-up action in your app.
         }
     }, 1000);
 };
