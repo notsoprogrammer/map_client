@@ -127,7 +127,7 @@ const LoginModal = ({ open, handleClose }) => {
         <Box sx={style}>
             <Box sx={{ padding: '5px' }} >
               <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
-                <img src={PrjGeomapLogo} alt='logo' style={{ height: 50 , width: 100 }} />
+                <img src={PrjGeomapLogo} alt='logo' style={{ height: 50 , width: 120 }} />
                 <h2>Welcome back!</h2>
               {isTableauAuthenticated ? (
                 <>
