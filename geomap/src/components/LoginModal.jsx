@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../slices/authSlice';
 import ForgotPasswordModal from './forgotPasswordModal';
+import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
 
 const style = {
   position: 'absolute',
@@ -68,7 +69,15 @@ const LoginModal = ({ open, handleClose }) => {
       if (response.data && response.data.authToken) {
         localStorage.setItem('authToken', response.data.authToken);
         dispatch(setCredentials({ ...response.data }));
-        handleClose();
+
+        // Redirect based on user role
+        if (response.data.role === 'admin') {
+          navigate('/admin/usermanagement');
+        } else {
+          navigate('/dashboard');
+        }
+
+        handleClose(); // Close the modal after successful login
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -88,62 +97,66 @@ const LoginModal = ({ open, handleClose }) => {
     <>
       <Modal open={open} onClose={handleModalClose}>
         <Box sx={style}>
-          <Stack spacing={2} direction="column" alignItems='center'>
-            {isTableauAuthenticated ? (
-              <>
-                <TextField
-                  sx={{ width: '100%' }}
-                  type='email'
-                  label="Email Address"
-                  variant="outlined"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onKeyPress={handleKeyPress} // Attach keypress handler
-  
-                />
-                <TextField
-                  sx={{ width: '100%' }}
-                  type='password'
-                  label="Password"
-                  variant="outlined"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                />
+            <Box sx={{ padding: '5px' }} >
+              <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
+                <img src={PrjGeomapLogo} alt='logo' style={{ height: 54, width: 54 }} />
+                <h2>Welcome back!</h2>
+              {isTableauAuthenticated ? (
+                <>
+                  <TextField
+                    sx={{ width: '100%' }}
+                    type='email'
+                    label="Email Address"
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyPress={handleKeyPress} // Attach keypress handler
+    
+                  />
+                  <TextField
+                    sx={{ width: '100%' }}
+                    type='password'
+                    label="Password"
+                    variant="outlined"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                  />
+                  <Button
+                    onClick={handleForgotPasswordOpen}
+                    sx={{ textTransform: 'none' }}
+                  >
+                    Forgot Password?
+                  </Button>
+                  <Button
+                    sx={{ width: '100%' }}
+                    onClick={submitHandler}
+                    variant="contained"
+                    color='success'
+                    disabled={isLoading}
+                  >
+                    {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+                  </Button>
+                </>
+              ) : (
                 <Button
-                  onClick={handleForgotPasswordOpen}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Forgot Password?
-                </Button>
-                <Button
-                  sx={{ width: '100%' }}
-                  onClick={submitHandler}
+                  onClick={handleLoginWithTableau}
                   variant="contained"
-                  color='success'
+                  color="primary"
                   disabled={isLoading}
                 >
-                  {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+                  Authenticate with Tableau
                 </Button>
-              </>
-            ) : (
-              <Button
-                onClick={handleLoginWithTableau}
-                variant="contained"
-                color="primary"
-                disabled={isLoading}
-              >
-                Authenticate with Tableau
-              </Button>
-            )}
-            <Button onClick={handleModalClose}>Close</Button>
-          </Stack>
+              )}
+              <Button onClick={handleModalClose}>Close</Button>
+            </Stack>
+          </Box>
         </Box>
       </Modal>
 
-      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleSnackBarClose} message={snackbar.message} />
-      <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
-    </>
+        <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleSnackBarClose} message={snackbar.message} />
+        <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
+      </>
   );
 };
 
