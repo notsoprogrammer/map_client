@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { setCredentials } from '../slices/authSlice';
 import ForgotPasswordModal from './forgotPasswordModal';
 import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
@@ -26,6 +27,7 @@ const LoginModal = ({ open, handleClose }) => {
   const [isTableauAuthenticated, setIsTableauAuthenticated] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '' });
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleForgotPasswordOpen = () => {
@@ -89,31 +91,6 @@ const LoginModal = ({ open, handleClose }) => {
     }
   };
 
-  // const submitHandler = async (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
-  //     if (response.data && response.data.authToken) {
-  //       localStorage.setItem('authToken', response.data.authToken);
-  //       dispatch(setCredentials({ ...response.data }));
-
-  //       // Redirect based on user role
-  //       if (response.data.role === 'admin') {
-  //         navigate('/admin/usermanagement');
-  //       } else {
-  //         navigate('/dashboard');
-  //       }
-
-  //       handleClose(); // Close the modal after successful login
-  //     }
-  //   } catch (error) {
-  //     console.error('Login failed:', error);
-  //     setSnackbar({ open: true, message: "Login failed: " + (error.response?.data?.message || "An error occurred") });
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const handleModalClose = () => {
     setEmail('');
