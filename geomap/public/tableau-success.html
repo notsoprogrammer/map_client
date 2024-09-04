@@ -1,5 +1,15 @@
-<script>
-    window.opener.postMessage('authenticationSuccessful', 'https://mapulon.netlify.app');
-    window.close(); // Close the popup
-  </script>
-  
+<!-- tableau-success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authentication Success</title>
+    <script>
+        window.opener.postMessage('authenticationSuccessful', 'https://mapulon.netlify.app'); // Make sure this matches your actual deployment URL
+        window.close(); // Close this window after posting message
+    </script>
+</head>
+<body>
+    <p>Authentication successful. Please close this window if it does not close automatically.</p>
+</body>
+</html>
