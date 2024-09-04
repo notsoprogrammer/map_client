@@ -49,11 +49,15 @@ const LoginModal = ({ open, handleClose }) => {
       if (authWindow.closed) {
         clearInterval(timer);
         setIsLoading(false);
-        // Ideally, check authentication status here with an API call or local storage token
         setIsTableauAuthenticated(true); // Assuming authentication was successful
         setSnackbar({ open: true, message: 'Tableau Authentication successful!' });
       }
     }, 1000);
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      submitHandler(e);
+    }
   };
 
   const submitHandler = async (e) => {
@@ -64,7 +68,7 @@ const LoginModal = ({ open, handleClose }) => {
       if (response.data && response.data.authToken) {
         localStorage.setItem('authToken', response.data.authToken);
         dispatch(setCredentials({ ...response.data }));
-        handleClose();  // Close the modal after successful login
+        handleClose();
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -74,49 +78,65 @@ const LoginModal = ({ open, handleClose }) => {
     }
   };
 
+  const handleModalClose = () => {
+    setEmail('');
+    setPassword('');
+    handleClose();
+  };
+
   return (
     <>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleModalClose}>
         <Box sx={style}>
           <Stack spacing={2} direction="column" alignItems='center'>
-            <TextField
-              sx={{ width: '100%' }}
-              type='email'
-              label="Email Address"
-              variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={!isTableauAuthenticated}
-            />
-            <TextField
-              sx={{ width: '100%' }}
-              type='password'
-              label="Password"
-              variant="outlined"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={!isTableauAuthenticated}
-            />
-            <Button
-              onClick={handleForgotPasswordOpen}
-              disabled={!isTableauAuthenticated}
-            >
-              Forgot Password?
-            </Button>
-            <Button
-              onClick={submitHandler}
-              disabled={isLoading || !isTableauAuthenticated}
-            >
-              {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
-            </Button>
-            <Button
-              onClick={handleLoginWithTableau}
-              disabled={isTableauAuthenticated}
-              variant="contained"
-            >
-              Authenticate with Tableau
-            </Button>
-            <Button onClick={handleClose}>Cancel</Button>
+            {isTableauAuthenticated ? (
+              <>
+                <TextField
+                  sx={{ width: '100%' }}
+                  type='email'
+                  label="Email Address"
+                  variant="outlined"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyPress={handleKeyPress} // Attach keypress handler
+  
+                />
+                <TextField
+                  sx={{ width: '100%' }}
+                  type='password'
+                  label="Password"
+                  variant="outlined"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
+                <Button
+                  onClick={handleForgotPasswordOpen}
+                  sx={{ textTransform: 'none' }}
+                >
+                  Forgot Password?
+                </Button>
+                <Button
+                  sx={{ width: '100%' }}
+                  onClick={submitHandler}
+                  variant="contained"
+                  color='success'
+                  disabled={isLoading}
+                >
+                  {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={handleLoginWithTableau}
+                variant="contained"
+                color="primary"
+                disabled={isLoading}
+              >
+                Authenticate with Tableau
+              </Button>
+            )}
+            <Button onClick={handleModalClose}>Close</Button>
           </Stack>
         </Box>
       </Modal>
