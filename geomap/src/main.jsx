@@ -1,4 +1,4 @@
-import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, PrivateRoute, Crops, Settings, Features, Reset, UserManagement } from './components/index';
+import { About, Contact, RiceStat, Dashboard, Farmers, MapUploads, Maps, PrivateRoute, Crops, Settings, Features, Reset, UserManagement, Login } from './components/index';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import NotFound from './components/notFound.jsx';
 import App from './App.jsx';
@@ -24,6 +24,7 @@ const RootComponent = () => {
         <Routes>
             <Route path="*" element={<NotFound />} />
             <Route path='/' element={<App />} />
+            <Route path="/login" element={<Login open={true} />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/reset-password/:token' element={<Reset/>} />
             {/* Private Routes */}

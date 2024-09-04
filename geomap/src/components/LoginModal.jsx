@@ -24,6 +24,7 @@ const LoginModal = ({ open, handleClose }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  const [tableauAuthenticated, setTableauAuthenticated] = useState(false); // State to manage Tableau authentication status
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,95 +53,60 @@ const LoginModal = ({ open, handleClose }) => {
     const windowFeatures = "toolbar=no, menubar=no, width=500, height=700, top=100, left=100";
     const authWindow = window.open(tableauAuthUrl, '_blank', windowFeatures);
 
-    // Optional: Monitor the window status to close it programmatically
-    const timer = setInterval(function() {
-        if (authWindow.closed) {
-            clearInterval(timer);
-            alert("Authentication complete. You may now close this window.");
-            // Here you might want to trigger some follow-up action in your app.
-        }
+    // Monitor the window status to close it programmatically
+    const timer = setInterval(() => {
+      if (authWindow.closed) {
+        clearInterval(timer);
+        setTableauAuthenticated(true); // Assuming authentication is successful once the window is closed
+        alert("Tableau Authentication complete. You may now proceed.");
+      }
     }, 1000);
-};
+  };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     setIsLoading(true);
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
-      if (response.data && response.data.authToken && response.data.tableauToken) {
-        // Store the authToken and tableauToken in localStorage
-        localStorage.setItem('authToken', response.data.authToken);
-        localStorage.setItem('tableauToken', response.data.tableauToken);
+      localStorage.setItem('authToken', response.data.authToken);
+      dispatch(setCredentials({ ...response.data }));
 
-        dispatch(setCredentials({ ...response.data }));
-
-        // Redirect based on user role
-        if (response.data.role === 'admin') {
-          navigate('/admin/usermanagement');
-        } else {
-          navigate('/dashboard');
-        }
-      }
+      navigate(response.data.role === 'admin' ? '/admin/usermanagement' : '/dashboard');
     } catch (error) {
-      console.error(error.response?.data?.message || error.message);
+      console.error('Login failed:', error);
       alert("Login failed: " + (error.response?.data?.message || "An error occurred"));
     } finally {
       setIsLoading(false);
     }
   };
 
-  return (
-    <>
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+  if (!tableauAuthenticated) {
+    return (
+      <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Box sx={{ padding: '5px' }} >
-            <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
-              <img src={geomap} alt='logo' style={{ height: 54, width: 54 }} />
-              <h2>Welcome back!</h2>
-              <TextField
-                sx={{ width: '100%' }}
-                type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyPress={handleKeyPress} // Attach keypress handler
-                id="outlined-basic"
-                label="Email Address"
-                variant="outlined"
-              />
-              <TextField
-                sx={{ width: '100%' }}
-                type='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyPress={handleKeyPress} // Attach keypress handler
-                id="outlined-basic"
-                label="Password"
-                variant="outlined"
-              />
-              <Button onClick={handleForgotPasswordOpen} sx={{ textTransform: 'none' }}>Forgot Password?</Button>
+          <h2>Please authenticate with Tableau first.</h2>
+          <Button onClick={handleLoginWithTableau} variant="contained" color="primary">
+            Authenticate with Tableau
+          </Button>
+        </Box>
+      </Modal>
+    );
+  }
 
-              <Button sx={{ width: '100%' }} type='submit' onClick={submitHandler} variant="contained" color='success' disabled={isLoading}>
-                {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
-              </Button>
-              <Button onClick={handleLoginWithTableau} variant="contained" color="primary">
-                  Login with Tableau
-              </Button>
-              <Button onClick={handleGoogleLogin} variant="contained" color="primary">
-                Login with Google
-            </Button>
-              <Button sx={{ width: '100%' }} onClick={handleClose} variant="text">cancel</Button>
-            </Stack>
-          </Box>
+  return (
+    <Modal open={open} onClose={handleClose}>
+      <Box sx={style}>
+        <Stack spacing={2} direction="column" alignItems='center'>
+          <TextField type='email' label="Email Address" variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} onKeyPress={handleKeyPress} />
+          <TextField type='password' label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} onKeyPress={handleKeyPress} />
+          <Button onClick={handleLogin} disabled={isLoading || !tableauAuthenticated}>
+            {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+          </Button>
+          <Button onClick={handleForgotPasswordOpen}>Forgot Password?</Button>
+          <Button onClick={handleClose}>Cancel</Button>
+        </Stack>
       </Box>
-    </Modal>
-
       <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
-    </>
+    </Modal>
   );
 };
 
