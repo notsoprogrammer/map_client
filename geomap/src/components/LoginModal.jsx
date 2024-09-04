@@ -22,11 +22,19 @@ const LoginModal = ({ open, handleClose }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // State to manage if authenticated
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
-  const [snackbarMessage, setSnackbarMessage] = useState(''); // Snackbar message
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const dispatch = useDispatch();
+
+  // Define handleSnackbarClose to manage the snackbar closing
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleForgotPasswordOpen = () => {
     handleClose(); // Close the login modal
@@ -46,7 +54,7 @@ const LoginModal = ({ open, handleClose }) => {
     if (e.key === 'Enter') {
       submitHandler(e);
     }
-  };
+  };  
   const handleLoginWithTableau = () => {
     const tableauAuthUrl = "https://prod-apsoutheast-a.online.tableau.com";
     const windowFeatures = "toolbar=no, menubar=no, width=500, height=700, top=100, left=100";
