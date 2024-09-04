@@ -12,7 +12,7 @@ const RootComponent = () => {
 
     useEffect(() => {
         window.addEventListener('message', (event) => {
-            if (event.origin === "https://prod-apsoutheast-a.online.tableau.com" && event.data === 'authenticationSuccessful') {
+            if (event.origin === "https://prod-apsoutheast-a.online.tableau.com/#/site/geomapsamar/home" && event.data === 'authenticationSuccessful') {
                 navigate('/dashboard'); // Redirect to dashboard
             }
         });
