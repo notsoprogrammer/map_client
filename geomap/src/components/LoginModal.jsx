@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Modal, Stack, TextField, Snackbar } from '@mui/material';
+import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../slices/authSlice';
-import ForgotPasswordModal from './forgotPasswordModal';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 const style = {
   position: 'absolute',
@@ -22,22 +22,12 @@ const LoginModal = ({ open, handleClose }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [isTableauAuthenticated, setIsTableauAuthenticated] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '' });
 
   const dispatch = useDispatch();
 
-  // Define handleSnackbarClose to manage the snackbar closing
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
-
   const handleForgotPasswordOpen = () => {
-    handleClose(); // Close the login modal
     setForgotPasswordOpen(true);
   };
 
@@ -45,17 +35,12 @@ const LoginModal = ({ open, handleClose }) => {
     setForgotPasswordOpen(false);
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = `${process.env.REACT_APP_API_URL}/api/auth/tableau`; // This URL should start the OAuth process on the backend
-};
+  const handleSnackBarClose = () => {
+    setSnackbar({ open: false, message: '' });
+  };
 
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      submitHandler(e);
-    }
-  };  
   const handleLoginWithTableau = () => {
+    setIsLoading(true);
     const tableauAuthUrl = "https://prod-apsoutheast-a.online.tableau.com";
     const windowFeatures = "toolbar=no, menubar=no, width=500, height=700, top=100, left=100";
     const authWindow = window.open(tableauAuthUrl, '_blank', windowFeatures);
@@ -63,9 +48,10 @@ const LoginModal = ({ open, handleClose }) => {
     const timer = setInterval(() => {
       if (authWindow.closed) {
         clearInterval(timer);
-        setIsAuthenticated(true);
-        setSnackbarMessage("Tableau Authentication complete. You may now proceed.");
-        setSnackbarOpen(true);
+        setIsLoading(false);
+        // Ideally, check authentication status here with an API call or local storage token
+        setIsTableauAuthenticated(true); // Assuming authentication was successful
+        setSnackbar({ open: true, message: 'Tableau Authentication successful!' });
       }
     }, 1000);
   };
@@ -75,42 +61,68 @@ const LoginModal = ({ open, handleClose }) => {
     setIsLoading(true);
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
-      localStorage.setItem('authToken', response.data.authToken);
-      dispatch(setCredentials({ ...response.data }));
-      handleClose();
+      if (response.data && response.data.authToken) {
+        localStorage.setItem('authToken', response.data.authToken);
+        dispatch(setCredentials({ ...response.data }));
+        handleClose();  // Close the modal after successful login
+      }
     } catch (error) {
       console.error('Login failed:', error);
-      setSnackbarMessage("Login failed: " + (error.response?.data?.message || "An error occurred"));
-      setSnackbarOpen(true);
+      setSnackbar({ open: true, message: "Login failed: " + (error.response?.data?.message || "An error occurred") });
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (!isAuthenticated) {
-    return <Button onClick={handleLoginWithTableau} variant="contained" color="primary">Authenticate with Tableau</Button>;
-  }
-
   return (
     <>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Stack spacing={2} direction="column" justifyContent="center" alignItems='center'>
-            <TextField label="Email Address" variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <TextField label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <Button onClick={submitHandler} disabled={isLoading}>Sign In</Button>
-            <Button onClick={handleForgotPasswordOpen}>Forgot Password?</Button>
-            <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
+          <Stack spacing={2} direction="column" alignItems='center'>
+            <TextField
+              sx={{ width: '100%' }}
+              type='email'
+              label="Email Address"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={!isTableauAuthenticated}
+            />
+            <TextField
+              sx={{ width: '100%' }}
+              type='password'
+              label="Password"
+              variant="outlined"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={!isTableauAuthenticated}
+            />
+            <Button
+              onClick={handleForgotPasswordOpen}
+              disabled={!isTableauAuthenticated}
+            >
+              Forgot Password?
+            </Button>
+            <Button
+              onClick={submitHandler}
+              disabled={isLoading || !isTableauAuthenticated}
+            >
+              {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+            </Button>
+            <Button
+              onClick={handleLoginWithTableau}
+              disabled={isTableauAuthenticated}
+              variant="contained"
+            >
+              Authenticate with Tableau
+            </Button>
             <Button onClick={handleClose}>Cancel</Button>
           </Stack>
         </Box>
       </Modal>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-      />
+
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleSnackBarClose} message={snackbar.message} />
+      <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
     </>
   );
 };
