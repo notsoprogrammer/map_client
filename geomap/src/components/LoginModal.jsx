@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField,Typography } from '@mui/material';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCredentials } from '../slices/authSlice';
 import ForgotPasswordModal from './forgotPasswordModal';
 import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
-import { Typography } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 
 const style = {
@@ -166,6 +166,10 @@ const LoginModal = ({ open, handleClose }) => {
                   Authenticate with Tableau
                 </Button>
               )}
+              <Typography variant="caption" sx={{ mt: 1, textAlign: 'center' }}>
+                <InfoIcon fontSize="small" sx={{ mr: 1 }} />
+                Please ensure to complete authentication before closing the pop-up.
+              </Typography>
               <Button onClick={handleModalClose}>Close</Button>
             </Stack>
           </Box>
