@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField, Typography } from '@mui/material';
+
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCredentials } from '../slices/authSlice';
 import ForgotPasswordModal from './forgotPasswordModal';
 import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
+import { Typography } from '@mui/material';
+
 
 const style = {
   position: 'absolute',
@@ -47,16 +50,29 @@ const LoginModal = ({ open, handleClose }) => {
     const tableauAuthUrl = "https://prod-apsoutheast-a.online.tableau.com";
     const windowFeatures = "toolbar=no, menubar=no, width=500, height=700, top=100, left=100";
     const authWindow = window.open(tableauAuthUrl, '_blank', windowFeatures);
-
-    const timer = setInterval(() => {
-      if (authWindow.closed) {
-        clearInterval(timer);
-        setIsLoading(false);
-        setIsTableauAuthenticated(true); // Assuming authentication was successful
-        setSnackbar({ open: true, message: 'Tableau Authentication successful!' });
-      }
-    }, 1000);
+  
+    if (!authWindow) {
+      setSnackbar({ open: true, message: 'Pop-up was blocked. Please allow pop-ups for this site and try again.' });
+      setIsLoading(false);
+    } else {
+      // Inform user to authenticate before closing the window
+      setSnackbar({ open: true, message: 'Please authenticate in the new window before closing it.' });
+  
+      const timer = setInterval(() => {
+        if (authWindow.closed) {
+          clearInterval(timer);
+          setIsLoading(false);
+          if (isTableauAuthenticated) { // You need a mechanism or check to set this when authenticated
+            setSnackbar({ open: true, message: 'Tableau Authentication successful!' });
+          } else {
+            setSnackbar({ open: true, message: 'Authentication not completed. Please try again.' });
+          }
+        }
+      }, 1000);
+    }
   };
+  
+  
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       submitHandler(e);
@@ -138,10 +154,18 @@ const LoginModal = ({ open, handleClose }) => {
                     onClick={submitHandler}
                     variant="contained"
                     color='success'
-                    disabled={isLoading}
+                    disabled={isLoading || !email || !password} // Disable if loading or email/password is empty
                   >
                     {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
                   </Button>
+
+                  {(!email || !password) && (
+                    <Typography variant="caption" sx={{ color: 'red', mt: 1, textAlign: 'center' }}>
+                      Please fill in both email and password fields to log in.
+                    </Typography>
+                  )}
+
+
                 </>
               ) : (
                 <Button
