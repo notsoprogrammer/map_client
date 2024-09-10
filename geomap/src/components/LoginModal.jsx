@@ -111,16 +111,14 @@ const LoginModal = ({ open, handleClose }) => {
               <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
                 <img src={PrjGeomapLogo} alt='logo' style={{ height: 50 , width: 150 }} />
                 <h2>Welcome back!</h2>
-                <Button onClick={handleLoginWithTableau} variant="contained" color="primary" disabled={isLoading || isTableauAuthenticated}>
-                  Authenticate with Tableau
-                </Button>
+
                 {!isTableauAuthenticated && (
                   <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', mt: 1, color: 'text.secondary' }}>
                     <InfoIcon sx={{ mr: 1, color: 'info.main' }} />
                     Please ensure you complete authentication before closing the pop-up.
                   </Typography>
                 )}
-              {isTableauAuthenticated && (
+              {isTableauAuthenticated ? (
                 <>
                   <TextField
                     sx={{ width: '100%' }}
@@ -157,14 +155,13 @@ const LoginModal = ({ open, handleClose }) => {
                   {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
                 </Button>
 
-                {(!email || !password) && (
-                  <Typography variant="caption" sx={{ color: 'red', mt: 1, textAlign: 'center' }}>
-                    Please fill in both email and password fields to log in.
-                  </Typography>
-                )}
-
 
                 </>
+              ):(
+                <Button onClick={handleLoginWithTableau} variant="contained" color="primary" disabled={isLoading || isTableauAuthenticated}>
+                Authenticate with Tableau
+              </Button>
+
               )}
               
               <Button onClick={handleModalClose}>Close</Button>
