@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Modal, Snackbar, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCredentials } from '../slices/authSlice';
 import ForgotPasswordModal from './forgotPasswordModal';
 import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
+import { Typography } from '@mui/material';
+
 
 const style = {
   position: 'absolute',
@@ -47,35 +49,30 @@ const LoginModal = ({ open, handleClose }) => {
     const tableauAuthUrl = "https://prod-apsoutheast-a.online.tableau.com";
     const windowFeatures = "toolbar=no, menubar=no, width=500, height=700, top=100, left=100";
     const authWindow = window.open(tableauAuthUrl, '_blank', windowFeatures);
-  
     if (!authWindow) {
       setSnackbar({ open: true, message: 'Pop-up was blocked. Please allow pop-ups for this site and try again.' });
       setIsLoading(false);
     } else {
-
-      const timer = setInterval(() => {
-        if (authWindow.closed) {
-          clearInterval(timer);
-          setIsLoading(false);
-          // Simulate checking if authentication was successful
-          // Typically you might check a condition here, for this example let's assume it was successful
-          setIsTableauAuthenticated(true); // This should be set based on actual auth status, potentially by listening to a message as earlier discussed
-          setSnackbar({ open: true, message: 'Please ensure you completed authentication in the pop-up.' });
-        }
-      }, 1000);
+    const timer = setInterval(() => {
+      if (authWindow.closed) {
+        clearInterval(timer);
+        setIsLoading(false);
+        setIsTableauAuthenticated(true); // Assuming authentication was successful
+        setSnackbar({ open: true, message: 'Please ensure you completed authentication in the pop-up.' });
+      }
+    }, 1000);
     }
-  };
-
+    };
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && email && password) {
       submitHandler(e);
     }
   };
 
+  
   const submitHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Dummy endpoint for example, replace with your actual API
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
       if (response.data && response.data.authToken && response.data.tableauToken) {
