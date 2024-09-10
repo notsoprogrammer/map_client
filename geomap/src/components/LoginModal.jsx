@@ -7,7 +7,7 @@ import { setCredentials } from '../slices/authSlice';
 import ForgotPasswordModal from './forgotPasswordModal';
 import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
 import InfoIcon from '@mui/icons-material/Info';
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const style = {
   position: 'absolute',
@@ -62,6 +62,9 @@ const LoginModal = ({ open, handleClose }) => {
       }
     }, 1000);
   }
+  };
+  const reopenTableauAuth = () => {
+    handleLoginWithTableau(); // Directly attempt to reopen the authentication popup
   };
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && email && password) {
@@ -154,8 +157,9 @@ const LoginModal = ({ open, handleClose }) => {
                 >
                   {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
                 </Button>
-
-
+                <Button startIcon={<ArrowBackIcon />} onClick={reopenTableauAuth} variant="outlined" sx={{ mt: 1 }}>
+                  Retry Tableau Authentication
+                </Button>
                 </>
               ):(
                 <Button onClick={handleLoginWithTableau} variant="contained" color="primary" disabled={isLoading || isTableauAuthenticated}>
