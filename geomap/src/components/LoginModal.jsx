@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { setCredentials } from '../slices/authSlice';
 import ForgotPasswordModal from './forgotPasswordModal';
 import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
-import { Typography } from '@mui/material';
 
 
 const style = {
