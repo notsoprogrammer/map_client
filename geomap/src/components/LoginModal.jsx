@@ -61,14 +61,13 @@ const LoginModal = ({ open, handleClose }) => {
         setSnackbar({ open: true, message: 'Please ensure you completed authentication in the pop-up.' });
       }
     }, 1000);
-    }
-    };
+  }
+  };
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && email && password) {
       submitHandler(e);
     }
   };
-
   
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -105,66 +104,77 @@ const LoginModal = ({ open, handleClose }) => {
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Box sx={style}>
-        <Stack sx={{ width: '100%', margin: 'auto' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
-          <img src={PrjGeomapLogo} alt='logo' style={{ height: 50, width: 150 }} />
-          <h2>Welcome back!</h2>
-          <Button
-            onClick={handleLoginWithTableau}
-            variant="contained"
-            color="primary"
-            disabled={isLoading || isTableauAuthenticated}
-          >
-            {isTableauAuthenticated ? 'Authenticated with Tableau' : 'Authenticate with Tableau'}
-          </Button>
-          <TextField
-            sx={{ width: '100%' }}
-            type='email'
-            label="Email Address"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyPress={handleKeyPress}
-            disabled={!isTableauAuthenticated}
-          />
-          <TextField
-            sx={{ width: '100%' }}
-            type='password'
-            label="Password"
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyPress={handleKeyPress}
-            disabled={!isTableauAuthenticated}
-          />
-          <Button
-            onClick={handleForgotPasswordOpen}
-            sx={{ textTransform: 'none' }}
-            disabled={!isTableauAuthenticated}
-          >
-            Forgot Password?
-          </Button>
-          <Button
-            sx={{ width: '100%' }}
-            onClick={submitHandler}
-            variant="contained"
-            color='success'
-            disabled={isLoading || !email || !password}
-          >
-            {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
-          </Button>
-          {(!email || !password) && (
-            <Typography variant="caption" sx={{ color: 'red', mt: 1, textAlign: 'center' }}>
-              Please fill in both email and password fields to log in.
-            </Typography>
-          )}
-          <Button onClick={handleModalClose}>Close</Button>
-        </Stack>
-      </Box>
-      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleSnackBarClose} message={snackbar.message} />
-      <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
-    </Modal>
+    <>
+      <Modal open={open} onClose={handleModalClose}>
+        <Box sx={style}>
+            <Box sx={{ padding: '5px' }} >
+              <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
+                <img src={PrjGeomapLogo} alt='logo' style={{ height: 50 , width: 150 }} />
+                <h2>Welcome back!</h2>
+              {isTableauAuthenticated ? (
+                <>
+                  <TextField
+                    sx={{ width: '100%' }}
+                    type='email'
+                    label="Email Address"
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyPress={handleKeyPress} // Attach keypress handler
+    
+                  />
+                  <TextField
+                    sx={{ width: '100%' }}
+                    type='password'
+                    label="Password"
+                    variant="outlined"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                  />
+                  <Button
+                    onClick={handleForgotPasswordOpen}
+                    sx={{ textTransform: 'none' }}
+                  >
+                    Forgot Password?
+                  </Button>
+                  <Button
+                  sx={{ width: '100%' }}
+                  onClick={submitHandler}
+                  variant="contained"
+                  color='success'
+                  disabled={isLoading || !email || !password} // Disable if loading or email/password is empty
+                >
+                  {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+                </Button>
+
+                {(!email || !password) && (
+                  <Typography variant="caption" sx={{ color: 'red', mt: 1, textAlign: 'center' }}>
+                    Please fill in both email and password fields to log in.
+                  </Typography>
+                )}
+
+
+                </>
+              ) : (
+                <Button
+                  onClick={handleLoginWithTableau}
+                  variant="contained"
+                  color="primary"
+                  disabled={isLoading}
+                >
+                  Authenticate with Tableau
+                </Button>
+              )}
+              <Button onClick={handleModalClose}>Close</Button>
+            </Stack>
+          </Box>
+        </Box>
+      </Modal>
+
+        <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleSnackBarClose} message={snackbar.message} />
+        <ForgotPasswordModal open={forgotPasswordOpen} handleClose={handleForgotPasswordClose} />
+      </>
   );
 };
 
