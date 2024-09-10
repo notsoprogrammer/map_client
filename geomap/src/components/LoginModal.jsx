@@ -114,7 +114,7 @@ const LoginModal = ({ open, handleClose }) => {
                 <Button onClick={handleLoginWithTableau} variant="contained" color="primary" disabled={isLoading || isTableauAuthenticated}>
                   Authenticate with Tableau
                 </Button>
-                {isTableauAuthenticated && (
+                {!isTableauAuthenticated && (
                   <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', mt: 1, color: 'text.secondary' }}>
                     <InfoIcon sx={{ mr: 1, color: 'info.main' }} />
                     Please ensure you complete authentication before closing the pop-up.
