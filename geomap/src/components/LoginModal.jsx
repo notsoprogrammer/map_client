@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCredentials } from '../slices/authSlice';
-import ForgotPasswordModal from './ForgotPasswordModal';
+import ForgotPasswordModal from './forgotPasswordModal';
 import PrjGeomapLogo from  '../assets/PrjGeomapLogo.png';
 
 const style = {
