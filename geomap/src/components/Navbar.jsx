@@ -79,7 +79,7 @@ const Navbar = (props) => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <img src={PrjGeomapLogo} alt="Mapulon Logo" style={{ height: '80px', marginRight: '1rem' }} />
+            <img src={PrjGeomapLogo} alt="Mapulon Logo" style={{ height: '120px', marginRight: '1rem' }} />
             {/* <Typography
               variant="h6"
               component="div"
