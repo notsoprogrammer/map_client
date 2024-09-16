@@ -90,7 +90,12 @@ const Navbar = (props) => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <img src={PrjGeomapLogo} alt="Mapulon Logo" style={{ height: '50px', marginRight: '1rem' }} />
+            {/* Adjust logo size */}
+            <img 
+              src={PrjGeomapLogo} 
+              alt="Mapulon Logo" 
+              style={{ height: '80px', maxWidth: '120px', objectFit: 'contain' }} 
+            />
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             <RouterLink to="/" style={{ textDecoration: 'none' }}>
