@@ -3,7 +3,7 @@ import { AppBar, Box, Button, CssBaseline, Divider, Drawer, IconButton, List, Li
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginModal from './LoginModal';
-import Mapulon_Logo from '../assets/Mapulon_Logo.png'
+import PrjGeomapLogo from '../assets/PrjGeomapLogo.png'
 
 const drawerWidth = 240;
 const navItems = ['Home', 'Features', 'About', 'Contact Us', 'Sign In'];
@@ -79,7 +79,7 @@ const Navbar = (props) => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <img src={Mapulon_Logo} alt="Mapulon Logo" style={{ height: '40px', marginRight: '1rem' }} />
+            <img src={PrjGeomapLogo} alt="Mapulon Logo" style={{ height: '40px', marginRight: '1rem' }} />
             {/* <Typography
               variant="h6"
               component="div"
