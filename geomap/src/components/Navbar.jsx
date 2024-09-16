@@ -46,7 +46,7 @@ const Navbar = (props) => {
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2, color: navbarTextColor }}>
         <RouterLink to="/">
-          GEOMAP SAMAR
+          Mapulon
         </RouterLink>
       </Typography>
       <Divider />
@@ -80,13 +80,13 @@ const Navbar = (props) => {
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
             <img src={Mapulon_Logo} alt="Mapulon Logo" style={{ height: '40px', marginRight: '1rem' }} />
-            <Typography
+            {/* <Typography
               variant="h6"
               component="div"
               sx={{ fontWeight: 700, display: { xs: 'none', sm: 'block' } }}
             >
-              Mapulon App
-            </Typography>
+              Mapulon
+            </Typography> */}
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             <RouterLink to="/" style={{ textDecoration: 'none' }}>
