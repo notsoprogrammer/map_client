@@ -112,7 +112,7 @@ const LoginModal = ({ open, handleClose }) => {
         <Box sx={style}>
             <Box sx={{ padding: '5px' }} >
               <Stack sx={{ width: 400, marginLeft: '1rem' }} spacing={2} direction="column" justifyContent="center" alignItems='center'>
-                <img src={PrjGeomapLogo} alt='logo' style={{ height: 80 , width: 120 }} />
+                <img src={PrjGeomapLogo} alt='logo' style={{ height: 70 , width: 105 }} />
                 <h2>Welcome back!</h2>
 
                 {!isTableauAuthenticated && (
@@ -124,24 +124,35 @@ const LoginModal = ({ open, handleClose }) => {
               {isTableauAuthenticated ? (
                 <>
                   <TextField
-                    sx={{ width: '100%' }}
+                    sx={{ width: '100%', opacity: isLoading ? 0.5 : 1 }}
                     type='email'
                     label="Email Address"
                     variant="outlined"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    onKeyPress={handleKeyPress} // Attach keypress handler
-    
+                    onKeyPress={handleKeyPress}
+                    disabled={isLoading}
+                    InputProps={{
+                      endAdornment: isLoading ? <CircularProgress size={20} /> : null,
+                      style: { cursor: isLoading ? 'not-allowed' : 'text' }
+                    }}
                   />
+
                   <TextField
-                    sx={{ width: '100%' }}
+                    sx={{ width: '100%', opacity: isLoading ? 0.5 : 1 }}
                     type='password'
                     label="Password"
                     variant="outlined"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyPress={handleKeyPress}
+                    disabled={isLoading}
+                    InputProps={{
+                      endAdornment: isLoading ? <CircularProgress size={20} /> : null,
+                      style: { cursor: isLoading ? 'not-allowed' : 'text' }
+                    }}
                   />
+
                   <Button
                     onClick={handleForgotPasswordOpen}
                     sx={{ textTransform: 'none' }}
