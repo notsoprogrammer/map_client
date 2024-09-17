@@ -21,21 +21,17 @@ const Navbar = (props) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (document.documentElement.scrollTop >= 845) {
-        setNavbarColor('#282F44'); // Change to your desired background color
-        setNavbarTextColor('#fff'); // Change to your desired text color
-      } else {
-        setNavbarColor('white');
-        setNavbarTextColor('#282F44');
-      }
+      setNavbarColor('white');
+      setNavbarTextColor('#282F44'); // Set the text color to dark for contrast, adjust as needed
     };
-
+  
     document.addEventListener('scroll', handleScroll);
-
+  
     return () => {
       document.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -78,8 +74,23 @@ const Navbar = (props) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav" style={{ backgroundColor: navbarColor, transition: 'background-color 0.3s ease-in-out', boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)' }} position='fixed'>
-        <Toolbar sx={{ height: 64, color: navbarTextColor, display: 'flex', justifyContent: 'space-between' }}>
+      <AppBar
+        component="nav"
+        style={{
+          backgroundColor: 'white', // Fixed white background
+          transition: 'background-color 0.3s ease-in-out',
+          boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)'
+        }}
+        position="fixed"
+      >
+        <Toolbar
+          sx={{
+            height: 64,
+            color: 'rgba(0, 0, 0, 0.87)', 
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -94,7 +105,7 @@ const Navbar = (props) => {
             <img 
               src={PrjGeomapLogo} 
               alt="Mapulon Logo" 
-              style={{ height: '80px', maxWidth: '120px', objectFit: 'contain' }} 
+              style={{ height: '90px', maxWidth: '124px', objectFit: 'contain' }} 
             />
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
