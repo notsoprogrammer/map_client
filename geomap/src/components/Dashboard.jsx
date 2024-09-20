@@ -103,7 +103,7 @@ const Dashboard = () => {
           <div ref={tableauMapDashboard} style={{ width: '100%', height: '100%' }} />
         </Box>
       </Box>
-      <Box sx={municipality === 'Catbalogan' ? { width: '50%', height: '100%', overflowY: 'scroll' } : { width: '50%', height: '100%',overflowY: 'hidden' }}>
+      <Box sx={municipality === 'Catbalogan' ? { width: '50%', height: '100%', overflowY: 'scroll' } : { width: '50%', height: '100%',overflow: 'hidden' }}>
         <div ref={tableauAgriInfo} style={municipality === 'Catbalogan' ? { width: '100%', height: '210%' } : { width: '100%', height: '100%' }} />
       </Box>
     </Box>
