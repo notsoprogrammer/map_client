@@ -103,7 +103,7 @@ const Dashboard = () => {
         </Box>
       </Box>
       <Box sx={{ width: '50%', height: '100%', overflowY: 'scroll' }}>
-        <div ref={tableauAgriInfo} style={{ width: '100%', height: '210%' }} />
+        <div ref={tableauAgriInfo} style={{ width: '100%', height: '100%' }} />
       </Box>
     </Box>
   );
