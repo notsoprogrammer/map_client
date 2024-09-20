@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [links, setLinks] = useState(null);
   const tableauAgriInfo = useRef(null);
   const tableauMapDashboard = useRef(null);
+  const [municipality, setMunicipality] = useState('');
   
   useTokenValidation();
 
@@ -32,13 +33,13 @@ const Dashboard = () => {
           headers: { Authorization: `Bearer ${authToken}` },
           withCredentials: true
         });
-        // console.log("Dashboard links fetched:", response.data);
         setLinks(response.data);
+        setMunicipality(response.data.municipality); // Assuming municipality is returned here
       } catch (error) {
         console.error('Error fetching dashboard links:', error);
       }
     };
-  
+
     fetchLinks();
   }, []);
   
@@ -102,8 +103,8 @@ const Dashboard = () => {
           <div ref={tableauMapDashboard} style={{ width: '100%', height: '100%' }} />
         </Box>
       </Box>
-      <Box sx={{ width: '50%', height: '100%', overflowY: 'scroll' }}>
-        <div ref={tableauAgriInfo} style={{ width: '100%', height: '100%' }} />
+      <Box sx={municipality === 'Catbalogan' ? { width: '50%', height: '100%', overflowY: 'scroll' } : { width: '50%', height: '100%',overflowY: 'hidden' }}>
+        <div ref={tableauAgriInfo} style={municipality === 'Catbalogan' ? { width: '100%', height: '210%' } : { width: '100%', height: '100%' }} />
       </Box>
     </Box>
   );
