@@ -39,7 +39,14 @@ const UserManagement = () => {
                     withCredentials: true, // If your backend requires cookies as well
                 }
             );
-
+    
+            // Log the response (optional)
+            console.log("User added successfully:", response.data);
+    
+            // Optionally, you can use response.data to update the UI or store the added user data
+            const addedUser = response.data.user; // Assuming the backend sends back the created user
+    
+            // Handle success response
             setSuccess(true);
             setError('');
             setName('');
@@ -47,13 +54,17 @@ const UserManagement = () => {
             setMunicipality('');
             setJob('');
             setRole('user');
+    
+            // Optionally, show a success message with the new user details
+            console.log("Added user:", addedUser);
+    
         } catch (error) {
             console.error("Error adding user:", error);
             setSuccess(false);
-            setError("Failed to add user");
+            setError("Failed to add user. Please check the input and try again.");
         }
     };
-
+    
     return (
         <Box sx={{ mt: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h2>Manage Users</h2>
