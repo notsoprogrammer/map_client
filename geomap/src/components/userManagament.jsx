@@ -1,27 +1,49 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Alert, AlertTitle } from '@mui/material';
+import { TextField, Button, Box, Alert, AlertTitle, MenuItem } from '@mui/material';
 import axios from 'axios';
 
 const UserManagement = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [municipality, setMunicipality] = useState('');
     const [job, setJob] = useState('');
     const [role, setRole] = useState('user');
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
 
+    const municipalities = ['Catbalogan', 'Calbiga', 'Paranas', 'Basey', 'Gandara'];
+
     const handleAddUser = async () => {
+        // Retrieve the token from localStorage (or however you're storing it)
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            console.error('No auth token found. Please login again.');
+            setError('Authorization failed. Please login again.');
+            return;
+        }
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/addUser`,{
-                name, email, password, municipality, job, role,
-            });
+            // Make a request to the backend, including the token in the headers
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_URL}/api/admin/addUser`,
+                {
+                    name, 
+                    email, 
+                    municipality, 
+                    job, 
+                    role,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
+                    },
+                    withCredentials: true, // If your backend requires cookies as well
+                }
+            );
+
             setSuccess(true);
             setError('');
             setName('');
             setEmail('');
-            setPassword('');
             setMunicipality('');
             setJob('');
             setRole('user');
@@ -50,8 +72,18 @@ const UserManagement = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '300px' }}>
                 <TextField label="Name" value={name} onChange={(e) => setName(e.target.value)} />
                 <TextField label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <TextField label="Municipality" value={municipality} onChange={(e) => setMunicipality(e.target.value)} />
+                <TextField
+                    select
+                    label="Municipality"
+                    value={municipality}
+                    onChange={(e) => setMunicipality(e.target.value)}
+                >
+                    {municipalities.map((mun) => (
+                        <MenuItem key={mun} value={mun}>
+                            {mun}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <TextField label="Job" value={job} onChange={(e) => setJob(e.target.value)} />
                 <TextField label="Role" value={role} onChange={(e) => setRole(e.target.value)} />
                 <Button variant="contained" color="primary" onClick={handleAddUser}>Add User</Button>
