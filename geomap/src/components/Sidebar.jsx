@@ -8,7 +8,7 @@ import { useLogoutMutation } from '../slices/usersApiSlice';
 import {
     Groups2Outlined, HomeOutlined, DarkModeOutlined, LightModeOutlined,
     SettingsOutlined, ShoppingCartOutlined, ExitToAppOutlined, ReceiptLongOutlined,
-    PublicOutlined, UploadFileOutlined, ManageAccountsOutlined, Menu as MenuIcon, ChevronLeft
+    PublicOutlined, UploadFileOutlined, ManageAccountsOutlined
 } from "@mui/icons-material";
 import {
     Avatar, Box, Divider, Drawer, IconButton, Button, List, ListItem,
@@ -98,163 +98,153 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) 
 
     return (
         <Box component="nav">
-            <Drawer
-                open={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-                variant="persistent"
-                anchor="left"
-                sx={{
-                    width: drawerWidth,
-                    "& .MuiDrawer-paper": {
-                        color: theme.palette.secondary[200],
-                        backgroundColor: theme.palette.background.alt,
-                        boxSizing: "border-box",
-                        borderWidth: isNonMobile ? 0 : "2px",
+            {isSidebarOpen && (
+                <Drawer
+                    open={isSidebarOpen}
+                    onClose={() => setIsSidebarOpen(false)}
+                    variant="persistent"
+                    anchor="left"
+                    sx={{
                         width: drawerWidth,
-                    },
-                }}
-            >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2 }}>
-                    <IconButton onClick={() => setIsSidebarOpen(false)}>
-                        <ChevronLeft />
-                    </IconButton>
-                </Box>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    p: '1.5rem',
-                    pb: '1.5rem'
-                }}>
-                    <Avatar src={profileImageUrl} alt={user?.name} sx={{ width: 100, height: 100 }} />
-                    <Typography variant="h6" noWrap>
-                        {user.name}
-                    </Typography>
-                    <Typography variant="body2" noWrap>
-                        {user.job}
-                    </Typography>
-                </Box>
-                <List>
-                    {navItems.map(({ text, icon }) => {
-                        const lcText = text.toLowerCase();
-                        const isSelected = active === lcText;
+                        "& .MuiDrawer-paper": {
+                            color: theme.palette.secondary[200],
+                            backgroundColor: theme.palette.background.alt,
+                            boxSizing: "border-box",
+                            borderWidth: isNonMobile ? 0 : "2px",
+                            width: drawerWidth,
+                        },
+                    }}
+                >
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        p: '1.5rem',
+                        pb: '1.5rem'
+                    }}>
+                        <Avatar src={profileImageUrl} alt={user?.name} sx={{ width: 100, height: 100 }} />
+                        <Typography variant="h6" noWrap>
+                            {user.name}
+                        </Typography>
+                        <Typography variant="body2" noWrap>
+                            {user.job}
+                        </Typography>
+                    </Box>
+                    <List>
+                        {navItems.map(({ text, icon }) => {
+                            const lcText = text.toLowerCase();
+                            const isSelected = active === lcText;
 
-                        return (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton
-                                    selected={isSelected}
-                                    onClick={() => {
-                                        navigate(`/${lcText}`);
-                                        setActive(lcText);
-                                    }}
-                                    sx={{
-                                        backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
-                                        color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
-                                        '.MuiListItemIcon-root': {
-                                            color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
-                                        },
-                                        '&:hover': {
-                                            backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
+                            return (
+                                <ListItem key={text} disablePadding>
+                                    <ListItemButton
+                                        selected={isSelected}
+                                        onClick={() => {
+                                            navigate(`/${lcText}`);
+                                            setActive(lcText);
+                                        }}
+                                        sx={{
+                                            backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
+                                            color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
                                             '.MuiListItemIcon-root': {
-                                                color: theme.palette.primary[600],
-                                            },
-                                        },
-                                        '&.Mui-selected': {
-                                            backgroundColor: theme.palette.secondary[300],
-                                            color: theme.palette.primary[600],
-                                            '.MuiListItemIcon-root': {
-                                                color: theme.palette.primary[600],
+                                                color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
                                             },
                                             '&:hover': {
+                                                backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
+                                                '.MuiListItemIcon-root': {
+                                                    color: theme.palette.primary[600],
+                                                },
+                                            },
+                                            '&.Mui-selected': {
                                                 backgroundColor: theme.palette.secondary[300],
+                                                color: theme.palette.primary[600],
+                                                '.MuiListItemIcon-root': {
+                                                    color: theme.palette.primary[600],
+                                                },
+                                                '&:hover': {
+                                                    backgroundColor: theme.palette.secondary[300],
+                                                },
                                             },
-                                        },
-                                    }}
-                                >
-                                    <ListItemIcon>
-                                        {icon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                    {user.role === 'admin' && adminNavItems.map(({ text, icon, path }) => {
-                        const isSelected = pathname === path;
+                                        }}
+                                    >
+                                        <ListItemIcon>
+                                            {icon}
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} />
+                                    </ListItemButton>
+                                </ListItem>
+                            );
+                        })}
+                        {user.role === 'admin' && adminNavItems.map(({ text, icon, path }) => {
+                            const isSelected = pathname === path;
 
-                        return (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton
-                                    selected={isSelected}
-                                    onClick={() => {
-                                        navigate(path);
-                                        setActive(path);
-                                    }}
-                                    sx={{
-                                        backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
-                                        color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
-                                        '.MuiListItemIcon-root': {
-                                            color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
-                                        },
-                                        '&:hover': {
-                                            backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
+                            return (
+                                <ListItem key={text} disablePadding>
+                                    <ListItemButton
+                                        selected={isSelected}
+                                        onClick={() => {
+                                            navigate(path);  // Navigate using the correct path
+                                            setActive(path);
+                                        }}
+                                        sx={{
+                                            backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
+                                            color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
                                             '.MuiListItemIcon-root': {
-                                                color: theme.palette.primary[600],
-                                            },
-                                        },
-                                        '&.Mui-selected': {
-                                            backgroundColor: theme.palette.secondary[300],
-                                            color: theme.palette.primary[600],
-                                            '.MuiListItemIcon-root': {
-                                                color: theme.palette.primary[600],
+                                                color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
                                             },
                                             '&:hover': {
-                                                backgroundColor: theme.palette.secondary[300],
+                                                backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
+                                                '.MuiListItemIcon-root': {
+                                                    color: theme.palette.primary[600],
+                                                },
                                             },
-                                        },
-                                    }}
-                                >
-                                    <ListItemIcon>
-                                        {icon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                </List>
+                                            '&.Mui-selected': {
+                                                backgroundColor: theme.palette.secondary[300],
+                                                color: theme.palette.primary[600],
+                                                '.MuiListItemIcon-root': {
+                                                    color: theme.palette.primary[600],
+                                                },
+                                                '&:hover': {
+                                                    backgroundColor: theme.palette.secondary[300],
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <ListItemIcon>
+                                            {icon}
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} />
+                                    </ListItemButton>
+                                </ListItem>
+                            );
+                        })}
+                    </List>
 
-                <Box sx={{ mt: 'auto', width: '100%', p: '1.5rem' }}>
-                    <Divider sx={{ mb: 2 }} />
-                    <Button
-                        startIcon={theme.palette.mode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
-                        onClick={() => dispatch(setMode())}
-                        sx={buttonStyle}
-                    >
-                        {theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
-                    </Button>
-                    <Button
-                        startIcon={<SettingsOutlined />}
-                        onClick={() => navigate('/settings')}
-                        sx={buttonStyle}
-                    >
-                        Settings
-                    </Button>
-                    <Button
-                        startIcon={<ExitToAppOutlined />}
-                        onClick={logoutHandler}
-                        sx={buttonStyle}
-                    >
-                        Log Out
-                    </Button>
-                </Box>
-            </Drawer>
-            
-            {/* Toggle button for opening sidebar */}
-            {!isSidebarOpen && (
-                <IconButton onClick={() => setIsSidebarOpen(true)} sx={{ position: 'fixed', top: 16, left: 16 }}>
-                    <MenuIcon />
-                </IconButton>
+                    <Box sx={{ mt: 'auto', width: '100%', p: '1.5rem' }}>
+                        <Divider sx={{ mb: 2 }} />
+                        <Button
+                            startIcon={theme.palette.mode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
+                            onClick={() => dispatch(setMode())}
+                            sx={buttonStyle}
+                        >
+                            {theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
+                        </Button>
+                        <Button
+                            startIcon={<SettingsOutlined />}
+                            onClick={() => navigate('/settings')}
+                            sx={buttonStyle}
+                        >
+                            Settings
+                        </Button>
+                        <Button
+                            startIcon={<ExitToAppOutlined />}
+                            onClick={logoutHandler}
+                            sx={buttonStyle}
+                        >
+                            Log Out
+                        </Button>
+                    </Box>
+                </Drawer>
             )}
         </Box>
     );
