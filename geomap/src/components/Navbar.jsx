@@ -3,17 +3,15 @@ import { AppBar, Box, Button, CssBaseline, Divider, Drawer, IconButton, List, Li
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginModal from './LoginModal';
-import PrjGeomapLogo from '../assets/PrjGeomapLogo.png'
+import PrjGeomapLogo from '../assets/PrjGeomapLogo.png';
 
 const drawerWidth = 240;
 
 const Navbar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-
   const [navbarColor, setNavbarColor] = useState('white');
   const [navbarTextColor, setNavbarTextColor] = useState('#282F44');
-
   const [loginOpen, setLoginOpen] = useState(false);
 
   const handleLoginOpen = () => setLoginOpen(true);
@@ -22,16 +20,13 @@ const Navbar = (props) => {
   useEffect(() => {
     const handleScroll = () => {
       setNavbarColor('white');
-      setNavbarTextColor('#282F44'); // Set the text color to dark for contrast, adjust as needed
+      setNavbarTextColor('#282F44');
     };
-  
     document.addEventListener('scroll', handleScroll);
-  
     return () => {
       document.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -60,6 +55,14 @@ const Navbar = (props) => {
             </ListItemButton>
           </ListItem>
         </RouterLink>
+        {/* New Demo Link */}
+        <RouterLink to="/demo" style={{ textDecoration: 'none', color: navbarTextColor }}>
+          <ListItem disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemText primary="Demo" />
+            </ListItemButton>
+          </ListItem>
+        </RouterLink>
         <ListItem disablePadding onClick={handleLoginOpen}>
           <ListItemButton sx={{ textAlign: 'center' }}>
             <ListItemText primary="Sign In" />
@@ -77,7 +80,7 @@ const Navbar = (props) => {
       <AppBar
         component="nav"
         style={{
-          backgroundColor: 'white', // Fixed white background
+          backgroundColor: 'white',
           transition: 'background-color 0.3s ease-in-out',
           boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)'
         }}
@@ -86,7 +89,7 @@ const Navbar = (props) => {
         <Toolbar
           sx={{
             height: 64,
-            color: 'rgba(0, 0, 0, 0.87)', 
+            color: 'rgba(0, 0, 0, 0.87)',
             display: 'flex',
             justifyContent: 'space-between'
           }}
@@ -101,7 +104,6 @@ const Navbar = (props) => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            {/* Adjust logo size */}
             <img 
               src={PrjGeomapLogo} 
               alt="Mapulon Logo" 
@@ -119,6 +121,11 @@ const Navbar = (props) => {
                 Contact Us
               </Button>
             </RouterLink>
+            <RouterLink to="/demo" style={{ textDecoration: 'none' }}>
+              <Button sx={{ marginRight: '2rem', color: navbarTextColor }}>
+                Demo
+              </Button>
+            </RouterLink>
             <Button onClick={handleLoginOpen} sx={{ color: navbarTextColor }}>
               Sign In
             </Button>
@@ -126,7 +133,6 @@ const Navbar = (props) => {
           </Box>
         </Toolbar>
       </AppBar>
-
       <Box component="nav">
         <Drawer
           container={container}
@@ -134,7 +140,7 @@ const Navbar = (props) => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -146,6 +152,6 @@ const Navbar = (props) => {
       </Box>
     </Box>
   );
-}
+};
 
 export default Navbar;
