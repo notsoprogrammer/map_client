@@ -5,47 +5,42 @@ import {
   ReceiptLongOutlined, PublicOutlined
 } from "@mui/icons-material";
 import {
-  Avatar, Box, Divider, Drawer, IconButton, List, ListItem,
+  Avatar, Box, Divider, Drawer, List, ListItem,
   ListItemButton, ListItemIcon, ListItemText, Typography, Button, useTheme
 } from "@mui/material";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setMode } from '../slices/modeSlice';
+import Dashboard from '../Demo components/DashboardDemo';  // Importing your Dashboard component
+import Calbiga from '../Municipality Images/Calbiga.png'; // Assuming you have this mock image
 
-// Mock municipality images, can be removed if not needed in demo
-import Basey from '../Municipality Images/Basey.png';
-
-const normalizeMunicipalityName = (name) => name.replace(/\s+/g, '').toLowerCase();
-
-// Mock user for demo purposes
+// Demo user mock data
 const demoUser = {
   name: "Demo User",
-  municipality: "Basey",
+  municipality: "Calbiga",
   role: "guest",
 };
 
+// Sidebar navigation items
 const navItems = [
-  { text: "Dashboard", icon: <HomeOutlined /> },
-  { text: "Maps", icon: <PublicOutlined /> },
-  { text: "Farmers", icon: <Groups2Outlined /> },
-  { text: "Rice", icon: <ReceiptLongOutlined /> },
-  { text: "Crops", icon: <ReceiptLongOutlined /> },
+  { text: "Dashboard", icon: <HomeOutlined />, component: <Dashboard /> },
+  { text: "Maps", icon: <PublicOutlined />, component: <div>Maps Component</div> },
+  { text: "Farmers", icon: <Groups2Outlined />, component: <div>Farmers Component</div> },
+  { text: "Rice", icon: <ReceiptLongOutlined />, component: <div>Rice Component</div> },
+  { text: "Crops", icon: <ReceiptLongOutlined />, component: <div>Crops Component</div> },
 ];
 
-const Demo = ({ drawerWidth = 240, isNonMobile = true }) => {
-  const location = useLocation();
-  const [active, setActive] = useState(location.pathname.substring(1));
-  const navigate = useNavigate();
+const Demo = ({ drawerWidth = 240 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [activeItem, setActiveItem] = useState("Dashboard"); // Default to Dashboard
+  const [currentComponent, setCurrentComponent] = useState(<Dashboard />); // Default to Dashboard component
 
-  const profileImageUrl = Basey; // Placeholder for demo
-
-  const buttonStyle = {
-    justifyContent: "flex-start",
-    textTransform: "none",
-    color: theme.palette.text.primary,
-    width: '100%',
-    my: 1,
+  // Handle navigation when a sidebar item is clicked
+  const handleNavClick = (text, component) => {
+    setActiveItem(text);
+    setCurrentComponent(component);
   };
 
   const toggleTheme = () => {
@@ -53,7 +48,8 @@ const Demo = ({ drawerWidth = 240, isNonMobile = true }) => {
   };
 
   return (
-    <Box component="nav" display="flex" width="100%">
+    <Box display="flex" width="100%">
+      {/* Sidebar */}
       <Drawer
         open
         variant="persistent"
@@ -68,16 +64,8 @@ const Demo = ({ drawerWidth = 240, isNonMobile = true }) => {
           },
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.5rem',
-            pb: '1.5rem',
-          }}
-        >
-          <Avatar src={profileImageUrl} alt="Profile" sx={{ width: 100, height: 100 }} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: '1.5rem' }}>
+          <Avatar src={Calbiga} alt="Profile" sx={{ width: 100, height: 100 }} />
           <Typography variant="h6" noWrap>
             {demoUser.name}
           </Typography>
@@ -86,18 +74,14 @@ const Demo = ({ drawerWidth = 240, isNonMobile = true }) => {
           </Typography>
         </Box>
         <List>
-          {navItems.map(({ text, icon }) => {
-            const lcText = text.toLowerCase();
-            const isSelected = active === lcText;
+          {navItems.map(({ text, icon, component }) => {
+            const isSelected = activeItem === text;
 
             return (
               <ListItem key={text} disablePadding>
                 <ListItemButton
                   selected={isSelected}
-                  onClick={() => {
-                    navigate(`/${lcText}`);
-                    setActive(lcText);
-                  }}
+                  onClick={() => handleNavClick(text, component)}
                   sx={{
                     backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
                     color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
@@ -108,16 +92,6 @@ const Demo = ({ drawerWidth = 240, isNonMobile = true }) => {
                       backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
                       '.MuiListItemIcon-root': {
                         color: theme.palette.primary[600],
-                      },
-                    },
-                    '&.Mui-selected': {
-                      backgroundColor: theme.palette.secondary[300],
-                      color: theme.palette.primary[600],
-                      '.MuiListItemIcon-root': {
-                        color: theme.palette.primary[600],
-                      },
-                      '&:hover': {
-                        backgroundColor: theme.palette.secondary[300],
                       },
                     },
                   }}
@@ -134,17 +108,16 @@ const Demo = ({ drawerWidth = 240, isNonMobile = true }) => {
           <Button
             startIcon={theme.palette.mode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
             onClick={toggleTheme}
-            sx={buttonStyle}
+            sx={{ justifyContent: "flex-start", textTransform: "none", color: theme.palette.text.primary, width: '100%', my: 1 }}
           >
             {theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
           </Button>
         </Box>
       </Drawer>
+
+      {/* Main Content Area */}
       <Box flexGrow={1} p={2}>
-        <Typography variant="h4" gutterBottom>
-          Demo Page Content
-        </Typography>
-        {/* Placeholder for the content (e.g., Dashboard, Maps, etc.) */}
+        {currentComponent}
       </Box>
     </Box>
   );
