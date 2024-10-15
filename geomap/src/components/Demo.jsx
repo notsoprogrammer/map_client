@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {
   Groups2Outlined, HomeOutlined, DarkModeOutlined, LightModeOutlined,
-  ReceiptLongOutlined, PublicOutlined
+  ReceiptLongOutlined, PublicOutlined, ExitToAppOutlined
 } from "@mui/icons-material";
 import {
   Avatar, Box, Divider, Drawer, List, ListItem,
   ListItemButton, ListItemIcon, ListItemText, Typography, Button, useTheme
 } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { setMode } from '../slices/modeSlice';
 import Dashboard from '../Demo components/DashboardDemo';
 import Maps from './Maps';
@@ -34,6 +35,7 @@ const navItems = [
 
 const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Added for redirecting
   const currentMode = useSelector((state) => state.global.mode); // Get the current mode from Redux state
   const theme = useTheme(); // Access the current theme
 
@@ -50,8 +52,13 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
     dispatch(setMode()); // Dispatch the action to switch between light and dark modes
   };
 
+  // Handle Log Out (redirect to /contact)
+  const handleLogout = () => {
+    navigate("/contact"); // Redirect to the contact page
+  };
+
   return (
-    <Box display="flex" width="100%" height="100vh">
+    <Box display="flex" width="100%" height="100vh" sx={{ overflow: 'hidden' }}>
       {/* Sidebar */}
       {isSidebarOpen && (
         <Drawer
@@ -65,6 +72,7 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
               boxSizing: 'border-box',
               backgroundColor: theme.palette.background.alt,
               color: theme.palette.text.primary,
+              overflowX: 'hidden', // Disable horizontal scrolling
             },
           }}
         >
@@ -126,9 +134,20 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
 
           <Box sx={{ mt: 'auto', width: '100%', p: '1.5rem' }}>
             <Divider sx={{ mb: 2 }} />
+
+            {/* Dark/Light Mode Toggle */}
             <Button
-              startIcon={currentMode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
-              onClick={toggleTheme}
+                startIcon={theme.palette.mode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
+                onClick={() => dispatch(setMode())}
+                sx={buttonStyle}
+            >
+                {theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
+            </Button>
+
+            {/* Log Out Button */}
+            <Button
+              startIcon={<ExitToAppOutlined />}
+              onClick={handleLogout}
               sx={{
                 justifyContent: "flex-start",
                 textTransform: "none",
@@ -137,7 +156,7 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
                 my: 1,
               }}
             >
-              {currentMode === "dark" ? "Light Mode" : "Dark Mode"}
+              Log Out
             </Button>
           </Box>
         </Drawer>
@@ -149,6 +168,7 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
         sx={{
           flexGrow: 1,
           height: "100vh",
+          overflowY: 'auto', // Enable vertical scroll if necessary
           backgroundColor: theme.palette.background.default,
         }}
       >
