@@ -7,7 +7,7 @@ import {
   Avatar, Box, Divider, Drawer, List, ListItem,
   ListItemButton, ListItemIcon, ListItemText, Typography, Button, useTheme
 } from "@mui/material";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMode } from '../slices/modeSlice';
 import Dashboard from '../Demo components/DashboardDemo';
 import Maps from './Maps';
@@ -32,9 +32,11 @@ const navItems = [
   { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops /> },
 ];
 
-const Demo = ({ drawerWidth = 240 }) => {
-  const theme = useTheme();
+const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
   const dispatch = useDispatch();
+  const currentMode = useSelector((state) => state.global.mode); // Get the current mode from Redux state
+  const theme = useTheme(); // Access the current theme
+
   const [activeItem, setActiveItem] = useState("Dashboard"); // Default to Dashboard
   const [currentComponent, setCurrentComponent] = useState(<Dashboard />); // Default to Dashboard component
 
@@ -45,75 +47,101 @@ const Demo = ({ drawerWidth = 240 }) => {
   };
 
   const toggleTheme = () => {
-    dispatch(setMode());
+    dispatch(setMode()); // Dispatch the action to switch between light and dark modes
   };
 
   return (
     <Box display="flex" width="100%" height="100vh">
       {/* Sidebar */}
-      <Drawer
-        open
-        variant="persistent"
-        anchor="left"
-        sx={{
-          width: drawerWidth,
-          "& .MuiDrawer-paper": {
+      {isSidebarOpen && (
+        <Drawer
+          open
+          variant="persistent"
+          anchor="left"
+          sx={{
             width: drawerWidth,
-            boxSizing: 'border-box',
-            backgroundColor: theme.palette.background.alt,
-          },
-        }}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: '1.5rem' }}>
-          <Avatar src={Calbiga} alt="Profile" sx={{ width: 100, height: 100 }} />
-          <Typography variant="h6" noWrap>
-            {demoUser.name}
-          </Typography>
-          <Typography variant="body2" noWrap>
-            {demoUser.municipality}
-          </Typography>
-        </Box>
-        <List>
-          {navItems.map(({ text, icon, component }) => {
-            const isSelected = activeItem === text;
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              backgroundColor: theme.palette.background.alt,
+              color: theme.palette.text.primary,
+            },
+          }}
+        >
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            p: '1.5rem',
+            pb: '1.5rem'
+          }}>
+            <Avatar src={Calbiga} alt="Profile" sx={{ width: 100, height: 100 }} />
+            <Typography variant="h6" noWrap>
+              {demoUser.name}
+            </Typography>
+            <Typography variant="body2" noWrap>
+              {demoUser.municipality}
+            </Typography>
+          </Box>
+          <List>
+            {navItems.map(({ text, icon, component }) => {
+              const isSelected = activeItem === text;
 
-            return (
-              <ListItem key={text} disablePadding>
-                <ListItemButton
-                  selected={isSelected}
-                  onClick={() => handleNavClick(text, component)}
-                  sx={{
-                    backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
-                    color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
-                    '.MuiListItemIcon-root': {
-                      color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
-                    },
-                    '&:hover': {
-                      backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
+              return (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    selected={isSelected}
+                    onClick={() => handleNavClick(text, component)}
+                    sx={{
+                      backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
+                      color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
                       '.MuiListItemIcon-root': {
-                        color: theme.palette.primary[600],
+                        color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
                       },
-                    },
-                  }}
-                >
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-        <Box sx={{ mt: 'auto', width: '100%', p: '1.5rem' }}>
-          <Divider sx={{ mb: 2 }} />
-          <Button
-            startIcon={theme.palette.mode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
-            onClick={toggleTheme}
-            sx={{ justifyContent: "flex-start", textTransform: "none", color: theme.palette.text.primary, width: '100%', my: 1 }}
-          >
-            {theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
-          </Button>
-        </Box>
-      </Drawer>
+                      '&:hover': {
+                        backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
+                        '.MuiListItemIcon-root': {
+                          color: theme.palette.primary[600],
+                        },
+                      },
+                      '&.Mui-selected': {
+                        backgroundColor: theme.palette.secondary[300],
+                        color: theme.palette.primary[600],
+                        '.MuiListItemIcon-root': {
+                          color: theme.palette.primary[600],
+                        },
+                        '&:hover': {
+                          backgroundColor: theme.palette.secondary[300],
+                        },
+                      },
+                    }}
+                  >
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+
+          <Box sx={{ mt: 'auto', width: '100%', p: '1.5rem' }}>
+            <Divider sx={{ mb: 2 }} />
+            <Button
+              startIcon={currentMode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
+              onClick={toggleTheme}
+              sx={{
+                justifyContent: "flex-start",
+                textTransform: "none",
+                color: theme.palette.text.primary,
+                width: '100%',
+                my: 1,
+              }}
+            >
+              {currentMode === "dark" ? "Light Mode" : "Dark Mode"}
+            </Button>
+          </Box>
+        </Drawer>
+      )}
 
       {/* Main Content Area */}
       <Box
@@ -121,6 +149,7 @@ const Demo = ({ drawerWidth = 240 }) => {
         sx={{
           flexGrow: 1,
           height: "100vh",
+          backgroundColor: theme.palette.background.default,
         }}
       >
         {currentComponent}
