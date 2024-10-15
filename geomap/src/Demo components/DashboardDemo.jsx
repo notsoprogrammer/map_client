@@ -66,8 +66,8 @@ const Dashboard = () => {
       </Box>
       
       {/* Right Side - Agricultural Info Tableau Dashboard */}
-      <Box sx={municipality === 'Demo Municipality' ? { width: '50%', height: '100%', overflowY: 'scroll' } : { width: '50%', height: '100%', overflow: 'hidden' }}>
-        <div ref={tableauAgriInfo} style={municipality === 'Demo Municipality' ? { width: '100%', height: '210%' } : { width: '100%', height: '100%' }} />
+      <Box sx= {{ width: '50%', height: '100%', overflow: 'hidden' }}>
+        <div ref={tableauAgriInfo} style= { {width: '100%', height: '100%' }} />
       </Box>
     </Box>
   );

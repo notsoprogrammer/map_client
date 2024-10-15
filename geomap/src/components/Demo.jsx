@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
 import {
   Groups2Outlined, HomeOutlined, DarkModeOutlined, LightModeOutlined,
   ReceiptLongOutlined, PublicOutlined
@@ -10,13 +9,12 @@ import {
 } from "@mui/material";
 import { useDispatch } from 'react-redux';
 import { setMode } from '../slices/modeSlice';
-import Dashboard from '../Demo components/DashboardDemo';  // Importing your Dashboard component
+import Dashboard from '../Demo components/DashboardDemo';
 import Maps from './Maps';
 import Rice from '../Demo components/RiceDemo';
 import Crops from '../Demo components/CropsDemo';
 import Farmers from '../Demo components/FarmersDemo';
-
-import Calbiga from '../Municipality Images/Calbiga.png'; // Assuming you have this mock image
+import Calbiga from '../Municipality Images/Calbiga.png';
 
 // Demo user mock data
 const demoUser = {
@@ -28,17 +26,15 @@ const demoUser = {
 // Sidebar navigation items
 const navItems = [
   { text: "Dashboard", icon: <HomeOutlined />, component: <Dashboard /> },
-  { text: "Maps", icon: <PublicOutlined />, component: <Maps/> },
-  { text: "Farmers", icon: <Groups2Outlined />, component: <Farmers/> },
-  { text: "Rice", icon: <ReceiptLongOutlined />, component: <Rice/> },
-  { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops/> },
+  { text: "Maps", icon: <PublicOutlined />, component: <Maps /> },
+  { text: "Farmers", icon: <Groups2Outlined />, component: <Farmers /> },
+  { text: "Rice", icon: <ReceiptLongOutlined />, component: <Rice /> },
+  { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops /> },
 ];
 
 const Demo = ({ drawerWidth = 240 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [activeItem, setActiveItem] = useState("Dashboard"); // Default to Dashboard
   const [currentComponent, setCurrentComponent] = useState(<Dashboard />); // Default to Dashboard component
 
@@ -53,7 +49,7 @@ const Demo = ({ drawerWidth = 240 }) => {
   };
 
   return (
-    <Box display="flex" width="100%">
+    <Box display="flex" width="100%" height="100vh">
       {/* Sidebar */}
       <Drawer
         open
@@ -62,10 +58,9 @@ const Demo = ({ drawerWidth = 240 }) => {
         sx={{
           width: drawerWidth,
           "& .MuiDrawer-paper": {
-            color: theme.palette.secondary[200],
-            backgroundColor: theme.palette.background.alt,
-            boxSizing: "border-box",
             width: drawerWidth,
+            boxSizing: 'border-box',
+            backgroundColor: theme.palette.background.alt,
           },
         }}
       >
@@ -121,7 +116,13 @@ const Demo = ({ drawerWidth = 240 }) => {
       </Drawer>
 
       {/* Main Content Area */}
-      <Box flexGrow={1} p={2}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+        }}
+      >
         {currentComponent}
       </Box>
     </Box>
