@@ -11,6 +11,11 @@ import {
 import { useDispatch } from 'react-redux';
 import { setMode } from '../slices/modeSlice';
 import Dashboard from '../Demo components/DashboardDemo';  // Importing your Dashboard component
+import Maps from './Maps';
+import Rice from '../Demo components/RiceDemo';
+import Crops from '../Demo components/CropsDemo';
+import Farmers from '../Demo components/FarmersDemo';
+
 import Calbiga from '../Municipality Images/Calbiga.png'; // Assuming you have this mock image
 
 // Demo user mock data
@@ -23,10 +28,10 @@ const demoUser = {
 // Sidebar navigation items
 const navItems = [
   { text: "Dashboard", icon: <HomeOutlined />, component: <Dashboard /> },
-  { text: "Maps", icon: <PublicOutlined />, component: <div>Maps Component</div> },
-  { text: "Farmers", icon: <Groups2Outlined />, component: <div>Farmers Component</div> },
-  { text: "Rice", icon: <ReceiptLongOutlined />, component: <div>Rice Component</div> },
-  { text: "Crops", icon: <ReceiptLongOutlined />, component: <div>Crops Component</div> },
+  { text: "Maps", icon: <PublicOutlined />, component: <Maps/> },
+  { text: "Farmers", icon: <Groups2Outlined />, component: <Farmers/> },
+  { text: "Rice", icon: <ReceiptLongOutlined />, component: <Rice/> },
+  { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops/> },
 ];
 
 const Demo = ({ drawerWidth = 240 }) => {

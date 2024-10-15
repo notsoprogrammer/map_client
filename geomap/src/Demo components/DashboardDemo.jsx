@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import WeatherWidget from './WeatherWidget';
+import WeatherWidget from '../components/WeatherWidget';
 import { Box } from '@mui/material';
 
 const { tableau } = window;
