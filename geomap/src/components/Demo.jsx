@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Groups2Outlined, HomeOutlined, DarkModeOutlined, LightModeOutlined,
-  ReceiptLongOutlined, PublicOutlined, ExitToAppOutlined
+  ReceiptLongOutlined, PublicOutlined, ExitToAppOutlined, SettingsOutlined
 } from "@mui/icons-material";
 import {
   Avatar, Box, Divider, Drawer, List, ListItem,
@@ -48,16 +48,14 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
     setCurrentComponent(component);
   };
 
-  const toggleTheme = () => {
-    dispatch(setMode()); // Dispatch the action to switch between light and dark modes
-  };
   const buttonStyle = {
     justifyContent: "flex-start",
     textTransform: "none",
     color: theme.palette.text.primary,
     width: '100%',
     my: 1,
-};
+  };
+
   // Handle Log Out (redirect to /contact)
   const handleLogout = () => {
     navigate("/contact"); // Redirect to the contact page
@@ -143,24 +141,27 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
 
             {/* Dark/Light Mode Toggle */}
             <Button
-                startIcon={theme.palette.mode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
-                onClick={() => dispatch(setMode())}
-                sx={buttonStyle}
+              startIcon={currentMode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
+              onClick={() => dispatch(setMode())}
+              sx={buttonStyle}
             >
-                {theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
+              {currentMode === "dark" ? "Light Mode" : "Dark Mode"}
+            </Button>
+
+            {/* Settings Button */}
+            <Button
+              startIcon={<SettingsOutlined />}
+              onClick={() => navigate('/settings')}
+              sx={buttonStyle}
+            >
+              Settings
             </Button>
 
             {/* Log Out Button */}
             <Button
               startIcon={<ExitToAppOutlined />}
               onClick={handleLogout}
-              sx={{
-                justifyContent: "flex-start",
-                textTransform: "none",
-                color: theme.palette.text.primary,
-                width: '100%',
-                my: 1,
-              }}
+              sx={buttonStyle}
             >
               Log Out
             </Button>
