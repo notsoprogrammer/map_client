@@ -51,7 +51,13 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
   const toggleTheme = () => {
     dispatch(setMode()); // Dispatch the action to switch between light and dark modes
   };
-
+  const buttonStyle = {
+    justifyContent: "flex-start",
+    textTransform: "none",
+    color: theme.palette.text.primary,
+    width: '100%',
+    my: 1,
+};
   // Handle Log Out (redirect to /contact)
   const handleLogout = () => {
     navigate("/contact"); // Redirect to the contact page
