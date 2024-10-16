@@ -37,8 +37,8 @@ const Dashboard = () => {
 
 
     // Initialize Tableau visualizations
-    const agriViz = new tableau.Viz(tableauAgriInfo.current, mainDashboardUrl, options);
-    const mapViz = new tableau.Viz(tableauMapDashboard.current, weatherDashboardUrl, options);
+    const agriViz = new tableau.Viz(tableauAgriInfo.current, mainDashboardUrl);
+    const mapViz = new tableau.Viz(tableauMapDashboard.current, weatherDashboardUrl);
 
     // Clean up Tableau visualizations
     return () => {
