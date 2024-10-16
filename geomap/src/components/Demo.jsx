@@ -1,12 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import {
-  Box, CssBaseline, Button, Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText
-} from '@mui/material';
-import {
-  HomeOutlined, Groups2Outlined, ReceiptLongOutlined, PublicOutlined, DarkModeOutlined, LightModeOutlined, ExitToAppOutlined
-} from "@mui/icons-material";
+import { Box, CssBaseline, Button, Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Divider, Drawer } from '@mui/material';
+import { HomeOutlined, Groups2Outlined, ReceiptLongOutlined, PublicOutlined, DarkModeOutlined, LightModeOutlined, ExitToAppOutlined } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import { setMode } from '../slices/modeSlice';
 import Dashboard from '../Demo components/DashboardDemo';
@@ -16,13 +12,17 @@ import Crops from '../Demo components/CropsDemo';
 import Farmers from '../Demo components/FarmersDemo';
 import Calbiga from '../Municipality Images/Calbiga.png';
 
-import { tokensDark,tokensLight,themeSettings } from '../theme';
+// Import tokens and theme settings from theme.js
+import { tokensDark, tokensLight, themeSettings } from '../theme';
+
+// Demo user mock data
 const demoUser = {
   name: "Demo User",
   municipality: "Calbiga",
   role: "guest",
 };
 
+// Navigation items
 const navItems = [
   { text: "Dashboard", icon: <HomeOutlined />, component: <Dashboard /> },
   { text: "Maps", icon: <PublicOutlined />, component: <Maps /> },
@@ -31,50 +31,13 @@ const navItems = [
   { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops /> },
 ];
 
-const Demo = ({ drawerWidth = 240 }) => {
+const Demo = ({ drawerWidth = 240, isSidebarOpen = true, setIsSidebarOpen, isNonMobile }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const mode = useSelector((state) => state.global.mode);
 
-  const theme = useMemo(() => createTheme({
-    palette: {
-      mode: mode === 'dark' ? 'dark' : 'light',
-      ...(mode === 'dark' && {
-        primary: {
-          ...tokensDark.primary,
-          main: tokensDark.primary[400], // Sidebar active item background
-        },
-        secondary: {
-          ...tokensDark.secondary,
-          main: tokensDark.secondary[300], // Text and icon color
-        },
-        background: {
-          default: tokensDark.grade[200], // Main background
-          alt: tokensDark.grade[50], // Sidebar background color
-        },
-        text: {
-          primary: tokensDark.grey[50], // Lighter text color for dark mode
-          secondary: tokensDark.grey[200], // Dimmer text for icons
-        },
-      }),
-      ...(mode === 'light' && {
-        primary: {
-          main: tokensLight.primary[400],
-        },
-        secondary: {
-          main: tokensLight.secondary[600],
-        },
-        background: {
-          default: tokensLight.grey[0],
-          alt: tokensLight.grey[50],
-        },
-        text: {
-          primary: tokensLight.grey[900],
-          secondary: tokensLight.grey[700],
-        },
-      }),
-    },
-  }), [mode]);
+  // Use imported themeSettings to create the theme
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   const [activeItem, setActiveItem] = useState("Dashboard");
   const [currentComponent, setCurrentComponent] = useState(<Dashboard />);
@@ -99,86 +62,112 @@ const Demo = ({ drawerWidth = 240 }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box display="flex" width="100%" height="100vh" sx={{ overflow: 'hidden' }}>
+      <Box display="flex" width="100vw" height="100vh" sx={{ margin: 0, padding: 0, overflow: 'hidden' }}>
         {/* Sidebar for navigation */}
-        <Box
-          component="aside"
-          width={drawerWidth}
-          bgcolor={theme.palette.background.alt}  // Apply tokensDark.grade[50] for Sidebar background
-          p={2}
+        <Drawer
+          open={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          variant="persistent"
+          anchor="left"
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            width: drawerWidth,
+            "& .MuiDrawer-paper": {
+              color: theme.palette.secondary[200],
+              backgroundColor: theme.palette.background.alt,
+              boxSizing: "border-box",
+              borderWidth: isNonMobile ? 0 : "2px",
+              width: drawerWidth,
+            },
           }}
         >
-          {/* Demo User Avatar */}
-          <Avatar src={Calbiga} alt="Profile" sx={{ width: 100, height: 100 }} />
-          <Box mt={2} mb={4} textAlign="center">
-            <Box>{demoUser.name}</Box>
-            <Box>{demoUser.municipality}</Box>
-          </Box>
-
-          {/* Navigation List */}
-          <List>
-            {navItems.map(({ text, icon, component }) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton
-                  selected={activeItem === text}
-                  onClick={() => handleNavClick(component, text)}
-                  sx={{
-                    backgroundColor: activeItem === text ? theme.palette.primary.main : "transparent",
-                    color: activeItem === text ? '#FFF' : theme.palette.text.primary,
-                    '.MuiListItemIcon-root': {
-                      color: activeItem === text ? '#FFF' : theme.palette.text.secondary,
-                    },
-                    '&:hover': {
-                      backgroundColor: theme.palette.primary.main,
-                      color: '#FFF',
-                    },
-                  }}
-                >
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-
-          {/* Dark/Light Mode Toggle */}
-          <Button
-            startIcon={mode === 'dark' ? <LightModeOutlined /> : <DarkModeOutlined />}
-            onClick={() => dispatch(setMode())}
+          <Box
             sx={{
-              mt: 'auto',
-              justifyContent: 'flex-start',
-              width: '100%',
-              textTransform: 'none',
-              color: mode === 'dark' ? tokensDark.secondary[50] : tokensLight.secondary[600],  // Icon and text color
-              backgroundColor: mode === 'dark' ? tokensDark.primary[600] : tokensLight.grey[50],  // Button background
-              '&:hover': {
-                backgroundColor: mode === 'dark' ? tokensDark.primary[500] : tokensLight.grey[100],  // Hover effect
-              },
-              borderRadius: '8px',
-              padding: '8px 16px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              p: '1.5rem',
+              pb: '1.5rem'
             }}
           >
-            {mode === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
-          </Button>
+            <Avatar src={Calbiga} alt="Profile" sx={{ width: 100, height: 100 }} />
+            <Typography variant="h6" noWrap>
+              {demoUser.name}
+            </Typography>
+            <Typography variant="body2" noWrap>
+              {demoUser.municipality}
+            </Typography>
+          </Box>
 
+          <List>
+            {navItems.map(({ text, icon, component }) => {
+              const isSelected = activeItem === text;
 
-          {/* Log Out Button */}
-          <Button
-            startIcon={<ExitToAppOutlined />}
-            onClick={handleLogout}
-            sx={buttonStyle}
-          >
-            Log Out
-          </Button>
-        </Box>
+              return (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    selected={isSelected}
+                    onClick={() => handleNavClick(component, text)}
+                    sx={{
+                      backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
+                      color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
+                      '.MuiListItemIcon-root': {
+                        color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
+                      },
+                      '&:hover': {
+                        backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
+                        '.MuiListItemIcon-root': {
+                          color: theme.palette.primary[600],
+                        },
+                      },
+                      '&.Mui-selected': {
+                        backgroundColor: theme.palette.secondary[300],
+                        color: theme.palette.primary[600],
+                        '.MuiListItemIcon-root': {
+                          color: theme.palette.primary[600],
+                        },
+                        '&:hover': {
+                          backgroundColor: theme.palette.secondary[300],
+                        },
+                      },
+                    }}
+                  >
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+
+          <Box sx={{ mt: 'auto', width: '100%', p: '1.5rem' }}>
+            <Divider sx={{ mb: 2 }} />
+            <Button
+              startIcon={mode === 'dark' ? <LightModeOutlined /> : <DarkModeOutlined />}
+              onClick={() => dispatch(setMode())}
+              sx={{
+                ...buttonStyle,
+                color: mode === 'dark' ? theme.palette.secondary[200] : theme.palette.primary[600],
+                backgroundColor: mode === 'dark' ? theme.palette.primary[600] : theme.palette.secondary[100],
+                '&:hover': {
+                  backgroundColor: mode === 'dark' ? theme.palette.primary[500] : theme.palette.secondary[200],
+                },
+              }}
+            >
+              {mode === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
+            </Button>
+
+            <Button
+              startIcon={<ExitToAppOutlined />}
+              onClick={handleLogout}
+              sx={buttonStyle}
+            >
+              Log Out
+            </Button>
+          </Box>
+        </Drawer>
 
         {/* Main content area */}
-        <Box flexGrow={1} p={2}>
+        <Box flexGrow={1} p={0} sx={{ overflowY: 'auto', height: '100vh', boxSizing: 'border-box' }}>
           {currentComponent}
         </Box>
       </Box>
