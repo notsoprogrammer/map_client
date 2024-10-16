@@ -16,6 +16,7 @@ import Crops from '../Demo components/CropsDemo';
 import Farmers from '../Demo components/FarmersDemo';
 import Calbiga from '../Municipality Images/Calbiga.png';
 
+import { tokensDark,tokensLight,themeSettings } from '../theme';
 const demoUser = {
   name: "Demo User",
   municipality: "Calbiga",
@@ -153,17 +154,18 @@ const Demo = ({ drawerWidth = 240 }) => {
               justifyContent: 'flex-start',
               width: '100%',
               textTransform: 'none',
-              color: mode === 'dark' ? tokensDark.secondary[50] : tokensLight.secondary[600],  // Icon color
+              color: mode === 'dark' ? tokensDark.secondary[50] : tokensLight.secondary[600],  // Icon and text color
               backgroundColor: mode === 'dark' ? tokensDark.primary[600] : tokensLight.grey[50],  // Button background
               '&:hover': {
                 backgroundColor: mode === 'dark' ? tokensDark.primary[500] : tokensLight.grey[100],  // Hover effect
               },
-              borderRadius: '8px',  // Add some border radius for smooth edges
-              padding: '8px 16px',  // Space around the button for better touch area
+              borderRadius: '8px',
+              padding: '8px 16px',
             }}
           >
             {mode === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
           </Button>
+
 
           {/* Log Out Button */}
           <Button
