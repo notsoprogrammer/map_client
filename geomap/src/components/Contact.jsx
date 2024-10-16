@@ -5,27 +5,31 @@ import { Footer, Navbar } from './index';
 import axios from 'axios';
 
 const CustomTextField = styled(TextField)({
-    'label': {
-        color: '#FFF',
-    },
-    '& label.Mui-focused': {
-        color: '#A0AAB4',
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: '#B2BAC2',
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: '#E0E3E7',
-        },
-        '&:hover fieldset': {
-            borderColor: '#B2BAC2',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: '#6F7E8C',
-        },
-    }
+  'label': {
+      color: '#E0E3E7', // Change the label color to off-white
+  },
+  '& label.Mui-focused': {
+      color: '#B2BAC2', // Slightly darker for focused label
+  },
+  '& .MuiInputBase-input': {
+      color: '#E0E3E7', // This changes the input text color to off-white
+  },
+  '& .MuiInput-underline:after': {
+      borderBottomColor: '#B2BAC2',
+  },
+  '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+          borderColor: '#E0E3E7', // Border color for text field
+      },
+      '&:hover fieldset': {
+          borderColor: '#B2BAC2', // Border color on hover
+      },
+      '&.Mui-focused fieldset': {
+          borderColor: '#6F7E8C', // Border color when focused
+      },
+  }
 });
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
