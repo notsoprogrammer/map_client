@@ -5,8 +5,9 @@ import {
   Box, CssBaseline, Button, Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText
 } from '@mui/material';
 import {
-  HomeOutlined, Groups2Outlined, ReceiptLongOutlined, PublicOutlined, DarkModeOutlined, LightModeOutlined,ExitToAppOutlined
+  HomeOutlined, Groups2Outlined, ReceiptLongOutlined, PublicOutlined, DarkModeOutlined, LightModeOutlined, ExitToAppOutlined
 } from "@mui/icons-material";
+import { useNavigate } from 'react-router-dom'; // Import navigate hook
 import { setMode } from '../slices/modeSlice';
 import Dashboard from '../Demo components/DashboardDemo';
 import Maps from './Maps';
@@ -31,13 +32,44 @@ const navItems = [
   { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops /> },
 ];
 
-const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 250px
+const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 240px
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Use navigate for logout redirect
   const mode = useSelector((state) => state.global.mode); // Get the mode from Redux
+
+  // Updated theme settings to match dark mode in the first image
   const theme = useMemo(() => createTheme({
     palette: {
       mode: mode === 'dark' ? 'dark' : 'light',
-      // Customize theme specifically for the demo here
+      ...(mode === 'dark' && {
+        background: {
+          default: '#1C2536',  // Dark navy for main background
+          alt: '#1A2236',  // Slightly darker for the sidebar
+        },
+        primary: {
+          main: '#FFA726',  // Accent color for buttons and active states
+        },
+        secondary: {
+          main: '#9E9E9E',  // For text, icons, etc.
+        },
+        text: {
+          primary: '#E0E0E0',  // Light text for dark background
+          secondary: '#B0BEC5',  // Dimmer text
+        },
+      }),
+      ...(mode === 'light' && {
+        background: {
+          default: '#F9F9F9',
+          alt: '#FFFFFF',
+        },
+        primary: {
+          main: '#388E3C',  // Primary color for light mode
+        },
+        text: {
+          primary: '#212121',
+          secondary: '#757575',
+        },
+      }),
     },
   }), [mode]);
 
@@ -46,6 +78,11 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 250px
 
   const handleNavClick = (component, text) => {
     setCurrentComponent(component);
+    setActiveItem(text);  // Update active item state
+  };
+
+  const handleLogout = () => {
+    navigate("/contact");  // Redirect to contact page
   };
 
   const buttonStyle = {
@@ -56,11 +93,6 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 250px
     my: 1,
   };
 
-  // Handle Log Out (redirect to /contact)
-  const handleLogout = () => {
-    navigate("/contact"); // Redirect to the contact page
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -69,7 +101,7 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 250px
         <Box
           component="aside"
           width={drawerWidth}  // Apply customizable drawer width here
-          bgcolor={theme.palette.background.default}
+          bgcolor={theme.palette.background.alt}
           p={2}
           sx={{
             display: 'flex',
@@ -92,10 +124,14 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 250px
                   selected={activeItem === text}
                   onClick={() => handleNavClick(component, text)}
                   sx={{
-                    backgroundColor: activeItem === text ? theme.palette.secondary[300] : "transparent",
-                    color: activeItem === text ? theme.palette.primary[600] : theme.palette.text.primary,
+                    backgroundColor: activeItem === text ? theme.palette.primary.main : "transparent",
+                    color: activeItem === text ? '#FFF' : theme.palette.text.primary,
                     '.MuiListItemIcon-root': {
-                      color: activeItem === text ? theme.palette.primary[600] : theme.palette.text.secondary,
+                      color: activeItem === text ? '#FFF' : theme.palette.text.secondary,
+                    },
+                    '&:hover': {
+                      backgroundColor: theme.palette.primary.main,
+                      color: '#FFF',
                     },
                   }}
                 >
@@ -110,17 +146,26 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 250px
           <Button
             startIcon={mode === 'dark' ? <LightModeOutlined /> : <DarkModeOutlined />}
             onClick={() => dispatch(setMode())}
-            sx={{ mt: 'auto' }}
+            sx={{
+              mt: 'auto',
+              color: mode === 'dark' ? '#FFA726' : '#424242',  // Accent color for the button
+              backgroundColor: mode === 'dark' ? '#1A2236' : '#F5F5F5',  // Button background color
+              '&:hover': {
+                backgroundColor: mode === 'dark' ? '#263248' : '#E0E0E0',
+              },
+            }}
           >
-            {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            {mode === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
           </Button>
+
+          {/* Log Out Button */}
           <Button
-              startIcon={<ExitToAppOutlined />}
-              onClick={handleLogout}
-              sx={buttonStyle}
-            >
-              Log Out
-            </Button>
+            startIcon={<ExitToAppOutlined />}
+            onClick={handleLogout}
+            sx={buttonStyle}
+          >
+            Log Out
+          </Button>
         </Box>
 
         {/* Main content area */}
