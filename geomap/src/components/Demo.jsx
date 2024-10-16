@@ -7,7 +7,7 @@ import {
 import {
   HomeOutlined, Groups2Outlined, ReceiptLongOutlined, PublicOutlined, DarkModeOutlined, LightModeOutlined, ExitToAppOutlined
 } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom'; // Import navigate hook
+import { useNavigate } from 'react-router-dom';
 import { setMode } from '../slices/modeSlice';
 import Dashboard from '../Demo components/DashboardDemo';
 import Maps from './Maps';
@@ -16,14 +16,12 @@ import Crops from '../Demo components/CropsDemo';
 import Farmers from '../Demo components/FarmersDemo';
 import Calbiga from '../Municipality Images/Calbiga.png';
 
-// Demo user mock data
 const demoUser = {
   name: "Demo User",
   municipality: "Calbiga",
   role: "guest",
 };
 
-// Sidebar navigation items
 const navItems = [
   { text: "Dashboard", icon: <HomeOutlined />, component: <Dashboard /> },
   { text: "Maps", icon: <PublicOutlined />, component: <Maps /> },
@@ -32,42 +30,46 @@ const navItems = [
   { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops /> },
 ];
 
-const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 240px
+const Demo = ({ drawerWidth = 240 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Use navigate for logout redirect
-  const mode = useSelector((state) => state.global.mode); // Get the mode from Redux
+  const navigate = useNavigate();
+  const mode = useSelector((state) => state.global.mode);
 
-  // Updated theme settings to match dark mode in the first image
   const theme = useMemo(() => createTheme({
     palette: {
       mode: mode === 'dark' ? 'dark' : 'light',
       ...(mode === 'dark' && {
-        background: {
-          default: '#1C2536',  // Dark navy for main background
-          alt: '#1A2236',  // Slightly darker for the sidebar
-        },
         primary: {
-          main: '#FFA726',  // Accent color for buttons and active states
+          ...tokensDark.primary,
+          main: tokensDark.primary[400], // Sidebar active item background
         },
         secondary: {
-          main: '#9E9E9E',  // For text, icons, etc.
+          ...tokensDark.secondary,
+          main: tokensDark.secondary[300], // Text and icon color
+        },
+        background: {
+          default: tokensDark.grade[200], // Main background
+          alt: tokensDark.grade[50], // Sidebar background color
         },
         text: {
-          primary: '#E0E0E0',  // Light text for dark background
-          secondary: '#B0BEC5',  // Dimmer text
+          primary: tokensDark.grey[50], // Lighter text color for dark mode
+          secondary: tokensDark.grey[200], // Dimmer text for icons
         },
       }),
       ...(mode === 'light' && {
-        background: {
-          default: '#F9F9F9',
-          alt: '#FFFFFF',
-        },
         primary: {
-          main: '#388E3C',  // Primary color for light mode
+          main: tokensLight.primary[400],
+        },
+        secondary: {
+          main: tokensLight.secondary[600],
+        },
+        background: {
+          default: tokensLight.grey[0],
+          alt: tokensLight.grey[50],
         },
         text: {
-          primary: '#212121',
-          secondary: '#757575',
+          primary: tokensLight.grey[900],
+          secondary: tokensLight.grey[700],
         },
       }),
     },
@@ -78,11 +80,11 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 240px
 
   const handleNavClick = (component, text) => {
     setCurrentComponent(component);
-    setActiveItem(text);  // Update active item state
+    setActiveItem(text);
   };
 
   const handleLogout = () => {
-    navigate("/contact");  // Redirect to contact page
+    navigate("/contact");
   };
 
   const buttonStyle = {
@@ -100,8 +102,8 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 240px
         {/* Sidebar for navigation */}
         <Box
           component="aside"
-          width={drawerWidth}  // Apply customizable drawer width here
-          bgcolor={theme.palette.background.alt}
+          width={drawerWidth}
+          bgcolor={theme.palette.background.alt}  // Apply tokensDark.grade[50] for Sidebar background
           p={2}
           sx={{
             display: 'flex',
@@ -148,11 +150,16 @@ const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 240px
             onClick={() => dispatch(setMode())}
             sx={{
               mt: 'auto',
-              color: mode === 'dark' ? '#FFA726' : '#424242',  // Accent color for the button
-              backgroundColor: mode === 'dark' ? '#1A2236' : '#F5F5F5',  // Button background color
+              justifyContent: 'flex-start',
+              width: '100%',
+              textTransform: 'none',
+              color: mode === 'dark' ? tokensDark.secondary[50] : tokensLight.secondary[600],  // Icon color
+              backgroundColor: mode === 'dark' ? tokensDark.primary[600] : tokensLight.grey[50],  // Button background
               '&:hover': {
-                backgroundColor: mode === 'dark' ? '#263248' : '#E0E0E0',
+                backgroundColor: mode === 'dark' ? tokensDark.primary[500] : tokensLight.grey[100],  // Hover effect
               },
+              borderRadius: '8px',  // Add some border radius for smooth edges
+              padding: '8px 16px',  // Space around the button for better touch area
             }}
           >
             {mode === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
