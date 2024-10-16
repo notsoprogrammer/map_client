@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
-  Groups2Outlined, HomeOutlined, DarkModeOutlined, LightModeOutlined,
-  ReceiptLongOutlined, PublicOutlined, ExitToAppOutlined, SettingsOutlined
+  Box, CssBaseline, Button, Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText
+} from '@mui/material';
+import {
+  HomeOutlined, Groups2Outlined, ReceiptLongOutlined, PublicOutlined, DarkModeOutlined, LightModeOutlined
 } from "@mui/icons-material";
-import {
-  Avatar, Box, Divider, Drawer, List, ListItem,
-  ListItemButton, ListItemIcon, ListItemText, Typography, Button, useTheme
-} from "@mui/material";
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { setMode } from '../slices/modeSlice';
 import Dashboard from '../Demo components/DashboardDemo';
 import Maps from './Maps';
@@ -33,18 +31,20 @@ const navItems = [
   { text: "Crops", icon: <ReceiptLongOutlined />, component: <Crops /> },
 ];
 
-const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
+const Demo = ({ drawerWidth = 240 }) => {  // Default drawer width set to 250px
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Added for redirecting
-  const currentMode = useSelector((state) => state.global.mode); // Get the current mode from Redux state
-  const theme = useTheme(); // Access the current theme
+  const mode = useSelector((state) => state.global.mode); // Get the mode from Redux
+  const theme = useMemo(() => createTheme({
+    palette: {
+      mode: mode === 'dark' ? 'dark' : 'light',
+      // Customize theme specifically for the demo here
+    },
+  }), [mode]);
 
-  const [activeItem, setActiveItem] = useState("Dashboard"); // Default to Dashboard
-  const [currentComponent, setCurrentComponent] = useState(<Dashboard />); // Default to Dashboard component
+  const [activeItem, setActiveItem] = useState("Dashboard");
+  const [currentComponent, setCurrentComponent] = useState(<Dashboard />);
 
-  // Handle navigation when a sidebar item is clicked
-  const handleNavClick = (text, component) => {
-    setActiveItem(text);
+  const handleNavClick = (component, text) => {
     setCurrentComponent(component);
   };
 
@@ -62,126 +62,73 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true }) => {
   };
 
   return (
-    <Box display="flex" width="100%" height="100vh" sx={{ overflow: 'hidden' }}>
-      {/* Sidebar */}
-      {isSidebarOpen && (
-        <Drawer
-          open
-          variant="persistent"
-          anchor="left"
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box display="flex" width="100%" height="100vh" sx={{ overflow: 'hidden' }}>
+        {/* Sidebar for navigation */}
+        <Box
+          component="aside"
+          width={drawerWidth}  // Apply customizable drawer width here
+          bgcolor={theme.palette.background.default}
+          p={2}
           sx={{
-            width: drawerWidth,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: 'border-box',
-              backgroundColor: theme.palette.background.alt,
-              color: theme.palette.text.primary,
-              overflowX: 'hidden', // Disable horizontal scrolling
-            },
-          }}
-        >
-          <Box sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            p: '1.5rem',
-            pb: '1.5rem'
-          }}>
-            <Avatar src={Calbiga} alt="Profile" sx={{ width: 100, height: 100 }} />
-            <Typography variant="h6" noWrap>
-              {demoUser.name}
-            </Typography>
-            <Typography variant="body2" noWrap>
-              {demoUser.municipality}
-            </Typography>
+          }}
+        >
+          {/* Demo User Avatar */}
+          <Avatar src={Calbiga} alt="Profile" sx={{ width: 100, height: 100 }} />
+          <Box mt={2} mb={4} textAlign="center">
+            <Box>{demoUser.name}</Box>
+            <Box>{demoUser.municipality}</Box>
           </Box>
-          <List>
-            {navItems.map(({ text, icon, component }) => {
-              const isSelected = activeItem === text;
 
-              return (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton
-                    selected={isSelected}
-                    onClick={() => handleNavClick(text, component)}
-                    sx={{
-                      backgroundColor: isSelected ? theme.palette.secondary[300] : "transparent",
-                      color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[100],
-                      '.MuiListItemIcon-root': {
-                        color: isSelected ? theme.palette.primary[600] : theme.palette.secondary[200],
-                      },
-                      '&:hover': {
-                        backgroundColor: isSelected ? theme.palette.secondary[300] : theme.palette.action.hover,
-                        '.MuiListItemIcon-root': {
-                          color: theme.palette.primary[600],
-                        },
-                      },
-                      '&.Mui-selected': {
-                        backgroundColor: theme.palette.secondary[300],
-                        color: theme.palette.primary[600],
-                        '.MuiListItemIcon-root': {
-                          color: theme.palette.primary[600],
-                        },
-                        '&:hover': {
-                          backgroundColor: theme.palette.secondary[300],
-                        },
-                      },
-                    }}
-                  >
-                    <ListItemIcon>{icon}</ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              );
-            })}
+          {/* Navigation List */}
+          <List>
+            {navItems.map(({ text, icon, component }) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton
+                  selected={activeItem === text}
+                  onClick={() => handleNavClick(component, text)}
+                  sx={{
+                    backgroundColor: activeItem === text ? theme.palette.secondary[300] : "transparent",
+                    color: activeItem === text ? theme.palette.primary[600] : theme.palette.text.primary,
+                    '.MuiListItemIcon-root': {
+                      color: activeItem === text ? theme.palette.primary[600] : theme.palette.text.secondary,
+                    },
+                  }}
+                >
+                  <ListItemIcon>{icon}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
 
-          <Box sx={{ mt: 'auto', width: '100%', p: '1.5rem' }}>
-            <Divider sx={{ mb: 2 }} />
-
-            {/* Dark/Light Mode Toggle */}
-            <Button
-              startIcon={currentMode === "dark" ? <DarkModeOutlined /> : <LightModeOutlined />}
-              onClick={() => dispatch(setMode())}
-              sx={buttonStyle}
-            >
-              {currentMode === "dark" ? "Light Mode" : "Dark Mode"}
-            </Button>
-
-            {/* Settings Button */}
-            <Button
-              startIcon={<SettingsOutlined />}
-              onClick={() => navigate('/settings')}
-              sx={buttonStyle}
-            >
-              Settings
-            </Button>
-
-            {/* Log Out Button */}
-            <Button
+          {/* Dark/Light Mode Toggle */}
+          <Button
+            startIcon={mode === 'dark' ? <LightModeOutlined /> : <DarkModeOutlined />}
+            onClick={() => dispatch(setMode())}
+            sx={{ mt: 'auto' }}
+          >
+            {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          </Button>
+          <Button
               startIcon={<ExitToAppOutlined />}
               onClick={handleLogout}
               sx={buttonStyle}
             >
               Log Out
             </Button>
-          </Box>
-        </Drawer>
-      )}
+        </Box>
 
-      {/* Main Content Area */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          height: "100vh",
-          overflowY: 'auto', // Enable vertical scroll if necessary
-          backgroundColor: theme.palette.background.default,
-        }}
-      >
-        {currentComponent}
+        {/* Main content area */}
+        <Box flexGrow={1} p={2}>
+          {currentComponent}
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 
