@@ -36,6 +36,13 @@ const Contact = () => {
     message: ''
   });
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  // Function to validate a generic phone number format (digits and optional formatting characters)
+  const validatePhoneNumber = (number) => {
+    const regex = /^[0-9\s\-()]+$/; // Allows digits, spaces, dashes, and parentheses
+    return regex.test(number);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,28 +51,51 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/email/send`, formData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
 
-        console.log(response.data.message);
-        alert(response.data.message);
-        
-        setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            phoneNumber: '',
-            message: ''
-        });
+    // Check for empty fields
+    const newErrors = {};
+    if (!formData.firstName) newErrors.firstName = 'First name is required';
+    if (!formData.lastName) newErrors.lastName = 'Last name is required';
+    if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.phoneNumber) newErrors.phoneNumber = 'Phone number is required';
+    if (!formData.message) newErrors.message = 'Message is required';
+
+    // Check if the phone number is valid
+    if (formData.phoneNumber && !validatePhoneNumber(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Invalid phone number. Use only digits, spaces, dashes, or parentheses.';
+    }
+
+    // If there are errors, stop the submission
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/email/send`, formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log(response.data.message);
+      alert(response.data.message);
+      
+      // Reset form data and errors after successful submission
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        message: ''
+      });
+      setErrors({});
     } catch (error) {
-        console.error('Failed to send message:', error);
-        alert('Failed to send message: ' + (error.response?.data?.message || error.message));
+      console.error('Failed to send message:', error);
+      alert('Failed to send message: ' + (error.response?.data?.message || error.message));
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -80,11 +110,62 @@ const Contact = () => {
                 <Typography variant='h4' sx={{ marginBottom: 2, fontWeight: 700 }}>Contact us</Typography>
                 <Typography sx={{ marginBottom: 3 }}>Our friendly team would love to hear from you!</Typography>
                 <form onSubmit={handleSubmit}>
-                  <CustomTextField name="firstName" onChange={handleChange} value={formData.firstName} label="First name" variant="outlined" fullWidth margin="normal" />
-                  <CustomTextField name="lastName" onChange={handleChange} value={formData.lastName} label="Last name" variant="outlined" fullWidth margin="normal" />
-                  <CustomTextField name="email" onChange={handleChange} value={formData.email} label="Email Address" variant="outlined" fullWidth margin="normal" />
-                  <CustomTextField name="phoneNumber" onChange={handleChange} value={formData.phoneNumber} label="Phone Number" variant="outlined" fullWidth margin="normal" />
-                  <CustomTextField name="message" onChange={handleChange} value={formData.message} label="Message" multiline rows={4} fullWidth margin="normal" />
+                  <CustomTextField 
+                    name="firstName"
+                    onChange={handleChange}
+                    value={formData.firstName}
+                    label="First name"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.firstName}
+                    helperText={errors.firstName}
+                  />
+                  <CustomTextField 
+                    name="lastName"
+                    onChange={handleChange}
+                    value={formData.lastName}
+                    label="Last name"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.lastName}
+                    helperText={errors.lastName}
+                  />
+                  <CustomTextField 
+                    name="email"
+                    onChange={handleChange}
+                    value={formData.email}
+                    label="Email Address"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.email}
+                    helperText={errors.email}
+                  />
+                  <CustomTextField 
+                    name="phoneNumber"
+                    onChange={handleChange}
+                    value={formData.phoneNumber}
+                    label="Phone Number"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.phoneNumber}
+                    helperText={errors.phoneNumber}
+                  />
+                  <CustomTextField 
+                    name="message"
+                    onChange={handleChange}
+                    value={formData.message}
+                    label="Message"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.message}
+                    helperText={errors.message}
+                  />
                   <Button type="submit" sx={{ mt: 3, color: '#000', bgcolor: '#fff' }} variant="contained" fullWidth disabled={loading}>
                     {loading ? <CircularProgress size={24} /> : 'Send Message'}
                   </Button>
