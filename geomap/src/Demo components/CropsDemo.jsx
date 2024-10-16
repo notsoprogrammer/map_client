@@ -11,7 +11,7 @@ const Crops = () => {
 
     const initViz = () => {
       // Static Tableau dashboard link for the demo
-      const vizUrl = 'https://public.tableau.com/views/CalbigaHVCDProgram_Public/Calbiga_HVCDP-Viz2?:toolbar=no&:tabs=no'; // Replace with actual public Tableau URL
+      const vizUrl = 'https://public.tableau.com/views/CalbigaHVCDProgram_Public/Calbiga_HVCDP-Viz2'; // Replace with actual public Tableau URL
 
       const options = {
         width: '100%',

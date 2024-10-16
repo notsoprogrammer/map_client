@@ -144,14 +144,7 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true, setIsSidebarOpen, isNon
             <Button
               startIcon={mode === 'dark' ? <LightModeOutlined /> : <DarkModeOutlined />}
               onClick={() => dispatch(setMode())}
-              sx={{
-                ...buttonStyle,
-                color: mode === 'dark' ? theme.palette.secondary[200] : theme.palette.primary[600],
-                backgroundColor: mode === 'dark' ? theme.palette.primary[600] : theme.palette.secondary[100],
-                '&:hover': {
-                  backgroundColor: mode === 'dark' ? theme.palette.primary[500] : theme.palette.secondary[200],
-                },
-              }}
+              sx={buttonStyle}
             >
               {mode === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
             </Button>

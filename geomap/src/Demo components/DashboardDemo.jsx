@@ -32,12 +32,12 @@ const Dashboard = () => {
 
   // Static Tableau links for the demo mode
   useEffect(() => {
-    const mainDashboardUrl = 'https://public.tableau.com/views/Overall_Dashboard_Public/CropandRiceMainDashboard?:toolbar=no&:tabs=no';  // Replace with actual demo link
-    const weatherDashboardUrl = 'https://public.tableau.com/views/RicePrice_17282930517210/RiceEstimatedPAYandPrice?:toolbar=no&:tabs=no';  // Replace with actual demo link
+    const mainDashboardUrl = 'https://public.tableau.com/views/Overall_Dashboard_Public/CropandRiceMainDashboard';  // Replace with actual demo link
+    const weatherDashboardUrl = 'https://public.tableau.com/views/RicePrice_17282930517210/RiceEstimatedPAYandPrice';  // Replace with actual demo link
 
     const options = {
       hideTabs: true,
-      hideToolbar: true,
+      hideToolbar: true,  // Ensure the toolbar is hidden
     };
 
     // Initialize Tableau visualizations
