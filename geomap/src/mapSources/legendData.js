@@ -469,7 +469,7 @@ const legendData = {
         legendItems: [
           { label: '11.0-16.7', color: '#FFF491' },
           { label: '16.8-22.2', color: '#BF6D0E' },
-          { label: '22.3', color: '#F34242' },
+          { label: '22.3', color: '#482000' },
 
         ],
       },  
@@ -648,7 +648,7 @@ const legendData = {
         legendItems: [
           { label: '17.2-18.5', color: '#FFF491' },
           { label: '18.6-19.8', color: '#BF6D0E' },
-          { label: '19.9', color: '#F34242' },          
+          { label: '19.9', color: '#482000' },          
 
         ],
       },  
@@ -827,7 +827,7 @@ legendTitle: 'Exchangeable Zinc',
           legendItems: [
             { label: '13.7-14.6', color: '#FFF491' },
             { label: '14.7-15.5', color: '#BF6D0E' },
-            { label: '15.6', color: '#F34242' },            
+            { label: '15.6', color: '#482000' },            
           ],
         },  
         'Sand': {
@@ -1007,7 +1007,7 @@ legendTitle: 'Exchangeable Zinc',
         legendItems: [
           { label: '7.1-15.0', color: '#FFF491' },
           { label: '15.1-22.4', color: '#BF6D0E' },
-          { label: '22.5', color: '#F34242' },          
+          { label: '22.5', color: '#482000' },          
 
         ],
       },  
@@ -1186,7 +1186,7 @@ legendTitle: 'Exchangeable Zinc',
         legendItems: [
           { label: '15.8-17.9', color: '#FFF491' },
           { label: '18.0-20.0', color: '#BF6D0E' },
-          { label: '20.1', color: '#F34242' },          
+          { label: '20.1', color: '#482000' },          
 
         ],
       },  
@@ -1365,7 +1365,7 @@ legendTitle: 'Exchangeable Zinc',
         legendItems: [
           { label: '14.6-15.9', color: '#FFF491' },
           { label: '16.0-17.1', color: '#BF6D0E' },
-          { label: '17.2', color: '#F34242' },          
+          { label: '17.2', color: '#482000' },          
 
         ],
       },  
@@ -1544,7 +1544,7 @@ legendTitle: 'Exchangeable Zinc',
           legendItems: [
             { label: '21.0-28.7', color: '#FFF491' },
             { label: '28.8-36.1', color: '#BF6D0E' },
-            { label: '36.2', color: '#F34242' },            
+            { label: '36.2', color: '#482000' },            
           ],
         },  
         'Sand': {
@@ -1728,7 +1728,7 @@ legendTitle: 'Exchangeable Zinc',
         legendItems: [
           { label: '7.6-17.2', color: '#FFF491' },
           { label: '17.3-26.2', color: '#BF6D0E' },
-          { label: '26.3', color: '#F34242' },          
+          { label: '26.3', color: '#482000' },          
 
         ],
       },  
@@ -1907,7 +1907,7 @@ legendTitle: 'Exchangeable Zinc',
         legendItems: [
           { label: '14.0-14.8', color: '#FFF491' },
           { label: '14.9-15.7', color: '#BF6D0E' },
-          { label: '15.8', color: '#F34242' },          
+          { label: '15.8', color: '#482000' },          
 
         ],
       },  
@@ -2087,7 +2087,7 @@ legendTitle: 'Exchangeable Zinc',
           legendItems: [
             { label: '11.6-13.5', color: '#FFF491' },
             { label: '13.6-15.4', color: '#BF6D0E' },
-            { label: '15.5', color: '#F34242' },            
+            { label: '15.5', color: '#482000' },            
           ],
         },  
         'Sand': {
