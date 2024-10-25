@@ -14,7 +14,7 @@ const UserManagement = () => {
     const municipalities = ['Catbalogan', 'Calbiga', 'Paranas', 'Basey', 'Gandara'];
 
     const handleAddUser = async () => {
-        // Retrieve the token from localStorage (or however you're storing it)
+        
         const authToken = localStorage.getItem('authToken');
         if (!authToken) {
             console.error('No auth token found. Please login again.');
@@ -22,7 +22,7 @@ const UserManagement = () => {
             return;
         }
         try {
-            // Make a request to the backend, including the token in the headers
+            
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}/api/admin/addUser`,
                 {
@@ -34,19 +34,19 @@ const UserManagement = () => {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
+                        Authorization: `Bearer ${authToken}`, 
                     },
-                    withCredentials: true, // If your backend requires cookies as well
+                    withCredentials: true, 
                 }
             );
     
-            // Log the response (optional)
+            
             console.log("User added successfully:", response.data);
     
-            // Optionally, you can use response.data to update the UI or store the added user data
-            const addedUser = response.data.user; // Assuming the backend sends back the created user
+            
+            const addedUser = response.data.user; 
     
-            // Handle success response
+            
             setSuccess(true);
             setError('');
             setName('');
@@ -55,7 +55,7 @@ const UserManagement = () => {
             setJob('');
             setRole('user');
     
-            // Optionally, show a success message with the new user details
+            
             console.log("Added user:", addedUser);
     
         } catch (error) {

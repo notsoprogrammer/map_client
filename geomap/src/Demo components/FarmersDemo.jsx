@@ -4,13 +4,12 @@ import { Box } from '@mui/material';
 const { tableau } = window;
 
 const Farmers = () => {
-  const tableauVizRef = useRef(null); // Reference to the div where the viz will be embedded
+  const tableauVizRef = useRef(null);
 
   useEffect(() => {
-    let viz; // Variable to hold the viz instance
+    let viz;
 
     const initViz = () => {
-      // Static Tableau dashboard link for the demo
       const vizUrl ='https://public.tableau.com/views/CalbigaFarmersProgram/Calbiga_Farmers-Viz'; // Replace with actual public Tableau URL
 
       const options = {
@@ -23,7 +22,6 @@ const Farmers = () => {
         }
       };
 
-      // Initialize the Tableau Viz in the referenced div
       viz = new tableau.Viz(tableauVizRef.current, vizUrl, options);
     };
 
@@ -31,16 +29,13 @@ const Farmers = () => {
 
     const handleResize = () => {
       if (viz) {
-        // Adjust the frame size on window resize
         viz.setFrameSize(undefined, tableauVizRef.current.clientHeight);
       }
     };
 
-    // Add window resize listener
     window.addEventListener('resize', handleResize);
 
     return () => {
-      // Clean up on component unmount
       window.removeEventListener('resize', handleResize);
       if (viz) {
         viz.dispose();

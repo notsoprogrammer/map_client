@@ -32,7 +32,7 @@ const municipalityImages = {
     catbalogan: Catbalogan,
     gandara: Gandara,
     paranas: Paranas,
-    sanjorge: SanJorge // 'San Jorge' becomes 'sanjorge'
+    sanjorge: SanJorge 
 };
 
 const navItems = [
@@ -43,7 +43,7 @@ const navItems = [
     { text: "Crops", icon: <ReceiptLongOutlined /> },
 ];
 
-// Admin-specific navigation items
+
 const adminNavItems = [
     { text: "Map Uploads", icon: <UploadFileOutlined />, path: '/admin/mapuploads' },
     { text: "User Management", icon: <ManageAccountsOutlined />, path: '/admin/usermanagement' },
@@ -67,7 +67,7 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) 
 
     const logoutHandler = async () => {
         try {
-            const authToken = localStorage.getItem('authToken'); // Retrieve the token
+            const authToken = localStorage.getItem('authToken'); 
 
             if (!authToken) {
                 throw new Error('Token not found');
@@ -183,7 +183,7 @@ const Sidebar = ({ drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) 
                                     <ListItemButton
                                         selected={isSelected}
                                         onClick={() => {
-                                            navigate(path);  // Navigate using the correct path
+                                            navigate(path);  
                                             setActive(path);
                                         }}
                                         sx={{

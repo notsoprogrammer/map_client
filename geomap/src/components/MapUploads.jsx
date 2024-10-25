@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
 const MapUploads = () => {
-  // Define municipalities with coordinates
+  
   const municipalities = [
     { name: 'Basey', coordinates: '11.4147000312805,125.141495239258', SW: '11.2541704177856,124.976486206055', NE: '11.5752296447754,125.30655670166' },
     { name: 'Calbayog', coordinates: '12.1921854019165,124.599678039551', SW: '12.0490503311157,124.356742858887', NE: '12.3353204727172,124.842613220215' },
@@ -25,10 +25,10 @@ const MapUploads = () => {
     'Soil Texture': ['Clay', 'Sand','Silt' ],
   };
 
-  // Ref for file input
+  
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
-  // State variables
+  
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
@@ -42,33 +42,33 @@ const MapUploads = () => {
   const handleMunicipality = (event) => {
     const selectedMunicipalityName = event.target.value;
     setSelectedMunicipality(selectedMunicipalityName);
-   // Find the selected municipality in the list
+   
    const selectedMunicipality = municipalities.find((municipality) => municipality.name === selectedMunicipalityName);
 
    if (selectedMunicipality) {
-     // Set the coordinates, SW, and NE values based on the selected municipality
+     
      setInputValue(selectedMunicipality.coordinates);
      setBounds1(selectedMunicipality.SW);
      setBounds2(selectedMunicipality.NE);
 
-     // Split and convert coordinates, SW, and NE values to numbers
+     
      const latLongValues = selectedMunicipality.coordinates.split(',').map((str) => parseFloat(str.trim()));
      const SWlatLongValues = selectedMunicipality.SW.split(',').map((str) => parseFloat(str.trim()));
      const NElatLongValues = selectedMunicipality.NE.split(',').map((str) => parseFloat(str.trim()));
 
-     // Update the state with the parsed values
+     
      setLatLong(latLongValues);
      setSWLatLong(SWlatLongValues);
      setNELatLong(NElatLongValues);
    }
  };
 
-  // Event handler for file input change
+  
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  // Display alert message and hide after a timeout
+  
   const showMessage = (text) => {
     setMessage(text);
     setShowAlert(true);
@@ -79,7 +79,7 @@ const MapUploads = () => {
     }, 1500);
   
 
-// Function to handle file upload
+
 const handleFileUpload = async () => {
   if (!file || !selectedMunicipality || !mapType || !dataType) {
     showMessage('Please fill in all required fields.');
@@ -90,9 +90,9 @@ const handleFileUpload = async () => {
   formData.append('municipality', selectedMunicipality);
   formData.append('mapType', mapType);
   formData.append('dataType', dataType);  ;
-  formData.append('latLong', latLong.join(',')); // Convert array to string
-  formData.append('SWlatLong', SWlatLong.join(',')); // Convert array to string
-  formData.append('NElatLong', NElatLong.join(',')); // Convert array to string
+  formData.append('latLong', latLong.join(',')); 
+  formData.append('SWlatLong', SWlatLong.join(',')); 
+  formData.append('NElatLong', NElatLong.join(',')); 
     try {
       dispatch(uploadFileRequest());
       const url = `/api/files/upload/${selectedMunicipality}/${mapType}/${dataType}/${latLong}/${SWlatLong}/${NElatLong}`;
@@ -112,7 +112,7 @@ const handleFileUpload = async () => {
       setInputValue('');
       setBounds1('');
       setBounds2('');
-        // Reset the coordinates after successful upload
+        
         setLatLong([null, null]);
         setSWLatLong([null, null]);
         setNELatLong([null, null]);
@@ -123,7 +123,7 @@ const handleFileUpload = async () => {
     };
     
 
-  // State variables for latitude and longitude
+  
   const [inputValue, setInputValue] = useState('');
   const [bounds1, setBounds1] = useState('');
   const [bounds2, setBounds2] = useState('');
@@ -131,15 +131,15 @@ const handleFileUpload = async () => {
   const [SWlatLong, setSWLatLong] = useState([null, null]);
   const [NElatLong, setNELatLong] = useState([null, null]);
 
-  // Event handler for input change
+  
   const handleInputChange = (event) => {
     const value = event.target.value;
     setInputValue(value);
 
-    // Split the input value by comma and convert to numbers
+    
     const values = value.split(',').map((str) => parseFloat(str.trim()));
 
-    // Ensure we have exactly 2 values for latitude and longitude
+    
     if (values.length === 2 && !isNaN(values[0]) && !isNaN(values[1])) {
       setLatLong(values);
     } else {
@@ -147,7 +147,7 @@ const handleFileUpload = async () => {
     }
   };
 
-  // Event handler for bounds1 input change
+  
   const handleBounnds1 = (event) => {
     const bounds1val = event.target.value;
     setBounds1(bounds1val);
@@ -161,7 +161,6 @@ const handleFileUpload = async () => {
     }
   };
 
-  // Event handler for bounds2 input change
   const handleBounnds2 = (event) => {
     const bounds2val = event.target.value;
     setBounds2(bounds2val);
@@ -175,19 +174,18 @@ const handleFileUpload = async () => {
     }
   };
 
-  // Log coordinates to console on change
+  
   useEffect(() => {
     console.log(latLong);
     console.log(SWlatLong);
     console.log(NElatLong);
   }, [latLong, NElatLong, SWlatLong]);
 
-  // JSX for the component
+  
   return (
     <Box height="calc(100vh-64px)" width="calc(100%-250px)" sx={{ mt: '100px', p: 5 }}>
       <h1>Map Files Uploads</h1>
       <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: 5 }}>
-        {/* File input */}
         <input
           ref={fileInputRef}
           type="file"
@@ -196,7 +194,6 @@ const handleFileUpload = async () => {
           accept=".jpeg, .png"
         />
 
-        {/* Form for map upload */}
         <Box
           sx={{
             display: 'flex',
@@ -210,7 +207,6 @@ const handleFileUpload = async () => {
             alignContent: 'stretch',
           }}
         >
-          {/* Dropdown for municipality */}
           <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
             <FormControl variant="filled" sx={{ m: 1, minWidth: 150 }}>
               <InputLabel id="municipality">Municipality</InputLabel>
@@ -231,7 +227,6 @@ const handleFileUpload = async () => {
             </FormControl>
           </Box>
 
-          {/* Dropdown for Map Type */}
           <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
             <FormControl variant="filled" sx={{ m: 1, minWidth: 150 }}>
               <InputLabel id="map-type">Map</InputLabel>
@@ -252,7 +247,6 @@ const handleFileUpload = async () => {
             </FormControl>
           </Box>
 
-          {/* Dropdown for Data Type */}
           {mapType && (
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
               <FormControl variant="filled" sx={{ m: 1, minWidth: 150 }}>
@@ -275,7 +269,6 @@ const handleFileUpload = async () => {
             </Box>
           )}
 
-          {/* Input field for Latitude and Longitude */}
           <Box>
             <TextField
               label="Enter Latitude and Longitude"
@@ -290,10 +283,8 @@ const handleFileUpload = async () => {
             </div>
           </Box>
 
-          {/* Coordinates for bounds */}
           <h3>Coordinates for bounds</h3>
 
-          {/* Textfield for South-West corner Latitude and Longitude */}
           <Box>
             <TextField
               label="South-West corner Latitude and Longitude"
@@ -308,7 +299,6 @@ const handleFileUpload = async () => {
             </div>
           </Box>
 
-          {/* Textfield for North-East corner Latitude and Longitude */}
           <Box>
             <TextField
               label="North-East corner Latitude and Longitude"
@@ -324,12 +314,10 @@ const handleFileUpload = async () => {
           </Box>
         </Box>
 
-        {/* Upload button */}
         <Button variant="contained" onClick={handleFileUpload}>
           Upload
         </Button>
 
-        {/* Show alert if necessary */}
         {showAlert && message !== '' ? (
           <Alert severity="success" onClose={() => setShowAlert(false)}>
             {message}

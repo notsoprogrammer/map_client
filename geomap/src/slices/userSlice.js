@@ -14,21 +14,21 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: null,
-    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    status: 'idle', 
     error: null
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'idle';
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = 'loading';
         state.user = action.payload;
       })
       .addCase(fetchUser.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = 'succeeded';
         state.error = action.payload;
       });
   }

@@ -21,9 +21,6 @@ import { tokensDark,tokensLight } from '../theme';
 import PieChartComponent from '../mapSources/PieChartCrop';
 import analysesData from '../mapSources/Analyses';
 import customMarkerIconURl from '../assets/CustomMarkerIcon.svg'
-//when I made this code, only God, chatGPT and I knows. If you're having problem, only God can answer you :)
-
-// Component definition
 const Maps = () => {
 
   const [mapType, setMapType] = useState('');
@@ -46,9 +43,9 @@ const Maps = () => {
   const [markers, setMarkers] = useState([]);
   const customMarkerIcon = new L.Icon({
     iconUrl: customMarkerIconURl,
-    iconSize: [30, 40], // Size of the icon
-    iconAnchor: [15, 40], // Point of the icon which will correspond to marker's location
-    popupAnchor: [0, -40] // Point from which the popup should open relative to the iconAnchor
+    iconSize: [30, 40], 
+    iconAnchor: [15, 40],
+    popupAnchor: [0, -40] 
 });
   const chartTextColors = {
     dark: tokensDark.grey[0], 
@@ -75,7 +72,6 @@ const Maps = () => {
   const handleMunicipality = (event) => {
     const newMunicipality = event.target.value;
   
-    // Update the municipality state
     setMunicipality(newMunicipality);
     
     if (newMunicipality === 'Samar') {
@@ -182,7 +178,6 @@ const Maps = () => {
     );
   };
 
-  // Styles for legend
   const legendStyle = {
     position: 'absolute',
     bottom: '10px',
@@ -403,7 +398,6 @@ const Maps = () => {
     }, [geojsonData, mapType, municipality, category]);
 
     
-    // Effect for fetching map data
     useEffect(() => {
       if (mapType === 'Soil Properties') {
         setMunicipality('Samar'); 
@@ -531,7 +525,7 @@ const Maps = () => {
                           <Marker 
                             key={index} 
                             position={[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]}
-                            icon={customMarkerIcon} // Using custom marker icon
+                            icon={customMarkerIcon} 
                           >
                             <Popup>
                               The {category} value in {feature.properties.Brgy} is {feature.properties[category]}
@@ -551,14 +545,12 @@ const Maps = () => {
                   data={geojsonData}
                   onEachFeature={(feature, layer) => {
                   }}
-                  style={{fillColor: '#D8D8D8', fillOpacity:0.7, weight: 0.3, opacity: 0.7, color: 'black'}} //line
+                  style={{fillColor: '#D8D8D8', fillOpacity:0.7, weight: 0.3, opacity: 0.7, color: 'black'}}
                 />
               )}
 
-              {/* Image Overlay Layer */}
               {imgLayer && <ImageOverlay url={imgLayer} bounds={extent} opacity={opacity} style={{zIndex:99}}/>}
             
-              {/* Main Tile Layer */}
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -568,12 +560,10 @@ const Maps = () => {
                     <GeoJSON data={geojsonData} style={{ fillColor: '#ffD8D8D8', fillOpacity: 0.4, color: 'black', weight: 0.1 }} />
                   </LayersControl.Overlay>
                 )}
-              {/* Legend */}
               {mapType && municipality && category && <Legend municipality={municipality} mapType={mapType} category={category} />}
 
             </MapContainer>
 
-        {/* Sidebar for Controls and Information */}
         <Box height="calc(100vh - 10px)" sx={{ display: 'flex', flexDirection: 'column', px: 2, width: '47%' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <h4>Select a Map</h4>

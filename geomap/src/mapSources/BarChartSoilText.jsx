@@ -5,17 +5,14 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const TextureBarChart = ({ data, property,colors,textColor,gridColor,isPaginated,municipality,titleFormats,setShowAllTextures}) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5; // Set how many items you want per page
+    const itemsPerPage = 5; 
     const maxPage = Math.ceil(data.length / itemsPerPage);
-
-    // Data slicing based on current page
     const paginatedData = data.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
     const chartTitle = titleFormats[property] + municipality;
 
-    // Handlers for pagination
     const nextPage = () => setCurrentPage((prev) => Math.min(prev + 1, maxPage));
     const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
     useEffect(() => {
@@ -26,19 +23,16 @@ const TextureBarChart = ({ data, property,colors,textColor,gridColor,isPaginated
         'Clay': '#A88D66',
         'Silt': '#E9A026',
         'Sand': '#E5DB52',
-        // Add more mappings as necessary
       };
       
 
     return (
     <div>  
         <h4>{chartTitle}</h4>
-        {/* <button onClick={() => setShowAllTextures(true)}>Show All Soil Textures</button> */}
         <div style={{border: '0.5px solid grey' ,background: 'rgba(217, 217, 217, 0.1)', height: "300px", marginBottom:'3%'}}> 
         <ResponsiveBar
             data={paginatedData}
             keys={[property]}
-            //colors={colors} // Using the passed color for the bars
             tooltip={({ data, color }) => (
                 <div style={{
                     padding: '9px 9px',
@@ -112,12 +106,12 @@ const TextureBarChart = ({ data, property,colors,textColor,gridColor,isPaginated
                 }}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
-                labelTextColor={'#262626'} // Set the label text color
+                labelTextColor={'#262626'} 
                 legends={[
                     {
                         dataFrom: 'keys',
-                        anchor: 'bottom-right', // Changed to 'top-right'
-                        direction: 'row',    // Use 'row' for horizontal layout
+                        anchor: 'bottom-right', 
+                        direction: 'row',   
                         justify: false,
                         translateX: 30,
                         translateY: 0,

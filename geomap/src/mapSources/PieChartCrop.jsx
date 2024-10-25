@@ -23,12 +23,11 @@ const PieChartComponent = ({ data,textColor}) => {
     const CustomTooltip = ({ id, value, crops }) => (
         <div style={{  color: 'black',background: 'rgba(255, 255, 255, 0.5)', padding: '8px',borderRadius: '2px', }}>
           <strong>Crops</strong>
-          <ul style={{ padding: '12px', margin: '1px', fontSize: '11px' }}> {/* Adjust styles here */}
+          <ul style={{ padding: '12px', margin: '1px', fontSize: '11px' }}> 
             {crops.map(crop => <li key={crop}>{crop}</li>)}
           </ul>
         </div>
       );
-  // Convert the `data` object into an array for the pie chart
   const dataForChart = Object.keys(data).map(key => ({
     id: key,
     label: key,
@@ -44,12 +43,10 @@ const PieChartComponent = ({ data,textColor}) => {
     'Moderately Suitable': '#42AE76 ',
     'Marginally Suitable': '#4FB4D3',
     'Recommended Crops': '#F4EB3A',
-    // ... other mappings
   };
   const getColor = (bar) => colorMapping[bar.id] || '#000';
   const shouldSplitLegend = chartSize >500;
 
-  // Splitting data into two arrays for two rows
   const halfLength = Math.ceil(dataForChart.length / 2);
   const firstRowData = shouldSplitLegend ? dataForChart.slice(0, halfLength) : dataForChart;
   const secondRowData = shouldSplitLegend ? dataForChart.slice(halfLength) : [];
@@ -97,55 +94,6 @@ const PieChartComponent = ({ data,textColor}) => {
           arcLinkLabelsColor={{ from: 'color' }}
           arcLabelsSkipAngle={10}
           arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-          // legends={[
-          //   {
-          //     anchor: 'bottom',
-          //     direction: 'row',
-          //     justify: false,
-          //     translateX: shouldSplitLegend ? -90 : -20,
-          //     translateY: shouldSplitLegend ? (legendTranslateY) -30 : (legendTranslateY),
-          //     itemsSpacing: 20,
-          //     itemWidth: 105,
-          //     itemHeight: 18,
-          //     itemTextColor: '#999',
-          //     itemDirection: 'left-to-right',
-          //     itemOpacity: 1,
-          //     symbolSize: 18,
-          //     symbolShape: 'circle',
-          //     data: firstRowData.map(item => ({
-          //       ...item,
-          //       color: getColor(item), // Ensure the color mapping is used
-          //     })),
-          //     effects: [
-          //       {
-          //         on: 'hover',
-          //         style: {
-          //           itemTextColor: '#000'
-          //         }
-          //       }
-          //     ]
-          //   },...(shouldSplitLegend ? [{
-          //     // Second row for legend (only if small screen)
-          //     anchor: 'bottom',
-          //     direction: 'row',
-          //     justify: false,
-          //     translateX: shouldSplitLegend ? -90 : -20,
-          //     translateY: legendTranslateY, // Adjust based on the height of the first row
-          //     itemsSpacing: 20,
-          //     itemWidth: 105,
-          //     itemHeight: 18,
-          //     itemTextColor: '#999',
-          //     itemDirection: 'left-to-right',
-          //     itemOpacity: 1,
-          //     symbolSize: 18,
-          //     symbolShape: 'circle',
-          //     data: secondRowData.map(item => ({
-          //       ...item,
-          //       color: getColor(item), // Ensure the color mapping is used
-          //     })),
-          //     // ... other props ...
-          //   }] : []),
-          // ]}
         />
       </div>
     </div>

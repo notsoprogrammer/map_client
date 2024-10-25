@@ -4,10 +4,10 @@ import { Box } from '@mui/material';
 const { tableau } = window;
 
 const Rice = () => {
-  const tableauVizRef = useRef(null); // Reference to the div where the viz will be embedded
+  const tableauVizRef = useRef(null);
 
   useEffect(() => {
-    let viz; // Variable to hold the viz instance
+    let viz;
 
     const initViz = () => {
       // Static Tableau dashboard link for the demo
@@ -23,7 +23,6 @@ const Rice = () => {
         }
       };
 
-      // Initialize the Tableau Viz in the referenced div
       viz = new tableau.Viz(tableauVizRef.current, vizUrl, options);
     };
 
@@ -31,16 +30,13 @@ const Rice = () => {
 
     const handleResize = () => {
       if (viz) {
-        // Adjust the frame size on window resize
         viz.setFrameSize(undefined, tableauVizRef.current.clientHeight);
       }
     };
 
-    // Add window resize listener
     window.addEventListener('resize', handleResize);
 
     return () => {
-      // Clean up on component unmount
       window.removeEventListener('resize', handleResize);
       if (viz) {
         viz.dispose();

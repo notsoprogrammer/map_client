@@ -34,7 +34,7 @@ const Dashboard = () => {
           withCredentials: true
         });
         setLinks(response.data);
-        setMunicipality(response.data.municipality); // Assuming municipality is returned here
+        setMunicipality(response.data.municipality); 
       } catch (error) {
         console.error('Error fetching dashboard links:', error);
       }
@@ -85,8 +85,8 @@ const Dashboard = () => {
       (error) => {
         console.error(error);
         setCoords({
-          latitude: 11.7888905913845, // Default latitude
-          longitude: 124.879792127437, // Default longitude
+          latitude: 11.7888905913845, 
+          longitude: 124.879792127437, 
         });
       }
     );

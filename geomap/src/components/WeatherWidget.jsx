@@ -29,13 +29,12 @@ const WeatherWidget = ({ coords }) => {
       fetchForecastByCoords(coords.latitude, coords.longitude)
         .then(data => {
           const dailyForecasts = data.list.filter((reading) => reading.dt_txt.endsWith("12:00:00"));
-          // Set the forecast data using the processed data from the response
           setForecastData(dailyForecasts.slice(0, 5).map(day => ({
             day: new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'long' }),
             minTemp: Math.round(day.main.temp_min),
             maxTemp: Math.round(day.main.temp_max),
             icon: `http://openweathermap.org/img/wn/${day.weather[0].icon}.png`,
-            condition: day.weather[0].main, // This could be description as well, if more detail is desired
+            condition: day.weather[0].main, 
           })));
         })
         .catch(console.error);

@@ -20,7 +20,7 @@ function Settings() {
 
     
     useEffect(() => {
-        fetchUserData(); // Initial fetch on component mount
+        fetchUserData(); 
     }, []);
 
     useEffect(() => {
@@ -29,14 +29,14 @@ function Settings() {
 
     const fetchUserData = async () => {
         const authToken = localStorage.getItem('authToken');
-        console.log("Retrieved token:", authToken); // Log to verify
+        console.log("Retrieved token:", authToken); 
         try {
           const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
             headers: { 'Authorization': `Bearer ${authToken}` }
           });
           const data = await response.json();
           if (response.ok) {
-            setLocalUser(data); // Set local user state
+            setLocalUser(data); 
           } else {
             console.error(data.message);
           }
@@ -49,7 +49,7 @@ function Settings() {
 
     const handleCancel = () => {
         setEditMode(false);
-        fetchUserData(); // Refresh the user data when cancelling edits
+        fetchUserData(); 
     };
 
     const handleInputChange = (event) => {

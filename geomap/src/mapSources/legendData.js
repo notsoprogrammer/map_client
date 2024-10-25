@@ -1,4 +1,4 @@
-// Legend data (you can replace this with your own legend data structure)
+
 const legendData = {
   'Samar': {
     'Soil Properties': {
@@ -144,7 +144,7 @@ const legendData = {
           { label: '30.0', color: '#F34242' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -315,7 +315,7 @@ const legendData = {
         ],
       },
 
-      // Add legends for other crops in Samar...
+      
     },
   },
   
@@ -461,7 +461,7 @@ const legendData = {
           { label: '15.1', color: '#F34242' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -499,7 +499,7 @@ const legendData = {
           { label: 'High', color: '#00FF00' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
   },
 
@@ -640,7 +640,7 @@ const legendData = {
           { label: '30.0', color: '#F34242' },          
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -678,7 +678,7 @@ const legendData = {
           { label: 'High', color: '#00FF00' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
   },
 
@@ -819,7 +819,7 @@ legendTitle: 'Exchangeable Zinc',
             { label: '19.6', color: '#F34242' },            
           ],
         },
-        // Add legends for other crops in Samar...
+        
       },
       'Soil Texture': {
           'Clay': {
@@ -858,7 +858,7 @@ legendTitle: 'Exchangeable Zinc',
             { label: 'High', color: '#00FF00' },
           ],
         },
-        // Add legends for other crops in Samar...
+        
       },
   },
 
@@ -999,7 +999,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: '12.5', color: '#F34242' },          
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -1037,7 +1037,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: 'High', color: '#00FF00' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
   },
 
@@ -1178,7 +1178,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: '12.5', color: '#F34242' },          
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -1216,7 +1216,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: 'High', color: '#00FF00' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
   },
 
@@ -1357,7 +1357,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: '13.0', color: '#F34242' },          
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -1395,7 +1395,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: 'High', color: '#00FF00' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
   },
 
@@ -1536,7 +1536,7 @@ legendTitle: 'Exchangeable Zinc',
             { label: '5.9', color: '#F34242' },            
           ],
         },
-        // Add legends for other crops in Samar...
+        
       },
       'Soil Texture': {
           'Clay': {
@@ -1575,7 +1575,7 @@ legendTitle: 'Exchangeable Zinc',
             { label: 'High', color: '#00FF00' },
           ],
         },
-        // Add legends for other crops in Samar...
+        
       },
   },
 
@@ -1720,7 +1720,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: '16.0', color: '#F34242' },          
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -1758,7 +1758,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: 'High', color: '#00FF00' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
   },
 
@@ -1899,7 +1899,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: '30.0', color: '#F34242' },          
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
     'Soil Texture': {
         'Clay': {
@@ -1937,7 +1937,7 @@ legendTitle: 'Exchangeable Zinc',
           { label: 'High', color: '#00FF00' },
         ],
       },
-      // Add legends for other crops in Samar...
+      
     },
   },
 
@@ -2079,7 +2079,7 @@ legendTitle: 'Exchangeable Zinc',
             { label: '2.7', color: '#F34242' },            
           ],
         },
-        // Add legends for other crops in Samar...
+        
       },
       'Soil Texture': {
           'Clay': {
@@ -2118,63 +2118,63 @@ legendTitle: 'Exchangeable Zinc',
             { label: 'High', color: '#00FF00' },
           ],
         },
-        // Add legends for other crops in Samar...
+        
       },
   },
 
-//   'Basey': {
-//     'Soil Properties': {
-//       'Calcium': {
-//         legendTitle: 'Exchangeable Calcium',
+
+
+
+
         legendCategories: [
+          { label: 'Basey', range: 'Soil Properties' },
+          { label: 'Calcium', range: 'Exchangeable Calcium' },
           { label: 'High', range: '> 2000' },
-          { label: 'Moderate', range: '1000-2000' },
-          { label: 'Low', range: '< 1000' },
         ],
-//         legendItems: [
-//           { label: '1346-1831', color: '#008CCC' },
-//           { label: '1831-1900', color: '#29AE37' },
-//           { label: '1900-2455', color: '#DAD409' },
-//           { label: '2455-3009', color: '#F39006' },
-//           { label: '3009-3495', color: '#F34242' },
-//         ],
-//       },
-//       // Add legends for other soil properties in Samar...
-//     },
-//   },
-//   // Add legends for other municipalities...
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
-// Add default legends for 'Soil Properties' and 'Crop Suitability' if they don't exist
-if (!legendData['Default']) {
-  legendData['Default'] = {
-    'Soil Properties': {
-      'Default': {
-        legendTitle: 'Default Soil Properties Level of Suitability',
+
+if (!legendData['Moderate']) {
+  legendData['1000-2000'] = {
+    'Low': {
+      '< 1000': {
+        legendTitle: '1346-1831',
         legendItems: [
-          { label: 'Low', color: '#FF0000' },
-          { label: 'Medium', color: '#FFFF00' },
-          { label: 'High', color: '#00FF00' },
-          { label: 'Very Low', color: '#FF6347' },
-          { label: 'Very High', color: '#228B22' },
+          { label: '#008CCC', color: '1831-1900' },
+          { label: '#29AE37', color: '1900-2455' },
+          { label: '#DAD409', color: '2455-3009' },
+          { label: '#F39006', color: '3009-3495' },
+          { label: '#F34242', color: 'Soil Properties' },
         ],
       },
-      // Add default legends for other soil properties...
+      
     },
     'Crop Suitability': {
       'Default': {
-        legendTitle: 'Default Crop Suitability Level of Suitability',
+        legendTitle: 'Default',
         legendItems: [
-          { label: 'Low', color: '#FF0000' },
-          { label: 'Medium', color: '#FFFF00' },
-          { label: 'High', color: '#00FF00' },
-          { label: 'Very Low', color: '#FF6347' },
-          { label: 'Very High', color: '#228B22' },
+          { label: 'Soil Properties', color: 'Default' },
+          { label: 'Default Soil Properties Level of Suitability', color: 'Low' },
+          { label: '#FF0000', color: 'Medium' },
+          { label: '#FFFF00', color: 'High' },
+          { label: '#00FF00', color: 'Very Low' },
         ],
       },
-      // Add default legends for other crops...
+      
     },
-    // Add default legends for other map types...
+    
   };
 }
 

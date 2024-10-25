@@ -1,4 +1,4 @@
-// processTextureData.js
+
 import textureData from '../mapSources/soilTexture';
 
 
@@ -21,9 +21,9 @@ const processTextureData = (category, municipality) => {
     const filteredData = textureData.features
       .filter(feature => feature.properties.Municipality === municipality)
       .map(feature => ({
-        Brgy: feature.properties.Brgy, // Name of Barangay
-        value: feature.properties[category], // Value of the selected category (Clay, Silt, or Sand)
-      })).filter(feature => feature.value != null); // Ensure no null values
+        Brgy: feature.properties.Brgy, 
+        value: feature.properties[category], 
+      })).filter(feature => feature.value != null); 
   
     return filteredData;
   };

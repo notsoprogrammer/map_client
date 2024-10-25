@@ -6,26 +6,26 @@ import axios from 'axios';
 
 const CustomTextField = styled(TextField)({
   'label': {
-      color: '#E0E3E7', // Change the label color to off-white
+      color: '#E0E3E7',
   },
   '& label.Mui-focused': {
-      color: '#B2BAC2', // Slightly darker for focused label
+      color: '#B2BAC2',
   },
   '& .MuiInputBase-input': {
-      color: '#E0E3E7', // This changes the input text color to off-white
+      color: '#E0E3E7',
   },
   '& .MuiInput-underline:after': {
       borderBottomColor: '#B2BAC2',
   },
   '& .MuiOutlinedInput-root': {
       '& fieldset': {
-          borderColor: '#E0E3E7', // Border color for text field
+          borderColor: '#E0E3E7',
       },
       '&:hover fieldset': {
-          borderColor: '#B2BAC2', // Border color on hover
+          borderColor: '#B2BAC2', 
       },
       '&.Mui-focused fieldset': {
-          borderColor: '#6F7E8C', // Border color when focused
+          borderColor: '#6F7E8C',
       },
   }
 });
@@ -42,9 +42,8 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Function to validate a generic phone number format (digits and optional formatting characters)
   const validatePhoneNumber = (number) => {
-    const regex = /^[0-9\s\-()]+$/; // Allows digits, spaces, dashes, and parentheses
+    const regex = /^[0-9\s\-()]+$/; 
     return regex.test(number);
   };
 
@@ -55,8 +54,6 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    // Check for empty fields
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = 'First name is required';
     if (!formData.lastName) newErrors.lastName = 'Last name is required';
@@ -64,12 +61,10 @@ const Contact = () => {
     if (!formData.phoneNumber) newErrors.phoneNumber = 'Phone number is required';
     if (!formData.message) newErrors.message = 'Message is required';
 
-    // Check if the phone number is valid
     if (formData.phoneNumber && !validatePhoneNumber(formData.phoneNumber)) {
       newErrors.phoneNumber = 'Invalid phone number. Use only digits, spaces, dashes, or parentheses.';
     }
 
-    // If there are errors, stop the submission
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setLoading(false);
@@ -86,7 +81,6 @@ const Contact = () => {
       console.log(response.data.message);
       alert(response.data.message);
       
-      // Reset form data and errors after successful submission
       setFormData({
         firstName: '',
         lastName: '',

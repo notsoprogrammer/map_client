@@ -25,7 +25,6 @@ const classifySoilProperty = (property, value) => {
     const threshold = thresholds[property];
     if (!threshold) return 'Unknown property';
   
-    // Check if value is within 'low', 'moderate', or 'high' thresholds
     if ((threshold.low[0] === null && numericValue < threshold.low[1]) ||
         (threshold.veryLow && numericValue > threshold.veryLow[0])) {
       return 'Low';
@@ -36,20 +35,19 @@ const classifySoilProperty = (property, value) => {
       return 'High';
     }
   
-    return 'Out of range'; // Fallback if value does not match any range
+    return 'Out of range'; 
   };
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5; // Set how many items you want per page
+    const itemsPerPage = 5;
     const maxPage = Math.ceil(data.length / itemsPerPage);
-    // Data slicing based on current page
+
     const paginatedData = data.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
     const chartTitle = titleFormats[property] + municipality;
 
-    // Handlers for pagination
     const nextPage = () => setCurrentPage((prev) => Math.min(prev + 1, maxPage));
     const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
     useEffect(() => {
@@ -67,7 +65,6 @@ const classifySoilProperty = (property, value) => {
                 return (
                   <div style={{ padding: '12px', color: 'black', background: 'rgba(255, 255, 255, 0.5)' }}>
                     <strong>Municipality:</strong> {data.Municipality}<br/>
-                    {/* <strong>{property}:</strong> {data[property]}<br/> */}
                     <strong>{property}:</strong> {classification}
                   </div>
                 );
@@ -83,7 +80,7 @@ const classifySoilProperty = (property, value) => {
                 },
                 grid: {
                     line: {
-                        stroke: gridColor, // Set the grid line color
+                        stroke: gridColor,
                         strokeWidth: 1
                     }
                 },
@@ -95,7 +92,7 @@ const classifySoilProperty = (property, value) => {
                 },
                 legends: {
                     text: {
-                        fill: textColor // Set the legend text color
+                        fill: textColor
                     }
                 }
                 
@@ -113,8 +110,7 @@ const classifySoilProperty = (property, value) => {
                     tickValues: 'every 2',
                     tickSize: 5,
                     tickPadding: 5,
-                    // legend:'Barangay',
-                    tickRotation: isPaginated ? 15 : 0, // Rotate labels by 45 degrees if paginated
+                    tickRotation: isPaginated ? 15 : 0,
                     legend: isPaginated ? '' : 'Barangay',
                     legendPosition: 'middle',
                     legendOffset: 40
@@ -129,38 +125,13 @@ const classifySoilProperty = (property, value) => {
                 }}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
-                labelTextColor={'#262626'} // Set the label text color
-                // legends={[
-                //     {
-                //         dataFrom: 'keys',
-                //         anchor: 'top-left', // Changed to 'top-right'
-                //         direction: 'row',    // Use 'row' for horizontal layout
-                //         justify: false,
-                //         translateX: -20,
-                //         translateY: -30,
-                //         itemsSpacing: 1,
-                //         itemWidth: 20,
-                //         itemHeight: 20,
-                //         itemDirection: 'left-to-right',
-                //         itemOpacity: 0.85,
-                //         symbolSize: 20,
-                //         effects: [
-                //             {
-                //                 on: 'hover',
-                //                 style: {
-                //                     itemOpacity: 1
-                //                 }
-                //             }
-                //         ]
-                //     }
-                // ]}
+                labelTextColor={'#262626'} 
                 animate={true}
                 motionStiffness={90}
                 motionDamping={15}
             />
         </div>
         {isPaginated && <div>
-                {/* Pagination Controls */}
                 <button 
                     onClick={prevPage} 
                     disabled={currentPage === 1}

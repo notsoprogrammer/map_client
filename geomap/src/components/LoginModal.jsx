@@ -57,14 +57,14 @@ const LoginModal = ({ open, handleClose }) => {
       if (authWindow.closed) {
         clearInterval(timer);
         setIsLoading(false);
-        setIsTableauAuthenticated(true); // Assuming authentication was successful
+        setIsTableauAuthenticated(true); 
         setSnackbar({ open: true, message: 'Please ensure you completed authentication in the pop-up.' });
       }
     }, 1000);
   }
   };
   const reopenTableauAuth = () => {
-    handleLoginWithTableau(); // Directly attempt to reopen the authentication popup
+    handleLoginWithTableau(); 
   };
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && email && password) {
@@ -78,13 +78,11 @@ const LoginModal = ({ open, handleClose }) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/auth`, { email, password });
       if (response.data && response.data.authToken && response.data.tableauToken) {
-        // Store the authToken and tableauToken in localStorage
         localStorage.setItem('authToken', response.data.authToken);
         localStorage.setItem('tableauToken', response.data.tableauToken);
 
         dispatch(setCredentials({ ...response.data }));
 
-        // Redirect based on user role
         if (response.data.role === 'admin') {
           navigate('/admin/usermanagement');
         } else {
@@ -164,7 +162,7 @@ const LoginModal = ({ open, handleClose }) => {
                   onClick={submitHandler}
                   variant="contained"
                   color='success'
-                  disabled={isLoading || !email || !password} // Disable if loading or email/password is empty
+                  disabled={isLoading || !email || !password} 
                 >
                   {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
                 </Button>

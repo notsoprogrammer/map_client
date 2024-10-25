@@ -12,17 +12,17 @@ import Crops from '../Demo components/CropsDemo';
 import Farmers from '../Demo components/FarmersDemo';
 import Calbiga from '../Municipality Images/Calbiga.png';
 
-// Import tokens and theme settings from theme.js
+
 import { tokensDark, tokensLight, themeSettings } from '../theme';
 
-// Demo user mock data
+
 const demoUser = {
   name: "Demo User",
   municipality: "Calbiga",
   role: "guest",
 };
 
-// Navigation items
+
 const navItems = [
   { text: "Dashboard", icon: <HomeOutlined />, component: <Dashboard /> },
   { text: "Maps", icon: <PublicOutlined />, component: <Maps /> },
@@ -36,7 +36,7 @@ const Demo = ({ drawerWidth = 240, isSidebarOpen = true, setIsSidebarOpen, isNon
   const navigate = useNavigate();
   const mode = useSelector((state) => state.global.mode);
 
-  // Use imported themeSettings to create the theme
+  
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   const [activeItem, setActiveItem] = useState("Dashboard");
