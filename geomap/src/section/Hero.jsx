@@ -18,7 +18,7 @@ const Hero = () => {
             <Typography variant="h1" sx={{ fontSize: '35px', fontWeight: '700', lineHeight:'1.4'}}>
               Unlock the Full Potential of Your Agricultural Land with Our Geo-Reference Mapping Solution
             </Typography>
-            <Typography variant="h6" sx={{ fontSize: '16px'}}>A User-friendly Monitoring System</Typography>
+            <Typography variant="h6" sx={{ fontSize: '16px'}}>Managing, Mapping and Visualizing Agricultural Data</Typography>
             <Typography variant="p" sx={{color:'#CCC9C9', fontSize: '14px'}}>Provides information of crops, land use, and soil quality. Crop condition
                 assessment, crop yield forecasting, soil mapping, etc.
             </Typography>
